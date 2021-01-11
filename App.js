@@ -11,9 +11,9 @@ const {width,height} =Dimensions.get("window")
 export default function App() {
   return (
     <View style={styles.container}>
-      <StatusBar style="auto" />
+      <StatusBar style="light" />
       <NavigationContainer>
-
+        <StackNavigation />
       </NavigationContainer>
     </View>
   );

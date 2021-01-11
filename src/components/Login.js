@@ -31,7 +31,7 @@ const Login = ({navigation}) => {
         if(userError=="")setUserError("Please enter a valid username")
         if(passwordError=="")setPasswordError("Please enter a valid password")
         if(username ==user.username&&password ==user.password){
-            navigation.navigate('Drawer');
+            navigation.navigate('Home');
             setUsername("");
             setPassword("")
         }
@@ -52,10 +52,10 @@ const Login = ({navigation}) => {
         return (
             <SafeAreaView style={styles.container}>
                 <View style={{width:'100%',height:'40%',backgroundColor:'white'}} >
-                    <View style={{height:120,width:'100%',paddingTop:20,borderBottomRightRadius:80,backgroundColor:'royalblue',position:'relative'}}>
-                        <View style={{width:'100%',height:25,backgroundColor:'steelblue',...StyleSheet.absoluteFillObject}}/>
+                    <View style={{height:120,width:'100%',paddingTop:20,borderRadius:30,backgroundColor:'#B0AAA7',position:'relative',alignItems:'center'}}>
+                        <View style={{width:'100%',height:25,backgroundColor:'#827C79',...StyleSheet.absoluteFillObject}}/>
                         <Text style={{fontSize:18,color:'white'}}></Text>
-                        <Text style={{fontSize:28,fontWeight:'bold',color:'white',marginLeft:20}}>Log in !</Text>
+                        <Text style={{fontSize:28,fontWeight:'bold',color:'white'}}>HRM</Text>
                     </View>
 
                 </View>
