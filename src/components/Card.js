@@ -1,4 +1,4 @@
-import { DrawerActions, useNavigation } from '@react-navigation/native'
+import { DrawerActions, StackActions, useNavigation } from '@react-navigation/native'
 import React from 'react'
 import { View, Text ,StyleSheet ,Dimensions,TouchableOpacity} from 'react-native'
 import { Feather as Icon } from '@expo/vector-icons'; 
@@ -12,15 +12,13 @@ const Card = ({title, icon,screen}) => {
     const navigation = useNavigation()
     return (
         <TouchableOpacity
-        onPress={()=>navigation.dispatch(DrawerActions.jumpTo(screen))} 
+        onPress={()=>navigation.dispatch(StackActions.push(screen))} 
         >
              <View style={styles.container}>
              <View style={styles.icon}>
                  <View style={styles.iconview}>
-                    <Icon name={icon} size={80} color='steelblue' />
+                    <Icon name={icon} size={25} color='steelblue' />
                  </View>
-                 
-
              </View>
              <View style={styles.text}>
                  <Text style={styles.word}>{title}</Text>
@@ -34,7 +32,8 @@ const Card = ({title, icon,screen}) => {
 const styles = StyleSheet.create({
     container:{
         width:width/2-20,
-        height:200,
+        height:80,
+        borderRadius:360,
         margin:10,
         shadowColor:'black',
         shadowOffset:{width:0,height:2},
@@ -50,23 +49,22 @@ const styles = StyleSheet.create({
     },
     iconview:{
         flex:1,
-        borderBottomRightRadius:35,
         alignItems:'center',
         justifyContent:'center', 
-        padding:10,
-        borderBottomLeftRadius:35
+        padding:5,
     },
     text:{
         width:'100%',
         height:'10%',
         justifyContent:'center',
         alignItems:'center',
-        padding:10
+        padding:5
     },
     word:{
         fontSize:15,
         fontWeight:'bold',
-        color:'teal'
+        color:'teal',
+        marginBottom:10
     }
 })
 

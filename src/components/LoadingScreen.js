@@ -20,7 +20,7 @@ const LoadingScreen = ({navigation}) => {
 
             </View>
             <View style={styles.midsection}>
-                <Text style={{fontSize:50,color:'#305285',fontWeight:"bold"}}>HRM</Text>
+                <Text style={{fontSize:40,color:'#305285',fontWeight:"bold"}}>HRMS</Text>
 
             </View>
 

@@ -1,20 +1,18 @@
 import React,{useState} from 'react'
-import { View,ScrollView, Alert,Text,Dimensions,TouchableOpacity,StyleSheet } from 'react-native';
+import { View,ScrollView,Button, Alert,Text,Dimensions,TouchableOpacity,StyleSheet } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import DatePicker from 'react-native-datepicker'
-
+import DateTimePicker from "@react-native-community/datetimepicker"
 
 
 
 import HeaderBar from '../custom/HeaderBar'
 import FormInput from '../custom/FormInput'
-import Button from '../custom/Button'
+
 
 
 const {width, height} = Dimensions.get('window')
 
-const EditStaff = ({route,navigation}) => {
-    const{id,fname,lname,experience,position,qualification} = route.params
+const EditStaff = ({navigation}) => {
 
 
     const [filterBy, setFilterBy] = useState(null)
@@ -24,18 +22,17 @@ const EditStaff = ({route,navigation}) => {
         {label: 'Backend Engineer', value: 'backend' },
         {label: 'Frontend Engineer', value: 'frontend' }
     ])
+    const [firstname, setFirstName] = useState("")
+    const [lastname, setLastName] = useState("lname")
+    const [qualify, setQualify] = useState("qualification")
+    const [exprence, setExprence] = useState("experience")
 
-    const [firstname, setFirstName] = useState(fname)
-    const [lastname, setLastName] = useState(lname)
-    const [qualify, setQualify] = useState(qualification)
-    const [exprence, setExprence] = useState(experience)
-    const [date, setDate] = useState("")
 
-    let exp =experience.toString()
-
-    const handleDateChange =(date)=>{
-        setDate(date)
-   }
+    const [date, setDate] = useState(new Date(1598051730000));
+    const [mode, setMode] = useState('date');
+    const [show, setShow] = useState(false);
+     
+ 
 
    const handleUserEdit =()=>{
        Alert.alert('Edit',"Apply changes ?",[
@@ -52,6 +49,23 @@ const EditStaff = ({route,navigation}) => {
     //    navigation.navigate('Drawer')
     }
     let controller;
+
+    const onChange = (event, selectedDate) => {
+        const currentDate = selectedDate || date;
+        setShow(Platform.OS === 'ios');
+        setDate(currentDate);
+      };
+    
+      const showMode = (currentMode) => {
+        setShow(true);
+        setMode(currentMode);
+      };
+    
+      const showDatepicker = () => {
+        showMode('date');
+      };
+    
+
     return (
         <View style={styles.container}>
             <HeaderBar />
@@ -60,7 +74,6 @@ const EditStaff = ({route,navigation}) => {
             style={styles.editsection}>
             <FormInput 
                   label="First Name"
-                  placeholder={firstname}
                   value ={firstname}
                   changeHandler={(text)=>setFirstName(text)}
                
@@ -68,7 +81,6 @@ const EditStaff = ({route,navigation}) => {
 
             <FormInput 
                   label="Last Name"
-                  placeholder={lname}
                   value={lastname}
                   changeHandler={(text)=>setLastName(text)}
               
@@ -94,49 +106,36 @@ const EditStaff = ({route,navigation}) => {
                  />
                   <FormInput 
                     label="Qualification"
-                    placeholder={qualify}
                     value={qualify}
                     changeHandler={(text)=>setQualify(text)}
               
                 />
                 <FormInput 
                     label="Experience"
-                    placeholder={exp}
                     value={exprence}
                     type="number-pad"
                     changeHandler={(text)=>setExprence(text)}
               
                 />
-                 <DatePicker 
-                        style={{width: 200,marginVertical:15}}
-                        date={date}
-                        mode="date"
-                        placeholder="Date of Birth"
-                        format="YYYY-MM-DD"
-                        minDate="1980-01-01"
-                        maxDate="2009-05-01"
-                        confirmBtnText="Confirm"
-                        cancelBtnText="Cancel"
-                        customStyles={{
-                          dateIcon: {
-                            position: 'absolute',
-                            left: 0,
-                            top: 4,
-                            marginLeft: 0
-                          },
-                          dateInput: {
-                            marginLeft: 36,
-                            borderColor:'teal',
-                            borderRadius:5
-                          }
-                        }}
-                        onDateChange={handleDateChange}
+                 <Button onPress={showDatepicker} title="Select date of birth" />
+                 {show && (
+                    <DateTimePicker
+                    testID="dateTimePicker"
+                    value={date}
+                    mode={mode}
+                    is24Hour={true}
+                    display="default"
+                    onChange={onChange}
                     />
-                    <Button 
-                 title="Submit"
-                 pressHandler={handleUserEdit}
-                 />
-
+      )}
+      <View style={{marginTop:10}}>
+          <Button 
+             color="mediumaquamarine"
+            onPress={ ()=>navigation.navigate('addmember')} 
+            title="Submit" />
+      </View>
+                       
+               
             </ScrollView>
             
         </View>

@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
-import {View,SafeAreaView ,Text,StyleSheet,TouchableOpacity} from 'react-native';
+import {View,SafeAreaView ,Button,Text,StyleSheet,TouchableOpacity} from 'react-native';
 
 import Inputfield from '../custom/Inputfield'
-import Button from '../custom/Button'
 
 const Login = ({navigation}) => {
 
@@ -55,7 +54,7 @@ const Login = ({navigation}) => {
                     <View style={{height:120,width:'100%',paddingTop:20,borderRadius:30,backgroundColor:'#B0AAA7',position:'relative',alignItems:'center'}}>
                         <View style={{width:'100%',height:25,backgroundColor:'#827C79',...StyleSheet.absoluteFillObject}}/>
                         <Text style={{fontSize:18,color:'white'}}></Text>
-                        <Text style={{fontSize:28,fontWeight:'bold',color:'white'}}>HRM</Text>
+                        <Text style={{fontSize:28,fontWeight:'bold',color:'white'}}>HRMS</Text>
                     </View>
 
                 </View>
@@ -86,10 +85,13 @@ const Login = ({navigation}) => {
                 
                  </View>
                  
-                <Button 
-                 title="Login"
-                 pressHandler={handleLogin}
-                 />
+               
+                    <Button 
+                    title="Login"
+                    color='darkgreen'
+                    onPress={handleLogin}
+                    />
+                 
                  <TouchableOpacity
                     style={{marginTop:10,height:30,width:150}}
                     onPress={()=>alert('Reset password ?')}

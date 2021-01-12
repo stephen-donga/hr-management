@@ -8,10 +8,10 @@ import { DrawerActions, useNavigation } from '@react-navigation/native';
 import Card from './Card'
 
 const items = [
-    {title:'Add Staff', icon:'user-plus',screen:'AddMember'},
-    {title:'Search', icon:'search',screen:'Staff'},
-    {title:'Add User', icon:'users',screen:'Home'},
-    {title:'My Details', icon:'user',screen:'Profile'}
+    {title:'Expenses', icon:'dollar-sign',screen:'AddMember'},
+    {title:'Training', icon:'book',screen:'Staff'},
+    {title:'Activities', icon:'activity',screen:'Home'},
+    {title:'Leaves', icon:'users',screen:'Profile'}
 ]
 
 
@@ -19,13 +19,8 @@ const Homepage = () => {
     const navigation = useNavigation()
     return (
         <SafeAreaView style={styles.container}>
-            <HeaderBar />
-            <DrawerHeader 
-             toggler={()=>navigation.dispatch(DrawerActions.openDrawer())}
-            
-             lastIcon='user-check'
-            
-            />
+           
+          
             <View style={styles.cardsection}>
              
                    <FlatList 
@@ -52,7 +47,6 @@ const styles = StyleSheet.create({
     },
     cardsection:{
         flex:1,
-        marginTop:20,
         alignItems:'center',
         justifyContent:'center'
      }

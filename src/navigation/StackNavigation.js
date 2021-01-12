@@ -4,6 +4,10 @@ import {createStackNavigator} from "@react-navigation/stack"
 import BottomTabs from '../navigation/BottomTabNavigation'
 import Login from '../components/Login'
 import LoadingScreen from '../components/LoadingScreen'
+import ViewStaff from '../components/ViewStaff'
+import Staff from '../components/Staff'
+import EditStaff from '../components/EditStaff'
+import AddMember from '../components/AddMember'
 
 const Stack = createStackNavigator()
 
@@ -14,6 +18,10 @@ const StackNavigation = ()=>{
         >
             <Stack.Screen name="Loading" component={LoadingScreen} />
             <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Staff" component={Staff} />
+            <Stack.Screen name='addmember' component={AddMember} />
+            <Stack.Screen name="EditStaff" component={EditStaff} />
+            <Stack.Screen name="View" component={ViewStaff} />
             <Stack.Screen name="Home" component={BottomTabs} />
         </Stack.Navigator>
     )

@@ -1,14 +1,14 @@
 import React,{useState} from 'react'
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity,Dimensions } from 'react-native'
-import DatePicker from 'react-native-datepicker'
+import { View, Text,Button, StyleSheet, ScrollView, TouchableOpacity,Dimensions } from 'react-native'
 import DropDownPicker from 'react-native-dropdown-picker';
+import DateTimePicker from "@react-native-community/datetimepicker"
+
 
 
 
 import DrawerHeader from '../custom/DrawerHeader'
 import HeaderBar from '../custom/HeaderBar'
 import FormInput from '../custom/FormInput'
-import Button from '../custom/Button'
 
 
 const {width, height} = Dimensions.get('window')
@@ -16,7 +16,6 @@ const AddMember = ({navigation}) => {
 
     const [firstname, setFirstName] = useState("");
     const [lastname, setLastName] = useState("");
-    const [date, setDate] = useState("");
     const [qualification, setQualification] = useState("");
     const [experience, setExperience] = useState("");
 
@@ -34,26 +33,21 @@ const AddMember = ({navigation}) => {
     const [qualificationErr, setQualifyErr] = useState("")
     const [experienceErr, setExperienceErr] = useState("")
 
-    const handleDateChange =(date)=>{
-         setDate(date)
-    }
+    const [date, setDate] = useState(new Date(1598051730000));
+    const [mode, setMode] = useState('date');
+    const [show, setShow] = useState(false);
+
     const handleFirstNameChange = (value) => {
         setFirstName(value)
-
     }
     const handleLastNameChange = (value) => {
         setLastName(value)
-
     }
     const handleExperienceChange = (value) => {
         setExperience(value)
-
     }
-    
- 
     const handleQualificationChange = (value) => {
         setQualification(value)
-
     }
     
 
@@ -99,23 +93,31 @@ const AddMember = ({navigation}) => {
             setFnameErr("")
             setLnameErr(" ")
         }
-        
-
-       
-
-
     }
+
+    const onChange = (event, selectedDate) => {
+        const currentDate = selectedDate || date;
+        setShow(Platform.OS === 'ios');
+        setDate(currentDate);
+      };
+    
+      const showMode = (currentMode) => {
+        setShow(true);
+        setMode(currentMode);
+      };
+    
+      const showDatepicker = () => {
+        showMode('date');
+      };
 
     let controller;
     return (
         <View style={styles.container} >
              <HeaderBar />
-             <DrawerHeader 
-                toggler={()=>navigation.openDrawer()}
-                />
+             
             <ScrollView style={styles.section}
-         showsVerticalScrollIndicator={false}
-        >
+                showsVerticalScrollIndicator={false}
+                >
                 <FormInput 
                   label="First Name"
                   placeholder="Enter first name"
@@ -170,35 +172,31 @@ const AddMember = ({navigation}) => {
                     value={experience}
                     changeHandler={handleExperienceChange}
                 />
-                <DatePicker 
-                        style={{width: 200,marginVertical:15}}
-                        date={date}
-                        mode="date"
-                        placeholder="Date of Birth"
-                        format="YYYY-MM-DD"
-                        minDate="2016-05-01"
-                        maxDate="2021-05-12"
-                        confirmBtnText="Confirm"
-                        cancelBtnText="Cancel"
-                        customStyles={{
-                          dateIcon: {
-                            position: 'absolute',
-                            left: 0,
-                            top: 4,
-                            marginLeft: 0
-                          },
-                          dateInput: {
-                            marginLeft: 36,
-                            borderColor:'teal',
-                            borderRadius:5
-                          }
-                        }}
-                        onDateChange={handleDateChange}
+                
+                
+
+                 <Button  onPress={showDatepicker} title="Select date of birth" />
+                 {show && (
+                    <DateTimePicker
+                    testID="dateTimePicker"
+                    value={date}
+                    mode={mode}
+                    is24Hour={true}
+                    display="default"
+                    onChange={onChange}
                     />
+                    
+      )}
+                 <View  style={{marginTop:20,marginBottom:20}}>
                  <Button 
                  title="Submit"
+                 color="green"
                  pressHandler={handleMemberAddition}
                  />
+                 </View>
+               <View style={{height:50}}>
+
+              </View>
             </ScrollView>
              
         </View>

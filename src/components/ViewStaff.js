@@ -3,30 +3,41 @@ import { View, Text,StyleSheet ,Dimensions} from 'react-native'
 import{Entypo} from "@expo/vector-icons"
 import {Feather as Icon} from "@expo/vector-icons"
 import HeaderBar from '../custom/HeaderBar'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const {width,height} = Dimensions.get('window')
 
-const ViewStaff = ({route,navigation}) => {
-    const{fname, lname,age,position,qualification,experience} = route.params;
+const ViewStaff = ( ) => {
     return (
         <View style={styles.container}>
             <HeaderBar />
            <View style={styles.topsection}>
-               <Entypo name="user" size={80} color="royalblue" />
+               <View style={{...StyleSheet.absoluteFill,backgroundColor:'#B0B7B9',borderBottomLeftRadius:14,borderBottomRightRadius:14}} />
+                <View style={{width:110,height:110,borderRadius:100,backgroundColor:'white'}}>
+
+                </View>
 
            </View>
            <View style={styles.extrudingsection}>
-               <Text style={styles.text}>{fname}{" "}{lname}</Text>
+               <Text style={styles.text}> </Text>
                <View style={styles.userdetails}>
                     <View style={styles.righttdetailsection}>
-                        <Text style={styles.title}>Position:</Text>
-                        <Text style={styles.label}>{position}</Text>
-                        <Text style={styles.title}>Qualification:</Text>
-                        <Text style={styles.label}>{qualification}</Text>
-                        <Text style={styles.title}>Experience:</Text>
-                        <Text style={styles.label}>{experience}{" "}years</Text>
-                        <Text style={styles.title}>Age:</Text>
-                        <Text style={styles.label}>{age}{" "}years</Text>
+                        <Text>GGJJ</Text>
+                      
+
+                    </View>
+                    <View style={{flexDirection:'row',justifyContent:'space-evenly',width:'100%',marginTop:220,height:40,position:'absolute'}}>
+                        <TouchableOpacity style={styles.button}
+                        >
+                            <Text>Edit</Text>
+
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.button}
+                        >
+                            <Text>Delete</Text>
+                            
+                        </TouchableOpacity>
+                         
 
                     </View>
 
@@ -49,14 +60,13 @@ const styles = StyleSheet.create({
         height:height/3,
         alignItems:'center',
         paddingTop:20,
-        backgroundColor:'mediumaquamarine',
         position:'relative'
     },
     extrudingsection:{
         width:width/3+150,
         height:height/2+50,
         backgroundColor:'white',
-        marginTop:-55,
+        marginTop:-40,
         alignSelf:'center',
         shadowColor:'black',
         shadowOffset:{width:0,height:2},
@@ -104,6 +114,14 @@ const styles = StyleSheet.create({
         color:'black',
         paddingLeft:10,
         marginBottom:15
+    },
+    button:{
+        width:width/3-20,
+        height:30,backgroundColor:'white',
+        borderColor:'teal',
+        borderWidth:1,
+        borderRadius:5,
+        alignItems:'center',justifyContent:'center'
     }
 
 })

@@ -7,27 +7,35 @@ const UserCard = ({fname,lname,id,age,position,qualification,experience}) => {
 
     const navigation = useNavigation()
     return (
-        <View style={styles.container}>
+        
             <TouchableOpacity 
-            style={styles.card}
+            style={styles.container}
             onPress={()=>alert('in-user')}
             >
+                <View style={{flexDirection:'row',flex:1}}>
+                    <View style={{width:'40%',height:'90%',alignSelf:'center',borderRadius:130,margin:5,backgroundColor:'white',borderColor:'#A1625E',borderWidth:1}}>
+                        
+                    </View>
+                    <View style={{width:'60%',height:'90%',alignItems:'center',justifyContent:'center'}}>
+                        <Text style={{fontSize:15,fontWeight:'bold'}}>{fname}{" "}{lname}</Text>
+                        <Text style={{fontSize:15,color:'steelblue'}}>{position}</Text>
+                    </View>
+
+                </View>
 
             </TouchableOpacity>
-             
-             
- 
-                    
-        </View>
+        
     )
 }
 
 const styles = StyleSheet.create({
     container:{
-        height:100,
+        height:130,
         borderRadius:10,
         marginBottom:10,
-        backgroundColor:'#F3ECE8'
+        backgroundColor:'#F4BCB8',
+        borderWidth:1,
+        borderColor:'#FB8B84'
     },
     card:{
         width:'100%',
