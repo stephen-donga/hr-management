@@ -11,7 +11,7 @@ const LoadingScreen = ({navigation}) => {
     } 
 
     useEffect(()=>{
-        setTimeout(home,3000)
+        setTimeout(home,2000)
     },[])
     return (
         <View style={styles.conatiner}>
@@ -54,8 +54,8 @@ const styles = StyleSheet.create({
         width:width/2,
         height:height/3,
         backgroundColor:'white',
-        marginTop:150,
-        marginLeft:width/2-80,
+        marginTop:height/2-150,
+        alignSelf:'center',
         borderRadius:50,
         borderWidth:5,
         borderColor:'#B49F93',

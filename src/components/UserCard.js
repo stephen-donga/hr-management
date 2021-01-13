@@ -1,19 +1,19 @@
 import React from 'react'
 import { View,StyleSheet, Text ,TouchableOpacity,Alert} from 'react-native'
 import {Entypo} from '@expo/vector-icons'
-import { useNavigation } from '@react-navigation/native'
+import { StackActions, useNavigation } from '@react-navigation/native'
 
-const UserCard = ({fname,lname,id,age,position,qualification,experience}) => {
+const UserCard = ({fname,lname,id,age,image,position,qualification,experience}) => {
 
     const navigation = useNavigation()
     return (
         
             <TouchableOpacity 
             style={styles.container}
-            onPress={()=>alert('in-user')}
+            onPress={()=>navigation.dispatch(StackActions.push('View',{fname,lname,id,age,image,position,qualification,experience}))}
             >
                 <View style={{flexDirection:'row',flex:1}}>
-                    <View style={{width:'40%',height:'90%',alignSelf:'center',borderRadius:130,margin:5,backgroundColor:'white',borderColor:'#A1625E',borderWidth:1}}>
+                    <View style={{width:'40%',height:'90%',alignSelf:'center' ,margin:5}}>
                         
                     </View>
                     <View style={{width:'60%',height:'90%',alignItems:'center',justifyContent:'center'}}>
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
         height:130,
         borderRadius:10,
         marginBottom:10,
-        backgroundColor:'#F4BCB8',
+        backgroundColor:'whitesmoke',
         borderWidth:1,
         borderColor:'#FB8B84'
     },

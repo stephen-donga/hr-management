@@ -8,10 +8,10 @@ import { DrawerActions, useNavigation } from '@react-navigation/native';
 import Card from './Card'
 
 const items = [
-    {title:'Expenses', icon:'dollar-sign',screen:'AddMember'},
-    {title:'Training', icon:'book',screen:'Staff'},
-    {title:'Activities', icon:'activity',screen:'Home'},
-    {title:'Leaves', icon:'users',screen:'Profile'}
+    {title:'Expenses', icon:'dollar-sign',screen:'Expenses'},
+    {title:'Training', icon:'book',screen:'Training'},
+    {title:'Activities', icon:'activity',screen:'Activities'},
+    {title:'Leaves', icon:'users',screen:'Leaves'}
 ]
 
 

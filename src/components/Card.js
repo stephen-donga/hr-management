@@ -32,7 +32,7 @@ const Card = ({title, icon,screen}) => {
 const styles = StyleSheet.create({
     container:{
         width:width/2-20,
-        height:80,
+        height:100,
         borderRadius:360,
         margin:10,
         shadowColor:'black',

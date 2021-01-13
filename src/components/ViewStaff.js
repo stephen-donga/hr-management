@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text,StyleSheet ,Dimensions} from 'react-native'
+import { View, Text,StyleSheet ,Image,Dimensions} from 'react-native'
 import{Entypo} from "@expo/vector-icons"
 import {Feather as Icon} from "@expo/vector-icons"
 import HeaderBar from '../custom/HeaderBar'
@@ -7,19 +7,22 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const {width,height} = Dimensions.get('window')
 
-const ViewStaff = ( ) => {
+const ViewStaff = ({route, navigation} ) => {
+     
+    const {fname,lname,id,age,position,qualification,image,experience} = route.params;
+
     return (
         <View style={styles.container}>
             <HeaderBar />
            <View style={styles.topsection}>
                <View style={{...StyleSheet.absoluteFill,backgroundColor:'#B0B7B9',borderBottomLeftRadius:14,borderBottomRightRadius:14}} />
-                <View style={{width:110,height:110,borderRadius:100,backgroundColor:'white'}}>
-
-                </View>
+               {
+                  image !==null?(<Image source={image} style={styles.pic}/>):( <Entypo name="user" size={80} color="steelblue" />)
+              }
 
            </View>
            <View style={styles.extrudingsection}>
-               <Text style={styles.text}> </Text>
+               <Text style={styles.text}>{fname}{" "}{lname} </Text>
                <View style={styles.userdetails}>
                     <View style={styles.righttdetailsection}>
                         <Text>GGJJ</Text>
@@ -122,6 +125,13 @@ const styles = StyleSheet.create({
         borderWidth:1,
         borderRadius:5,
         alignItems:'center',justifyContent:'center'
+    },
+    pic:{
+        width:100,
+        height:105,
+        borderRadius:80,
+        borderWidth:1,
+        borderColor:'teal'
     }
 
 })

@@ -33,7 +33,7 @@ const AddMember = ({navigation}) => {
     const [qualificationErr, setQualifyErr] = useState("")
     const [experienceErr, setExperienceErr] = useState("")
 
-    const [date, setDate] = useState(new Date(1598051730000));
+    const [date, setDate] = useState(new Date(96400000));
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
 
@@ -174,8 +174,11 @@ const AddMember = ({navigation}) => {
                 />
                 
                 
+                <View  style={{marginTop:20,marginBottom:20}}>
 
-                 <Button  onPress={showDatepicker} title="Select date of birth" />
+                 <Button  onPress={showDatepicker} title="Select date of birth"  />
+                 </View>
+
                  {show && (
                     <DateTimePicker
                     testID="dateTimePicker"
@@ -187,11 +190,11 @@ const AddMember = ({navigation}) => {
                     />
                     
       )}
-                 <View  style={{marginTop:20,marginBottom:20}}>
+                 <View  style={{marginBottom:20}}>
                  <Button 
                  title="Submit"
                  color="green"
-                 pressHandler={handleMemberAddition}
+                 onPress={handleMemberAddition}
                  />
                  </View>
                <View style={{height:50}}>

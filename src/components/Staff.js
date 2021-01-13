@@ -2,25 +2,29 @@ import React,{useState, useEffect} from 'react'
 import { View, Text, StyleSheet,TouchableOpacity,Dimensions} from 'react-native'
 import DropDownPicker from 'react-native-dropdown-picker';
 import { FlatList, TextInput } from 'react-native-gesture-handler';
+import { Feather } from '@expo/vector-icons';
 
 import HeaderBar from '../custom/HeaderBar'
 import UserCard from './UserCard'
+import { StackActions, useNavigation } from '@react-navigation/native';
 
 
 const {width, height} = Dimensions.get('window')
 
-const Staff = ({navigation}) => {
+const Staff = () => {
+
+    const navigation = useNavigation();
 
     const [members,setMembers] = useState([
-        {fname:'Ronald',lname:'Tendo',age:61,id:1,qualification:'Diploma',position:'Developer',experience:2,},
-        {fname:'Steven',lname:'Edonga',age:25,id:2,qualification:'Bootcamp graduate',position:'Intern',experience:1},
-        {fname:'Pascal',lname:'Sabitti',age:41,id:3,qualification:'Bachelors Degree',position:'Backend Engineer',experience:2},
-        {fname:'Kenneth',lname:'Ocitti',age:54,id:4, qualification:'Diploma',position:'Developer',experience:2},
-        {fname:'Enock',lname:'Kyazze',age:36,id:5,qualification:'Diploma',position:'Developer',experience:2},
-        {fname:'Nakiganda',lname:'Aisha',age:23,id:6,qualification:'Certificate',position:'Developer',experience:2},
-        {fname:'Frank',lname:'Buwembo',age:24,id:7,qualification:'Bachelors Degree',position:'Developer',experience:2},
-        {fname:'Natabo',lname:'Hilda',age:26,id:8,qualification:'Diploma',position:'Developer',experience:2},
-        {fname:'Isaac',lname:'Okoth',age:21,id:9,qualification:'Diploma',position:'Developer',experience:2}
+        {fname:'Ronald',lname:'Tendo',age:61,id:1,qualification:'Diploma',position:'Developer',experience:2,image:require('../../assets/user.png')},
+        {fname:'Steven',lname:'Edonga',age:25,id:2,qualification:'Bootcamp graduate',position:'Intern',experience:1,image:require('../../assets/user.png')},
+        {fname:'Pascal',lname:'Sabitti',age:41,id:3,qualification:'Bachelors Degree',position:'Backend Engineer',experience:2,image:require('../../assets/user.png')},
+        {fname:'Kenneth',lname:'Ocitti',age:54,id:4, qualification:'Diploma',position:'Developer',experience:2,image:require('../../assets/user.png')},
+        {fname:'Enock',lname:'Kyazze',age:36,id:5,qualification:'Diploma',position:'Developer',experience:2,image:null},
+        {fname:'Nakiganda',lname:'Aisha',age:23,id:6,qualification:'Certificate',position:'Developer',experience:2,image:require('../../assets/user.png')},
+        {fname:'Frank',lname:'Buwembo',age:24,id:7,qualification:'Bachelors Degree',position:'Developer',experience:2,image:require('../../assets/user.png')},
+        {fname:'Natabo',lname:'Hilda',age:26,id:8,qualification:'Diploma',position:'Developer',experience:2,image:require('../../assets/user.png')},
+        {fname:'Isaac',lname:'Okoth',age:21,id:9,qualification:'Diploma',position:'Developer',experience:2,image:require('../../assets/user.png')}
     ])
     const [searchField,setSearchField] = useState("")
     const [filterBy, setFilterBy] = useState("name")
@@ -82,6 +86,15 @@ const Staff = ({navigation}) => {
                     onChangeItem={item => setFilterBy(item.value)}
             />
                 </View>
+                <View style={styles.button}>
+                    <TouchableOpacity
+                    onPress={()=>navigation.dispatch(StackActions.push('Addmember')) } 
+                    style={styles.addbutton}
+                    >
+                         <Feather name="user-plus"size={24} color='white' />
+                    </TouchableOpacity>
+            
+                </View>
                  
                 
             </View>
@@ -114,11 +127,27 @@ const styles = StyleSheet.create({
         marginTop:20
     },
     search:{
-        width:'55%',
+        width:'30%',
         paddingLeft:10
     },
+    button:{
+        width:'30%',
+        paddingLeft:5,
+        backgroundColor:'white',
+    },
+    addbutton:{
+        width:width/3-30,
+        fontSize:15,
+        height:30,
+        borderColor:'grey',
+        borderRadius:55,
+        borderWidth:1,
+        backgroundColor:'green',
+        alignItems:'center',
+        justifyContent:'center'
+    },
     input:{
-        width:width/3+50,
+        width:width/3-30,
         fontSize:15,
         borderColor:'grey',
         borderRadius:5,
@@ -129,6 +158,7 @@ const styles = StyleSheet.create({
         width:'95%',
         marginTop:10,
         alignSelf:'center',
+        marginBottom:80
     }
 
      

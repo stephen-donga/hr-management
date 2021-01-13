@@ -1,31 +1,33 @@
 import React from 'react'
-import { View, Text,StyleSheet ,Dimensions} from 'react-native'
+import { View, Text,StyleSheet,Image ,Dimensions} from 'react-native'
 import{Entypo} from "@expo/vector-icons"
 import {Feather as Icon} from "@expo/vector-icons"
 import HeaderBar from '../custom/HeaderBar'
 
 const {width,height} = Dimensions.get('window')
 
-const ViewStaff = () => {
+const ViewStaff = ({route, navigation}) => {
+
+    const {fname,lname,id,age,position,qualification,image,experience} = route.params;
     return (
         <View style={styles.container}>
             <HeaderBar />
            <View style={styles.topsection}>
-               <Entypo name="user" size={80} color="steelblue" />
+              {
+                  image !==null?(<Image source={image} style={styles.pic}/>):( <Entypo name="user" size={80} color="steelblue" />)
+              }
 
            </View>
            <View style={styles.extrudingsection}>
-               <Text style={styles.text}> </Text>
+               <Text style={styles.text}>{fname}{" "}{lname} </Text>
                <View style={styles.userdetails}>
                     <View style={styles.righttdetailsection}>
-                        <Text style={styles.title}>Name:</Text>
-                        <Text style={styles.label}>Stephen Edonga</Text>
                         <Text style={styles.title}>Role:</Text>
-                        <Text style={styles.label}>Administrator</Text>
+                        <Text style={styles.label}>{position}</Text>
                         <Text style={styles.title}>Experience:</Text>
-                        <Text style={styles.label}>1 year</Text>
+                        <Text style={styles.label}>{experience}</Text>
                         <Text style={styles.title}>Age:</Text>
-                        <Text style={styles.label}>35 </Text>
+                        <Text style={styles.label}>{age} </Text>
 
                     </View>
 
@@ -48,7 +50,7 @@ const styles = StyleSheet.create({
         height:height/3,
         alignItems:'center',
         paddingTop:20,
-        backgroundColor:'mediumaquamarine',
+        backgroundColor:'#B8ABA3',
         position:'relative'
     },
     extrudingsection:{
@@ -103,6 +105,13 @@ const styles = StyleSheet.create({
         color:'black',
         paddingLeft:10,
         marginBottom:15
+    },
+    pic:{
+        width:100,
+        height:105,
+        borderRadius:80,
+        borderWidth:1,
+        borderColor:'teal'
     }
 
 })

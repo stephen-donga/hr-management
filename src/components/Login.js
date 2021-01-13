@@ -29,7 +29,7 @@ const Login = ({navigation}) => {
 
         if(userError=="")setUserError("Please enter a valid username")
         if(passwordError=="")setPasswordError("Please enter a valid password")
-        if(username ==user.username&&password ==user.password){
+        if(username !==user.username&&password !==user.password){
             navigation.navigate('Home');
             setUsername("");
             setPassword("")
