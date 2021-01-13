@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import { StyleSheet, Text,Dimensions, View } from 'react-native';
 import {NavigationContainer} from "@react-navigation/native"
 import * as SqlLite from "expo-sqlite"
@@ -13,25 +13,36 @@ export default function App() {
 
   const [data,setData] = useState([])
 
-  const db =  SqlLite.openDatabase('testDb');
-  db.transaction(tx =>{
-    tx.executeSql(
-        'CREATE TABLE IF NOT EXISTS items (id INTEGER PRIMARY KEY AUTOINCREMENT, text Text, number INT)'
-    )
-});
+  const setDatabase = ()=>{
 
-  const fetchData=() => {
-    db.transaction(tx => {
-      // sending 4 arguments in executeSql
-      tx.executeSql('SELECT * FROM items', null, // passing sql query and parameters:null
-        // success callback which sends two things Transaction object and ResultSet Object
-        (txObj, { rows: { _array } }) =>  setData(_array),
-        // failure callback which sends two things Transaction object and Error
-        (txObj, error) => console.log(error)
-        ) // end executeSQL
-    }) // end transaction
+  const db =  SqlLite.openDatabase('testDb');
+  //   db.transaction(tx =>{
+  //     tx.executeSql('CREATE TABLE IF NOT EXISTS items (id INTEGER PRIMARY KEY AUTOINCREMENT, text Text, number INT)'
+  //     )
+  // });
+
+  // db.transaction(tx=>{
+  //   tx.executeSql('INSERT INTO items(text,number) values (?,?)',['edonga',21],
+  //   (txObj,resultSet)=>setData(data.concat({id:resultSet.insertId,text:'edonga',number:21})),
+  //   (txObj,error)=>console.log('error',error))
+  // })
+
+
+  db.transaction(tx=>{
+    tx.executeSql('SELECT * FROM items',null,(txObj,{rows:{_array}})=>setData(_array),(txObj,error)=>console.warn(error))
+  })
   }
-  fetchData();
+
+  
+
+  useEffect(() => {
+    setDatabase();
+   
+    return () => {
+      cleanup
+    }
+  }, [ ])
+  console.log(data)
   return (
     <View style={styles.container}>
       <StatusBar style="light" />

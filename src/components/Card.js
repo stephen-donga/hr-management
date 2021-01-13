@@ -17,7 +17,7 @@ const Card = ({title, icon,screen}) => {
              <View style={styles.container}>
              <View style={styles.icon}>
                  <View style={styles.iconview}>
-                    <Icon name={icon} size={25} color='steelblue' />
+                    <Icon name={icon} size={45} color='steelblue' />
                  </View>
              </View>
              <View style={styles.text}>
@@ -32,7 +32,7 @@ const Card = ({title, icon,screen}) => {
 const styles = StyleSheet.create({
     container:{
         width:width/2-20,
-        height:100,
+        height:120,
         borderRadius:360,
         margin:10,
         shadowColor:'black',
