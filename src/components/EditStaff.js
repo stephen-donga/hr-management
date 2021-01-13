@@ -9,11 +9,12 @@ import HeaderBar from '../custom/HeaderBar'
 import FormInput from '../custom/FormInput'
 
 
-
 const {width, height} = Dimensions.get('window')
 
-const EditStaff = ({navigation}) => {
+const EditStaff = ({route,navigation}) => {
 
+ 
+    const {fname,lname,id,age,position,qualification,image,experience} = route.params;
 
     const [filterBy, setFilterBy] = useState(null)
     const [items,setItems] = useState([
@@ -22,17 +23,18 @@ const EditStaff = ({navigation}) => {
         {label: 'Backend Engineer', value: 'backend' },
         {label: 'Frontend Engineer', value: 'frontend' }
     ])
-    const [firstname, setFirstName] = useState("")
-    const [lastname, setLastName] = useState("lname")
-    const [qualify, setQualify] = useState("qualification")
-    const [exprence, setExprence] = useState("experience")
+    const [firstname, setFirstName] = useState(fname)
+    const [lastname, setLastName] = useState(lname)
+    const [qualify, setQualify] = useState(qualification)
+    const [positn, setPosition] = useState(position)
+    const [exprence, setExprence] = useState(experience)
 
 
     const [date, setDate] = useState(new Date(1598051730000));
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
      
- 
+   
 
    const handleUserEdit =()=>{
        Alert.alert('Edit',"Apply changes ?",[
@@ -46,8 +48,7 @@ const EditStaff = ({navigation}) => {
             navigation.navigate('Home')
           } }
     ],{cancelable:true})
-    //    navigation.navigate('Drawer')
-    }
+     }
     let controller;
 
     const onChange = (event, selectedDate) => {
@@ -74,6 +75,7 @@ const EditStaff = ({navigation}) => {
             style={styles.editsection}>
             <FormInput 
                   label="First Name"
+                  placeholder={fname}
                   value ={firstname}
                   changeHandler={(text)=>setFirstName(text)}
                
@@ -81,6 +83,7 @@ const EditStaff = ({navigation}) => {
 
             <FormInput 
                   label="Last Name"
+                  placeholder={lname}
                   value={lastname}
                   changeHandler={(text)=>setLastName(text)}
               
@@ -106,12 +109,14 @@ const EditStaff = ({navigation}) => {
                  />
                   <FormInput 
                     label="Qualification"
+                    placeholder={qualification}
                     value={qualify}
                     changeHandler={(text)=>setQualify(text)}
               
                 />
                 <FormInput 
                     label="Experience"
+                    placeholder={experience.toString()}
                     value={exprence}
                     type="number-pad"
                     changeHandler={(text)=>setExprence(text)}
@@ -130,8 +135,8 @@ const EditStaff = ({navigation}) => {
       )}
       <View style={{marginTop:10}}>
           <Button 
-             color="mediumaquamarine"
-            onPress={ ()=>navigation.navigate('addmember')} 
+             color="darkgreen"
+            onPress={ ()=>navigation.navigate('Home')} 
             title="Submit" />
       </View>
                        

@@ -25,20 +25,29 @@ const ViewStaff = ({route, navigation} ) => {
                <Text style={styles.text}>{fname}{" "}{lname} </Text>
                <View style={styles.userdetails}>
                     <View style={styles.righttdetailsection}>
-                        <Text>GGJJ</Text>
+                        <Text style={styles.ttle}>Position</Text>
+                        <Text>{position}</Text>
+                        <Text style={styles.ttle }>Qualification</Text>
+                        <Text>{qualification}</Text>
+                        <Text style={styles.ttle}>Age</Text>
+                        <Text>{age}</Text>
+                         
                       
 
                     </View>
                     <View style={{flexDirection:'row',justifyContent:'space-evenly',width:'100%',marginTop:220,height:40,position:'absolute'}}>
-                        <TouchableOpacity style={styles.button}
+                        <TouchableOpacity 
+                        onPress={()=>navigation.navigate('EditStaff',{fname,lname,id,age,position,qualification,image,experience})}
+                        style={styles.button}
                         >
                             <Text>Edit</Text>
-
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.button}
+
+                        <TouchableOpacity 
+                        onPress={()=>alert('Delete ?')}
+                        style={styles.button}
                         >
                             <Text>Delete</Text>
-                            
                         </TouchableOpacity>
                          
 
@@ -120,11 +129,13 @@ const styles = StyleSheet.create({
     },
     button:{
         width:width/3-20,
-        height:30,backgroundColor:'white',
+        height:30,
+        backgroundColor:'whitesmoke',
         borderColor:'teal',
         borderWidth:1,
         borderRadius:5,
-        alignItems:'center',justifyContent:'center'
+        alignItems:'center',
+        justifyContent:'center'
     },
     pic:{
         width:100,
@@ -132,6 +143,11 @@ const styles = StyleSheet.create({
         borderRadius:80,
         borderWidth:1,
         borderColor:'teal'
+    },
+    ttle:{
+        marginBottom:5,
+        fontWeight:'bold',
+        color:'teal'
     }
 
 })

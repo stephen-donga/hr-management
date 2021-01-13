@@ -1,9 +1,6 @@
 import React from 'react'
-import {View, SafeAreaView,Text, FlatList, StyleSheet } from 'react-native';
-
-import HeaderBar from '../custom/HeaderBar'
-import DrawerHeader from '../custom/DrawerHeader'
-import { DrawerActions, useNavigation } from '@react-navigation/native';
+import {View, SafeAreaView,FlatList, StyleSheet } from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 import Card from './Card'
 
@@ -19,10 +16,7 @@ const Homepage = () => {
     const navigation = useNavigation()
     return (
         <SafeAreaView style={styles.container}>
-           
-          
             <View style={styles.cardsection}>
-             
                    <FlatList 
                         data={items}
                         numColumns={2}
@@ -32,9 +26,6 @@ const Homepage = () => {
                    />   
               
             </View>
-            
-
-             
         </SafeAreaView>
     )
 }

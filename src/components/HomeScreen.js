@@ -1,15 +1,39 @@
 import React, {useState} from 'react'
 import { View, Text ,StyleSheet, Image,Dimensions} from 'react-native'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
+import { AntDesign } from '@expo/vector-icons'; 
+
+let fname="edonga"
+let lname="steven"
+let age = 23
+let position ='lawyer'
+let qualification = 'diploma'
+let experience = 2
+let id =4
+let image = null
+
 
 import HeaderBar from '../custom/HeaderBar'
 import Homepage from './Homepage'
+import { StackActions, TabActions, useNavigation } from '@react-navigation/native';
+import { BottomNavigation } from 'react-native-paper';
 
 const {width, height} = Dimensions.get('window')
 
 const HomeScreen = () => {
 
+    const navigation = useNavigation()
+
     const[showDropDown,setShowDropDown] = useState(false)
+
+    const handleLogOut = ()=>{
+        setShowDropDown(!showDropDown)
+        navigation.dispatch(StackActions.push('Login'))
+    }
+    const handleEdit = ()=>{
+        setShowDropDown(!showDropDown)
+        navigation.navigate('EditStaff',{fname,lname,id,age,position,qualification,image,experience})
+    }
     return (
         <View style={styles.container}>
             <HeaderBar />
@@ -44,6 +68,21 @@ const HomeScreen = () => {
                     <Text style={styles.labels}>Title:</Text>
                     <Text style={styles.detail}>C.T.O</Text>
                     <Text style={styles.labels}></Text>
+                    <View style={{width:'100%',alignSelf:"baseline",height:40,flexDirection:'row',justifyContent:"space-evenly"}}>
+                        <TouchableOpacity
+                        onPress={handleEdit} 
+                        style={{width:50,height:25,borderWidth:1,borderColor:'teal',borderRadius:5,alignItems:'center',justifyContent:'center',backgroundColor:'white'}}
+                        >
+                             <Text>Edit</Text>
+                             </TouchableOpacity>
+
+                             <TouchableOpacity
+                             onPress={handleLogOut}
+                             style={{backgroundColor:'green',borderColor:'teal',borderWidth:1,width:25,padding:2,borderRadius:30,height:25}} 
+                             >
+                                <AntDesign name="logout" size={18} color="black" />
+                             </TouchableOpacity>
+                    </View>
                </View>
                )
            }
@@ -144,7 +183,7 @@ const styles = StyleSheet.create({
         marginTop:90,
         position:'absolute',
         width:width/2,
-        height:height/3,
+        height:height/3-50,
         padding:10,
         backgroundColor:'whitesmoke',
         borderRadius:5,
