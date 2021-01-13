@@ -11,7 +11,7 @@ import AddMember from '../components/AddMember'
 import UserProfile from '../components/UserProfile'
 import Leaves from '../components/Leaves'
 import Training from '../components/Training'
-import Expenses from '../components/Expenses'
+import Events from '../components/Events'
 
 const Stack = createStackNavigator()
 
@@ -26,7 +26,7 @@ const StackNavigation = ()=>{
             <Stack.Screen name='Addmember' component={AddMember} />
             <Stack.Screen name="EditStaff" component={EditStaff} />
             <Stack.Screen name="View" component={ViewStaff} />
-            <Stack.Screen name="Expenses" component={Expenses} />
+            <Stack.Screen name="Events" component={Events} />
             <Stack.Screen name="Leaves" component={Leaves} />
             <Stack.Screen name="Training" component={Training} />
             <Stack.Screen name="Home" component={BottomTabs} />

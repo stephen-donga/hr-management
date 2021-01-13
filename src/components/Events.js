@@ -5,12 +5,12 @@ import HeaderBar from '../custom/HeaderBar'
 
 const {width, height} = Dimensions.get('window')
 
-const Expenses = () => {
+const Events = () => {
     return (
         <View style={styles.container}>
             <HeaderBar />
             <View style={styles.details}>
-            <Text style={styles.title}>Expenses</Text>
+            <Text style={styles.title}>Events</Text>
 
             </View>
         </View>
@@ -34,4 +34,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Expenses;
+export default Events;

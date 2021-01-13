@@ -11,7 +11,8 @@ import HeaderBar from '../custom/HeaderBar'
 import FormInput from '../custom/FormInput'
 
 
-const {width, height} = Dimensions.get('window')
+const {width, height} = Dimensions.get('window');
+
 const AddMember = ({navigation}) => {
 
     const [firstname, setFirstName] = useState("");
@@ -37,6 +38,8 @@ const AddMember = ({navigation}) => {
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
 
+    // const validDate = date.toLocaleDateString()
+
     const handleFirstNameChange = (value) => {
         setFirstName(value)
     }
@@ -58,24 +61,25 @@ const AddMember = ({navigation}) => {
         if(qualification=="")setQualifyErr('Please enter your qualification')
         
 
-        // fetch('http://192.168.137.1:8000/staff/add',{
-        //     method:'post',
-        //     headers: {
-        //         Accept: "application/json",
-        //         "Content-Type": "application/json"
-        //       },
-        //       body: JSON.stringify({
-        //         firstName:firstname,
-        //         lastName:lastname,
-        //         date:date,
-        //         qualification:qualification,
-        //         experience:experience,
-        //         position:position
-        //       })
-        // })
-        // .then(res =>res.json())
-        // .then(server=>console.warn(server))
-        // .catch(error=>console.warn(error))
+        fetch('http://192.168.43.6:8000/staff/add',{
+            method:'post',
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({
+                firstName:firstname,
+                lastName:lastname,
+                date:date,
+                qualification:qualification,
+                experience:experience,
+                position:filterBy
+              })
+        })
+        .then(res =>res.json())
+        .then(server=>console.warn(server))
+        .catch(error=>console.warn(error))
+
         if(firstname == ""&& lastname==""&&qualification==""&&experience==""){
             alert('Enter details before you submit')
         }else{

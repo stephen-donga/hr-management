@@ -5,7 +5,7 @@ import {useNavigation} from '@react-navigation/native';
 import Card from './Card'
 
 const items = [
-    {title:'Expenses', icon:'dollar-sign',screen:'Expenses'},
+    {title:'Events', icon:'grid',screen:'Events'},
     {title:'Training', icon:'book',screen:'Training'},
     {title:'Leaves', icon:'users',screen:'Leaves'}
 ]

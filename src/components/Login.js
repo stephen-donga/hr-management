@@ -86,11 +86,13 @@ const Login = ({navigation}) => {
                  </View>
                  
                
+                    <View style={{width:200,marginLeft:35,height:50}}>
                     <Button 
                     title="Login"
                     color='darkgreen'
                     onPress={handleLogin}
                     />
+                    </View>
                  
                  <TouchableOpacity
                     style={{marginTop:10,height:30,width:150}}
