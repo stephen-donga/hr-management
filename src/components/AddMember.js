@@ -38,7 +38,7 @@ const AddMember = ({navigation}) => {
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
 
-    // const validDate = date.toLocaleDateString()
+    const validDate = new Date(date).toLocaleDateString()
 
     const handleFirstNameChange = (value) => {
         setFirstName(value)
@@ -70,7 +70,7 @@ const AddMember = ({navigation}) => {
               body: JSON.stringify({
                 firstName:firstname,
                 lastName:lastname,
-                date:date,
+                date:validDate,
                 qualification:qualification,
                 experience:experience,
                 position:filterBy
