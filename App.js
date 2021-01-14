@@ -29,7 +29,9 @@ export default function App() {
 
 
   db.transaction(tx=>{
-    tx.executeSql('SELECT * FROM items',null,(txObj,{rows:{_array}})=>setData(_array),(txObj,error)=>console.warn(error))
+    tx.executeSql('SELECT * FROM items',null,
+    (txObj,{rows:{_array}})=>setData(data.concat(_array)),
+    (txObj,error)=>console.warn(error))
   })
   }
 
@@ -39,7 +41,6 @@ export default function App() {
     setDatabase();
    
     return () => {
-      cleanup
     }
   }, [ ])
   console.log(data)

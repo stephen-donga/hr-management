@@ -2,11 +2,13 @@ import React,{useState} from 'react'
 import { View, Text,Button, StyleSheet, ScrollView, TouchableOpacity,Dimensions } from 'react-native'
 import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePicker from "@react-native-community/datetimepicker"
+import auditTrail from '../utils/trails'
+
+const auditManager = auditTrail()
 
 
 
 
-import DrawerHeader from '../custom/DrawerHeader'
 import HeaderBar from '../custom/HeaderBar'
 import FormInput from '../custom/FormInput'
 
@@ -55,30 +57,35 @@ const AddMember = ({navigation}) => {
     
 
     const handleMemberAddition = () =>{
-        if(firstname=="")setFnameErr("Please enter firestname");
-        if(lastname =="")setLnameErr('Please enter last name');
-        if(experience=="")setExperienceErr('Please enter your experience');
-        if(qualification=="")setQualifyErr('Please enter your qualification')
-        
+        if(firstname==""){
+            setFnameErr("Please enter first name")
+            return;
+        }else{
 
-        fetch('http://192.168.43.6:8000/staff/add',{
-            method:'post',
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json"
-              },
-              body: JSON.stringify({
-                firstName:firstname,
-                lastName:lastname,
-                date:validDate,
-                qualification:qualification,
-                experience:experience,
-                position:filterBy
-              })
-        })
-        .then(res =>res.json())
-        .then(server=>console.warn(server))
-        .catch(error=>console.warn(error))
+        }
+        if(lastname ==""){
+            setLnameErr('Please enter last name')
+            return;
+        }else{
+
+        }
+
+        if(filterBy ==null){
+            alert('Please select position')
+            return;
+        }else{
+
+        }
+
+        if(qualification==""){
+            setQualifyErr('Please enter qualification')
+            return;
+        }
+
+        if(experience==""){
+            setExperienceErr('Please enter experience')
+                return;
+            }
 
         if(firstname == ""&& lastname==""&&qualification==""&&experience==""){
             alert('Enter details before you submit')
@@ -88,6 +95,34 @@ const AddMember = ({navigation}) => {
             setExperience("")
             setDate("")
             setQualification("")
+
+            fetch('http://192.168.43.6:8000/staff/add',{
+                method:'post',
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json"
+                  },
+                  body: JSON.stringify({
+                    firstName:firstname,
+                    lastName:lastname,
+                    date:validDate,
+                    qualification:qualification,
+                    experience:experience,
+                    position:filterBy
+                  })
+            })
+            .then(res =>res.json())
+            .then(server=>console.warn(server))
+            .catch(error=>console.warn(error))
+
+         let   trail={
+                actor:"Steven",
+                action:`Added new member Odongo Gerald`,
+                time:new Date().toString()
+            }
+    
+            auditTrail.logTrail(trail)
+
             navigation.navigate('Home')
 
 
@@ -97,6 +132,9 @@ const AddMember = ({navigation}) => {
             setFnameErr("")
             setLnameErr(" ")
         }
+
+       
+        
     }
 
     const onChange = (event, selectedDate) => {
@@ -113,8 +151,8 @@ const AddMember = ({navigation}) => {
       const showDatepicker = () => {
         showMode('date');
       };
-
-    let controller;
+      
+     let controller;
     return (
         <View style={styles.container} >
              <HeaderBar />
