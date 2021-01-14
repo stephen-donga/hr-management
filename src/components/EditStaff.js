@@ -2,8 +2,7 @@ import React,{useState} from 'react'
 import { View,ScrollView,Button, Alert,Text,Dimensions,TouchableOpacity,StyleSheet } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePicker from "@react-native-community/datetimepicker"
-
-
+import auditTrail from '../utils/trails'
 
 import HeaderBar from '../custom/HeaderBar'
 import FormInput from '../custom/FormInput'
@@ -44,7 +43,16 @@ const EditStaff = ({route,navigation}) => {
           style: 'cancel'
         },
         { text: 'OK', onPress: () =>{
-            alert('Confirmed Edit')
+            alert('Staff Edited')
+
+            let trail = {
+                actor:'steven',
+                action:`${fname} ${lname} to ${firstname} ${lastname}`,
+                time: new Date().toString()
+            }
+
+            auditTrail.logTrail(trail)
+            
             navigation.navigate('Home')
           } }
     ],{cancelable:true})
@@ -136,7 +144,7 @@ const EditStaff = ({route,navigation}) => {
       <View style={{marginTop:10}}>
           <Button 
              color="darkgreen"
-            onPress={ ()=>navigation.navigate('Home')} 
+            onPress={handleUserEdit} 
             title="Submit" />
       </View>
                        

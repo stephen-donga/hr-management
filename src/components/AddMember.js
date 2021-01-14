@@ -4,14 +4,8 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePicker from "@react-native-community/datetimepicker"
 import auditTrail from '../utils/trails'
 
-const auditManager = auditTrail()
-
-
-
-
 import HeaderBar from '../custom/HeaderBar'
 import FormInput from '../custom/FormInput'
-
 
 const {width, height} = Dimensions.get('window');
 
@@ -57,6 +51,7 @@ const AddMember = ({navigation}) => {
     
 
     const handleMemberAddition = () =>{
+
         if(firstname==""){
             setFnameErr("Please enter first name")
             return;
@@ -115,7 +110,7 @@ const AddMember = ({navigation}) => {
             .then(server=>console.warn(server))
             .catch(error=>console.warn(error))
 
-         let   trail={
+        let trail={
                 actor:"Steven",
                 action:`Added new member Odongo Gerald`,
                 time:new Date().toString()

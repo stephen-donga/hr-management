@@ -1,9 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {View,SafeAreaView ,Button,Text,StyleSheet,TouchableOpacity} from 'react-native';
+import auditTrail from '../utils/trails'
 
 import Inputfield from '../custom/Inputfield'
 
 const Login = ({navigation}) => {
+
+    useEffect(() => {
+      
+        return () => {
+          
+        }
+    }, [])
 
 
     const [username, setUsername] = useState("")
@@ -27,15 +35,43 @@ const Login = ({navigation}) => {
 
     const validate = () =>{
 
-        if(userError=="")setUserError("Please enter a valid username")
-        if(passwordError=="")setPasswordError("Please enter a valid password")
-        if(username !==user.username&&password !==user.password){
-            navigation.navigate('Home');
-            setUsername("");
-            setPassword("")
+        let trail={
+            actor: "",
+            action:'',
+            time:new Date().toString()
         }
-        else{
-            alert('Enter correct credentials please !')
+
+        if(userError==""){
+            setUserError("Please enter a valid username")
+            return;
+        }
+        if(passwordError==""){
+            setPasswordError("Please enter a valid password")
+            return;
+        }else{ 
+            if(username ==user.username&&password ==user.password){
+                trail ={
+                    actor:"username",
+                    action:'Successfully logged in',
+                    time:new Date().toString()
+                }
+                auditTrail.logTrail(trail)
+    
+                navigation.navigate('Home');
+                setUsername("");
+                setPassword("")
+            }
+            else{
+                alert('Enter correct credentials please !')
+                trail={
+                    actor:'username',
+                    action:'Failed login with password "password"',
+                    time:new Date().toString()
+                }
+    
+                auditTrail.logTrail(trail)
+            }
+            
         }
         
     }
