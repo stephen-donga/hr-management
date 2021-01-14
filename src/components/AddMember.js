@@ -3,6 +3,7 @@ import { View, Text,Button, StyleSheet, ScrollView, TouchableOpacity,Dimensions 
 import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePicker from "@react-native-community/datetimepicker"
 import auditTrail from '../utils/trails'
+import db from '../utils/database'
 
 import HeaderBar from '../custom/HeaderBar'
 import FormInput from '../custom/FormInput'
@@ -33,6 +34,8 @@ const AddMember = ({navigation}) => {
     const [date, setDate] = useState(new Date(96400000));
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
+
+    const [result, setResult] = useState([])
 
     const validDate = new Date(date).toLocaleDateString()
 
@@ -91,24 +94,12 @@ const AddMember = ({navigation}) => {
             setDate("")
             setQualification("")
 
-            fetch('http://192.168.43.6:8000/staff/add',{
-                method:'post',
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json"
-                  },
-                  body: JSON.stringify({
-                    firstName:firstname,
-                    lastName:lastname,
-                    date:validDate,
-                    qualification:qualification,
-                    experience:experience,
-                    position:filterBy
-                  })
-            })
-            .then(res =>res.json())
-            .then(server=>console.warn(server))
-            .catch(error=>console.warn(error))
+            db.transaction(tx => {
+                tx.executeSql('INSERT INTO staff_members (first_name, last_name,position,qualification,experience,date_of_birth) values (?,?,?,?,?,?)', 
+                [firstname,lastname,validDate,qualification,experience,filterBy],
+                  (txObj, resultSet) => setResult(result.concat(resultSet)),
+                  (txObj, error) => console.log('Error', error))
+              })
 
         let trail={
                 actor:"Steven",
@@ -119,7 +110,6 @@ const AddMember = ({navigation}) => {
             auditTrail.logTrail(trail)
 
             navigation.navigate('Home')
-
 
             //clearing errors
             setQualifyErr("")

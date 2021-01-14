@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import {View,SafeAreaView ,Button,Text,StyleSheet,TouchableOpacity} from 'react-native';
 import auditTrail from '../utils/trails'
+import db from '../utils/database'
 
 import Inputfield from '../custom/Inputfield'
 
@@ -41,14 +42,10 @@ const Login = ({navigation}) => {
             time:new Date().toString()
         }
 
-        if(userError==""){
-            setUserError("Please enter a valid username")
-            return;
-        }
-        if(passwordError==""){
-            setPasswordError("Please enter a valid password")
-            return;
-        }else{ 
+        if(userError=="")setUserError("Please enter a valid username")
+        
+        if(passwordError=="")setPasswordError("Please enter a valid password")
+           
             if(username ==user.username&&password ==user.password){
                 trail ={
                     actor:"username",
@@ -71,17 +68,11 @@ const Login = ({navigation}) => {
     
                 auditTrail.logTrail(trail)
             }
-            
-        }
-        
     }
 
     const handleLogin = () => {
         validate();
-        // fetch('http://192.168.137.1:8000/users')
-        // .then(response =>console.log(JSON.stringify(response)))
-        // .catch(error =>console.warn(error))
-        
+      
     }
   
         return (

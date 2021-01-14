@@ -23,7 +23,7 @@ const Notifications = () => {
             
        }
    }, [])
-   
+
     return (
         <View style={styles.container}>
             <HeaderBar />
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
         marginTop:5
     },
     hr:{
-        width:width/2+250,
+        width:width/2+180,
         borderWidth:1,
         borderColor:'darkgrey'
     }
