@@ -3,18 +3,13 @@ import {createStore} from 'redux'
 import db from '../utils/database'
 
 const initialState = {
-    users:[]
+    username:'',
+    password:''
 }
-
-db.transaction(tx=>{
-    tx.executeSql('SELECT * FROM users',null,
-    (txObj,{rows:{_array}})=>initialState.staff.concat(_array)),
-    (txObj, error)=>console.log('Error',error)
-})
 
 const reducer = (state = initialState, action) =>{
     switch(action.tpye){
-        case "DELETE_STAFF":
+        case "ADD_USER":
             state = {
                 ...state,staff:action.payload
             }
