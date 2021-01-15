@@ -14,7 +14,6 @@ const Login = ({navigation}) => {
         }
     }, [])
 
-
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [userError,setUserError] = useState("")
@@ -24,7 +23,6 @@ const Login = ({navigation}) => {
         username:"steven",
         password:"edonga"
     }
-
 
     const handleUsernameChange = (text) => {
         setUsername(text)
@@ -48,21 +46,20 @@ const Login = ({navigation}) => {
            
             if(username ==user.username&&password ==user.password){
                 trail ={
-                    actor:"username",
+                    actor:username,
                     action:'Successfully logged in',
                     time:new Date().toString()
                 }
                 auditTrail.logTrail(trail)
     
                 navigation.navigate('Home');
-                setUsername("");
-                setPassword("")
+
             }
             else{
                 alert('Enter correct credentials please !')
                 trail={
-                    actor:'username',
-                    action:'Failed login with password "password"',
+                    actor:username,
+                    action:'Failed login with password',
                     time:new Date().toString()
                 }
     
@@ -72,6 +69,8 @@ const Login = ({navigation}) => {
 
     const handleLogin = () => {
         validate();
+        setUsername("");
+        setPassword("")
       
     }
   

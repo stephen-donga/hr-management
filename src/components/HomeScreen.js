@@ -89,8 +89,8 @@ const HomeScreen = () => {
             <View style={styles.lastsection}>
                 <Text style={styles.title}>All members</Text>
                     <FlatList 
-                    data={[{name:'Staff',urls:require('../../assets/staff2.png'),number:34},
-                    {name:'Users',urls:require('../../assets/user.png'),number:15}]}
+                    data={[{name:'Staff',urls:require('../../assets/staff2.png'),number:4},
+                    {name:'Users',urls:require('../../assets/user.png'),number:1}]}
                     renderItem={({item})=>{
                         return(
                             <TouchableOpacity onPress={()=>alert(item.name)}>

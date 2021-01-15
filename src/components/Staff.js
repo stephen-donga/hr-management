@@ -3,31 +3,25 @@ import { View, Text, StyleSheet,TouchableOpacity,Dimensions} from 'react-native'
 import DropDownPicker from 'react-native-dropdown-picker';
 import { FlatList, TextInput } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
+import {connect} from 'react-redux'
+
 
 import HeaderBar from '../custom/HeaderBar'
+import db from '../utils/database'
 import UserCard from './UserCard'
+
 import { StackActions, useNavigation } from '@react-navigation/native';
 
 
 const {width, height} = Dimensions.get('window')
 
-const Staff = () => {
+const Staff = (props) => {
 
     const navigation = useNavigation();
 
-    const [members,setMembers] = useState([
-        {fname:'Ronald',lname:'Tendo',age:61,id:1,qualification:'Diploma',position:'Developer',experience:2,image:require('../../assets/user.png')},
-        {fname:'Steven',lname:'Edonga',age:25,id:2,qualification:'Bootcamp graduate',position:'Intern',experience:1,image:require('../../assets/user.png')},
-        {fname:'Pascal',lname:'Sabitti',age:41,id:3,qualification:'Bachelors Degree',position:'Backend Engineer',experience:2,image:require('../../assets/user.png')},
-        {fname:'Kenneth',lname:'Ocitti',age:54,id:4, qualification:'Diploma',position:'Developer',experience:2,image:require('../../assets/user.png')},
-        {fname:'Enock',lname:'Kyazze',age:36,id:5,qualification:'Diploma',position:'Developer',experience:2,image:null},
-        {fname:'Nakiganda',lname:'Aisha',age:23,id:6,qualification:'Certificate',position:'Developer',experience:2,image:require('../../assets/user.png')},
-        {fname:'Frank',lname:'Buwembo',age:24,id:7,qualification:'Bachelors Degree',position:'Developer',experience:2,image:require('../../assets/user.png')},
-        {fname:'Natabo',lname:'Hilda',age:26,id:8,qualification:'Diploma',position:'Developer',experience:2,image:require('../../assets/user.png')},
-        {fname:'Isaac',lname:'Okoth',age:21,id:9,qualification:'Diploma',position:'Developer',experience:2,image:require('../../assets/user.png')}
-    ])
+    const [members,setMembers] = useState([])
     const [searchField,setSearchField] = useState("")
-    const [filterBy, setFilterBy] = useState("name")
+    const [filterBy, setFilterBy] = useState("")
     const [items,setItems] = useState([
         
         {label: 'Name', value: 'name' },
@@ -38,11 +32,16 @@ const Staff = () => {
 
     ])
 
+    const fetchMembers = ()=>{
+        db.transaction(tx=>{
+            tx.executeSql('SELECT * FROM staff_members',null,
+            (txObj,{rows:{_array}})=>setMembers(members.concat(_array))),
+            (txObj, error)=>console.log('Error',error)
+        })
+    }
+
     useEffect(()=>{
-        // fetch('http://192.168.137.1:8000/staff')
-        // .then((res) => res.json())
-        // .then(user =>setMembers(user))
-        // .catch(err=>console.warn(err))
+        fetchMembers();
     },[])
     
     let controller;
@@ -51,8 +50,8 @@ const Staff = () => {
         setSearchField(text)
     }
 
-    const filteredUsers = members.filter(member => member.fname.includes(searchField))
-
+    let filter = searchField.toString()
+    const filteredUsers = members.filter(member =>  member.first_name.toLowerCase().includes(filter)||member.last_name.toLowerCase().includes(filter))
     return (
         <View style={styles.container}>
             <HeaderBar />
@@ -63,6 +62,7 @@ const Staff = () => {
             <TextInput 
                 style={styles.input}
                 placeholder='Search'
+                value={searchField}
                 onChangeText={handleSearch}
             /> 
 
@@ -164,4 +164,12 @@ const styles = StyleSheet.create({
      
 })
 
-export default Staff
+const mapStateToProps =(state) =>{
+    return {
+          user:state.users
+    }
+}
+
+
+
+export default connect(mapStateToProps)(Staff)

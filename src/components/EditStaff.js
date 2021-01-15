@@ -3,6 +3,7 @@ import { View,ScrollView,Button, Alert,Text,Dimensions,TouchableOpacity,StyleShe
 import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePicker from "@react-native-community/datetimepicker"
 import auditTrail from '../utils/trails'
+import db from '../utils/database'
 
 import HeaderBar from '../custom/HeaderBar'
 import FormInput from '../custom/FormInput'
@@ -13,8 +14,8 @@ const {width, height} = Dimensions.get('window')
 const EditStaff = ({route,navigation}) => {
 
  
-    const {fname,lname,id,age,position,qualification,image,experience} = route.params;
-
+    const {first_name,last_name,id,position,qualification,experience} = route.params;
+alert(first_name)
     const [filterBy, setFilterBy] = useState(null)
     const [items,setItems] = useState([
         {label: 'Intern Developer', value: 'intern' },
@@ -22,16 +23,18 @@ const EditStaff = ({route,navigation}) => {
         {label: 'Backend Engineer', value: 'backend' },
         {label: 'Frontend Engineer', value: 'frontend' }
     ])
-    const [firstname, setFirstName] = useState(fname)
-    const [lastname, setLastName] = useState(lname)
+    const [firstname, setFirstName] = useState(first_name)
+    const [lastname, setLastName] = useState(last_name)
     const [qualify, setQualify] = useState(qualification)
     const [positn, setPosition] = useState(position)
     const [exprence, setExprence] = useState(experience)
 
 
-    const [date, setDate] = useState(new Date(1598051730000));
+    const [date, setDate] = useState(new Date(1598051730000).toString());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
+
+    const [data, setData] = useState([])
      
    
 
@@ -47,7 +50,7 @@ const EditStaff = ({route,navigation}) => {
 
             let trail = {
                 actor:'steven',
-                action:`${fname} ${lname} to ${firstname} ${lastname}`,
+                action:`${first_name} ${last_name} to ${firstname} ${lastname}`,
                 time: new Date().toString()
             }
 
@@ -73,6 +76,12 @@ const EditStaff = ({route,navigation}) => {
       const showDatepicker = () => {
         showMode('date');
       };
+
+      db.transaction(tx => {
+        tx.executeSql(`UPDATE staff_members SET first_name = ${firstname} last_name = ${lastname} position = ${positn} qualification= ${qualify} experience= ${exprence} date_of_birth =${date} WHERE id = ?`, [id],
+          (txObj,{rows:{_array}}) => setData(data.concat(_array))),
+          (txObj, error)=>console.log('Error',error) 
+         })
     
 
     return (
@@ -83,7 +92,7 @@ const EditStaff = ({route,navigation}) => {
             style={styles.editsection}>
             <FormInput 
                   label="First Name"
-                  placeholder={fname}
+                  placeholder={firstname}
                   value ={firstname}
                   changeHandler={(text)=>setFirstName(text)}
                
@@ -91,7 +100,7 @@ const EditStaff = ({route,navigation}) => {
 
             <FormInput 
                   label="Last Name"
-                  placeholder={lname}
+                  placeholder={lastname}
                   value={lastname}
                   changeHandler={(text)=>setLastName(text)}
               
@@ -147,10 +156,7 @@ const EditStaff = ({route,navigation}) => {
             onPress={handleUserEdit} 
             title="Submit" />
       </View>
-                       
-               
             </ScrollView>
-            
         </View>
     )
 }
