@@ -96,7 +96,7 @@ const AddMember = ({navigation}) => {
 
             db.transaction(tx => {
                 tx.executeSql('INSERT INTO staff_members (first_name, last_name,position,qualification,experience,date_of_birth) values (?,?,?,?,?,?)', 
-                [firstname,lastname,validDate,qualification,experience,filterBy],
+                [firstname,lastname,filterBy,qualification,experience,validDate],
                   (txObj, resultSet) => setResult(result.concat(resultSet)),
                   (txObj, error) => console.log('Error', error))
               })

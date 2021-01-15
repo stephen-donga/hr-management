@@ -1,22 +1,5 @@
-import React from 'react'
 import {createStore} from 'redux'
+import rootReducer from './rootReducer'
 
-const initialState = {
-    username:'',
-    password:''
-}
 
-const reducer = (state = initialState, action) =>{
-    switch(action.tpye){
-        case "ADD_USER":
-            state = {
-                ...state,
-                username:action.payload,
-                password:action.payload
-            }
-            break;
-    }
-    return state;
-}
-
-export const store = createStore(reducer);
+export const store = createStore(rootReducer);

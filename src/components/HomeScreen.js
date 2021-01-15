@@ -2,15 +2,16 @@ import React, {useState} from 'react'
 import { View, Text ,StyleSheet, Image,Dimensions} from 'react-native'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import { AntDesign } from '@expo/vector-icons'; 
+import {connect} from 'react-redux'
 
-let fname="edonga"
-let lname="steven"
-let age = 23
-let position ='lawyer'
-let qualification = 'diploma'
-let experience = 2
-let id =4
-let image = null
+// let fname="edonga"
+// let lname="steven"
+// let age = 23
+// let position ='lawyer'
+// let qualification = 'diploma'
+// let experience = 2
+// let id =4
+// let image = null
 
 
 import HeaderBar from '../custom/HeaderBar'
@@ -20,7 +21,7 @@ import { BottomNavigation } from 'react-native-paper';
 
 const {width, height} = Dimensions.get('window')
 
-const HomeScreen = () => {
+const HomeScreen = ({currentUser}) => {
 
     const navigation = useNavigation()
 
@@ -41,7 +42,7 @@ const HomeScreen = () => {
                 <View style={styles.top}>
                     <View style={styles.headerLeft}>
                         <Text style={styles.heading}>HRMS</Text>
-                        <Text style={styles.phrase}>Welcome user</Text>
+                        <Text style={styles.phrase}>Welcome {currentUser}</Text>
                     </View>
                     <View style={styles.headerRight}>
                         <TouchableOpacity 
@@ -63,8 +64,8 @@ const HomeScreen = () => {
            {
                showDropDown&&(
                 <View style={styles.dropdown}>
-                    <Text style={styles.labels}>Name:</Text>
-                    <Text style={styles.detail}>Rebbecca Aisha</Text>
+                    <Text style={styles.labels}>Username:</Text>
+                    <Text style={styles.detail}>{currentUser}</Text>
                     <Text style={styles.labels}>Title:</Text>
                     <Text style={styles.detail}>C.T.O</Text>
                     <Text style={styles.labels}></Text>
@@ -78,9 +79,9 @@ const HomeScreen = () => {
 
                              <TouchableOpacity
                              onPress={handleLogOut}
-                             style={{backgroundColor:'green',borderColor:'teal',borderWidth:1,width:25,padding:2,borderRadius:30,height:25}} 
+                             style={{backgroundColor:'white',borderColor:'teal',borderWidth:1,width:50,alignItems:'center',justifyContent:'center',padding:2,borderRadius:5,height:25}} 
                              >
-                                <AntDesign name="logout" size={18} color="black" />
+                                <AntDesign name="logout" size={15} color="black" />
                              </TouchableOpacity>
                     </View>
                </View>
@@ -155,6 +156,7 @@ const styles = StyleSheet.create({
         width:width/2+50,
         height:'100%',
         padding:5,
+        paddingLeft:15,
         position:'relative'
     },
     headerRight:{
@@ -169,7 +171,7 @@ const styles = StyleSheet.create({
         fontWeight:'bold'
     },
     phrase:{
-        fontSize:13,
+        fontSize:16,
         fontWeight:'bold',
         color:'steelblue'
     },
@@ -195,11 +197,11 @@ const styles = StyleSheet.create({
         flexDirection:'row'
     },
     labels:{
-        fontSize:14,
+        fontSize:16,
         fontWeight:'bold'
     },
     detail:{
-        fontSize:12,
+        fontSize:15,
         color:'darkblue'
     },
     numbercircle:{
@@ -216,4 +218,8 @@ const styles = StyleSheet.create({
         justifyContent:'center'}
 })
 
-export default HomeScreen
+const mapStateToProps = ({ user }) => ({
+    currentUser: user.currentUser
+  });
+
+export default connect(mapStateToProps)(HomeScreen)

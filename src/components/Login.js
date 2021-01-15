@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react'
 import {View,SafeAreaView ,Button,Text,StyleSheet,TouchableOpacity} from 'react-native';
 import auditTrail from '../utils/trails'
 import db from '../utils/database'
+import {connect} from  'react-redux'
+import {setCurrentUser} from '../redux/user/userAction'
 
 import Inputfield from '../custom/Inputfield'
 
-const Login = ({navigation}) => {
+const Login = ({navigation,setCurrentUser}) => {
 
     const [fetched, setFetched] = useState([])
 
@@ -70,6 +72,7 @@ const Login = ({navigation}) => {
                     action:'Successfully logged in',
                     time:new Date().toString()
                 }
+                setCurrentUser(username)
                 auditTrail.logTrail(trail)
     
                 navigation.navigate('Home');
@@ -169,4 +172,12 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Login;
+const mapStateToProps = ({ user }) => ({
+    currentUser: user.currentUser
+  });
+  
+  const mapDispatchToProps = dispatch => ({
+    setCurrentUser: user => dispatch(setCurrentUser(user))
+  });
+
+export default connect(mapStateToProps,mapDispatchToProps)(Login);

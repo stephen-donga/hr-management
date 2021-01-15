@@ -32,6 +32,8 @@ const Staff = (props) => {
 
     ])
 
+    console.log(members)
+
     const fetchMembers = ()=>{
         db.transaction(tx=>{
             tx.executeSql('SELECT * FROM staff_members',null,

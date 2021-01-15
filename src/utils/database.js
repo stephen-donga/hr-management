@@ -1,6 +1,6 @@
 import *as SqlLite from 'expo-sqlite'
 
-const db = SqlLite.openDatabase('human_resource_dbms')
+const db = SqlLite.openDatabase('human_resource_db1')
 
 db.transaction(tx =>{
   tx.executeSql('CREATE TABLE IF NOT EXISTS all_users (id INTEGER PRIMARY KEY AUTOINCREMENT, username Text, password Text)'

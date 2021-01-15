@@ -9,7 +9,7 @@ const {width,height} = Dimensions.get('window')
 
 const ViewStaff = ({route, navigation} ) => {
      
-    const {fname,lname,id,age,position,qualification,image,experience} = route.params;
+    const {first_name,last_name,id,age,position,qualification,image,experience} = route.params;
 
     return (
         <View style={styles.container}>
@@ -22,7 +22,7 @@ const ViewStaff = ({route, navigation} ) => {
 
            </View>
            <View style={styles.extrudingsection}>
-               <Text style={styles.text}>{fname}{" "}{lname} </Text>
+               <Text style={styles.text}>{first_name}{" "}{last_name} </Text>
                <View style={styles.userdetails}>
                     <View style={styles.righttdetailsection}>
                         <Text style={styles.ttle}>Position</Text>
@@ -37,7 +37,7 @@ const ViewStaff = ({route, navigation} ) => {
                     </View>
                     <View style={{flexDirection:'row',justifyContent:'space-evenly',width:'100%',marginTop:220,height:40,position:'absolute'}}>
                         <TouchableOpacity 
-                        onPress={()=>navigation.navigate('EditStaff',{fname,lname,id,age,position,qualification,image,experience})}
+                        onPress={()=>navigation.navigate('EditStaff',{first_name,last_name,id,age,position,qualification,image,experience})}
                         style={styles.button}
                         >
                             <Text>Edit</Text>

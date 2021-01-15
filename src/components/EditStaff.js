@@ -12,10 +12,7 @@ import FormInput from '../custom/FormInput'
 const {width, height} = Dimensions.get('window')
 
 const EditStaff = ({route,navigation}) => {
-
- 
     const {first_name,last_name,id,position,qualification,experience} = route.params;
-alert(first_name)
     const [filterBy, setFilterBy] = useState(null)
     const [items,setItems] = useState([
         {label: 'Intern Developer', value: 'intern' },
@@ -92,7 +89,7 @@ alert(first_name)
             style={styles.editsection}>
             <FormInput 
                   label="First Name"
-                  placeholder={firstname}
+                  placeholder={first_name}
                   value ={firstname}
                   changeHandler={(text)=>setFirstName(text)}
                
@@ -100,7 +97,7 @@ alert(first_name)
 
             <FormInput 
                   label="Last Name"
-                  placeholder={lastname}
+                  placeholder={last_name}
                   value={lastname}
                   changeHandler={(text)=>setLastName(text)}
               
