@@ -7,8 +7,27 @@ import Inputfield from '../custom/Inputfield'
 
 const Login = ({navigation}) => {
 
+    const [fetched, setFetched] = useState([])
+
+    const fetchUsers = () => {
+        db.transaction(tx=>{
+            tx.executeSql('SELECT * FROM all_users',null,
+            (txObj,{rows:{_array}})=>setFetched(fetched.concat(_array))),
+            (txObj, error)=>console.log('Error',error)
+        })
+
+    }
+    const insertIfDbEmpty = ()=>{
+        db.transaction(tx =>{
+        tx.executeSql('INSERT INTO all_users (username,password) values (?,?)',[ 'steven','edonga'],
+        (txObj,resultSet)=>console.log(resultSet),
+        (txObj, error)=>console.log('Error', error)
+        )
+        })
+    }
+
     useEffect(() => {
-      
+        fetchUsers();
         return () => {
           
         }
@@ -19,11 +38,12 @@ const Login = ({navigation}) => {
     const [userError,setUserError] = useState("")
     const [passwordError,setPasswordError] = useState("")
 
-    const user ={
-        username:"steven",
-        password:"edonga"
-    }
-
+    const filteredUser = fetched.filter(user =>user.username==username &&user.password==password)
+    const use =[ {
+        username:username,
+        password:password
+    }]
+    
     const handleUsernameChange = (text) => {
         setUsername(text)
     }
@@ -43,8 +63,8 @@ const Login = ({navigation}) => {
         if(userError=="")setUserError("Please enter a valid username")
         
         if(passwordError=="")setPasswordError("Please enter a valid password")
-           
-            if(username ==user.username&&password ==user.password){
+                       
+            if(filteredUser.length&&filteredUser[0].password===password){
                 trail ={
                     actor:username,
                     action:'Successfully logged in',
@@ -68,9 +88,14 @@ const Login = ({navigation}) => {
     }
 
     const handleLogin = () => {
+        if(fetched.length<1){
+            alert('Please restart and login with default username and password')
+            insertIfDbEmpty();
+        }
         validate();
         setUsername("");
         setPassword("")
+      
       
     }
   

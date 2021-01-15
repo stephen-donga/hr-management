@@ -102,8 +102,8 @@ const AddMember = ({navigation}) => {
               })
 
         let trail={
-                actor:"Steven",
-                action:`Added new member Odongo Gerald`,
+                actor:'steven',
+                action:`Added new member ${firstname} ${lastname}`,
                 time:new Date().toString()
             }
     

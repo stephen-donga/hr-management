@@ -10,8 +10,6 @@ auditTrail.logTrail=(trail)=>{
         (txObj, error)=>console.log('Error', error)
         )
     })
-  
-
 }
 
 
