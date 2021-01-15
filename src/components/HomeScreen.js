@@ -4,20 +4,9 @@ import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import { AntDesign } from '@expo/vector-icons'; 
 import {connect} from 'react-redux'
 
-// let fname="edonga"
-// let lname="steven"
-// let age = 23
-// let position ='lawyer'
-// let qualification = 'diploma'
-// let experience = 2
-// let id =4
-// let image = null
-
-
 import HeaderBar from '../custom/HeaderBar'
 import Homepage from './Homepage'
-import { StackActions, TabActions, useNavigation } from '@react-navigation/native';
-import { BottomNavigation } from 'react-native-paper';
+import { StackActions,useNavigation } from '@react-navigation/native';
 
 const {width, height} = Dimensions.get('window')
 

@@ -4,13 +4,14 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePicker from "@react-native-community/datetimepicker"
 import auditTrail from '../utils/trails'
 import db from '../utils/database'
+import {connect} from 'react-redux'
 
 import HeaderBar from '../custom/HeaderBar'
 import FormInput from '../custom/FormInput'
 
 const {width, height} = Dimensions.get('window');
 
-const AddMember = ({navigation}) => {
+const AddMember = ({navigation,currentUser}) => {
 
     const [firstname, setFirstName] = useState("");
     const [lastname, setLastName] = useState("");
@@ -52,7 +53,6 @@ const AddMember = ({navigation}) => {
         setQualification(value)
     }
     
-
     const handleMemberAddition = () =>{
 
         if(firstname==""){
@@ -102,7 +102,7 @@ const AddMember = ({navigation}) => {
               })
 
         let trail={
-                actor:'steven',
+                actor:currentUser,
                 action:`Added new member ${firstname} ${lastname}`,
                 time:new Date().toString()
             }
@@ -117,9 +117,6 @@ const AddMember = ({navigation}) => {
             setFnameErr("")
             setLnameErr(" ")
         }
-
-       
-        
     }
 
     const onChange = (event, selectedDate) => {
@@ -151,8 +148,6 @@ const AddMember = ({navigation}) => {
                   message= {firstname ? "":firstnameErr}
                   value={firstname}
                   changeHandler={handleFirstNameChange}
-                  
-                
                 />
 
                 <FormInput 
@@ -161,8 +156,6 @@ const AddMember = ({navigation}) => {
                   message={lastname ? "":lastnameErr}
                   value={lastname}
                   changeHandler={handleLastNameChange}
-                  
-                
                 />
                 <Text style={{marginTop:15,fontSize:15}}>Position</Text>
                 <DropDownPicker
@@ -188,8 +181,6 @@ const AddMember = ({navigation}) => {
                     message={qualification ? "":qualificationErr}
                     value={qualification}
                     changeHandler={handleQualificationChange}
-                  
-                
                 />
                  <FormInput 
                     label="Experience"
@@ -199,13 +190,10 @@ const AddMember = ({navigation}) => {
                     value={experience}
                     changeHandler={handleExperienceChange}
                 />
-                
-                
                 <View  style={{marginTop:20,marginBottom:20}}>
 
                  <Button  onPress={showDatepicker} title="Select date of birth"  />
                  </View>
-
                  {show && (
                     <DateTimePicker
                     testID="dateTimePicker"
@@ -265,4 +253,9 @@ const styles = StyleSheet.create({
     
 })
 
-export default AddMember
+
+const mapStateToProps = ({ user }) => ({
+    currentUser: user.currentUser
+  });
+
+export default connect(mapStateToProps)(AddMember)

@@ -76,7 +76,7 @@ const EditStaff = ({route,navigation}) => {
 
       db.transaction(tx => {
         tx.executeSql(`UPDATE staff_members SET first_name = ${firstname} last_name = ${lastname} position = ${positn} qualification= ${qualify} experience= ${exprence} date_of_birth =${date} WHERE id = ?`, [id],
-          (txObj,{rows:{_array}}) => setData(data.concat(_array))),
+          (txObj,resultSet) => console.log(resultSet.rowsAffected)),
           (txObj, error)=>console.log('Error',error) 
          })
     
