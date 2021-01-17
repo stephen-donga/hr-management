@@ -5,13 +5,16 @@ import DateTimePicker from "@react-native-community/datetimepicker"
 import auditTrail from '../utils/trails'
 import db from '../utils/database'
 import {connect} from 'react-redux'
+import {addStaff} from '../redux/staff/staffActions'
 
 import HeaderBar from '../custom/HeaderBar'
 import FormInput from '../custom/FormInput'
 
 const {width, height} = Dimensions.get('window');
 
-const AddMember = ({navigation,currentUser}) => {
+const AddMember = ({navigation,currentUser,addStaff, route}) => {
+
+    const {fetchMembers} = route.params;
 
     const [firstname, setFirstName] = useState("");
     const [lastname, setLastName] = useState("");
@@ -21,10 +24,10 @@ const AddMember = ({navigation,currentUser}) => {
     const [filterBy, setFilterBy] = useState(null)
     const [items,setItems] = useState([
         
-        {label: 'Intern Developer', value: 'intern' },
-        {label: 'Fullstack Developer', value: 'fullstack' },
-        {label: 'Backend Engineer', value: 'backend' },
-        {label: 'Frontend Engineer', value: 'frontend' }
+        {label: 'Intern Developer', value: 'Intern Developer' },
+        {label: 'Fullstack Developer', value: 'Fullstack Developer' },
+        {label: 'Backend Engineer', value: 'Backend Developer' },
+        {label: 'Frontend Engineer', value: 'Frontend Developer' }
     ])
 
     const [firstnameErr, setFnameErr] = useState("")
@@ -100,6 +103,20 @@ const AddMember = ({navigation,currentUser}) => {
                   (txObj, resultSet) => setResult(result.concat(resultSet)),
                   (txObj, error) => console.log('Error', error))
               })
+        let staff = [
+            {
+                first_name:firstname,
+                last_name:lastname,
+                position:filterBy,
+                qualification:qualification,
+                experience:experience,
+                date_of_birth:validDate
+            }
+        ]
+
+        addStaff(staff)
+        fetchMembers();
+
 
         let trail={
                 actor:currentUser,
@@ -207,9 +224,9 @@ const AddMember = ({navigation,currentUser}) => {
       )}
                  <View  style={{marginBottom:20}}>
                  <Button 
-                 title="Submit"
-                 color="green"
-                 onPress={handleMemberAddition}
+                    title="Submit"
+                    color="green"
+                    onPress={handleMemberAddition}
                  />
                  </View>
                <View style={{height:50}}>
@@ -255,7 +272,11 @@ const styles = StyleSheet.create({
 
 
 const mapStateToProps = ({ user }) => ({
-    currentUser: user.currentUser
+    currentUser: user.currentUser,
   });
 
-export default connect(mapStateToProps)(AddMember)
+const mapDispatchToProps = dispatch => ({
+addStaff: arr => dispatch(addStaff(arr))
+});
+
+export default connect(mapStateToProps,mapDispatchToProps)(AddMember)

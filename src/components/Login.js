@@ -18,10 +18,12 @@ const Login = ({navigation,setCurrentUser}) => {
             (txObj, error)=>console.log('Error',error)
         })
 
+
     }
+
     const insertIfDbEmpty = ()=>{
         db.transaction(tx =>{
-        tx.executeSql('INSERT INTO all_users (username,password) values (?,?)',[ 'steven','edonga'],
+        tx.executeSql('INSERT INTO all_users (username,password) values (?,?)',[ 'root','hrms123'],
         (txObj,resultSet)=>console.log(resultSet),
         (txObj, error)=>console.log('Error', error)
         )
@@ -172,12 +174,13 @@ const styles = StyleSheet.create({
     }
 })
 
-const mapStateToProps = ({ user }) => ({
-    currentUser: user.currentUser
+const mapStateToProps = ({ user, staff }) => ({
+    currentUser: user.currentUser,
+    allS:staff.staff
   });
   
   const mapDispatchToProps = dispatch => ({
-    setCurrentUser: user => dispatch(setCurrentUser(user))
+    setCurrentUser: user => dispatch(setCurrentUser(user)),
   });
 
 export default connect(mapStateToProps,mapDispatchToProps)(Login);

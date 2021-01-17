@@ -1,15 +1,34 @@
 import React from 'react'
 import { View, Text,StyleSheet ,Image,Dimensions} from 'react-native'
 import{Entypo} from "@expo/vector-icons"
-import {Feather as Icon} from "@expo/vector-icons"
 import HeaderBar from '../custom/HeaderBar'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import {connect} from 'react-redux'
+import db from '../utils/database'
+import auditTrail from '../utils/trails'
+import {setStaff} from '../redux/staff/staffActions'
 
 const {width,height} = Dimensions.get('window')
 
-const ViewStaff = ({route, navigation} ) => {
+const ViewStaff = ({route,currentUser,navigation,allStaff,setStaff} ) => {
      
-    const {first_name,last_name,id,age,position,qualification,image,experience} = route.params;
+    const {first_name,last_name,id,position,qualification,image,experience,date_of_birth,del} = route.params;
+
+    const deleteMember = (memberId) =>{
+        db.transaction(tx =>{
+          tx.executeSql('DELETE FROM staff_members WHERE id=?',[memberId],
+          (txObj,resultSet)=>console.log(resultSet)),
+          (txObj, error) => console.log('Error', error)
+      });
+
+      let trail={
+        actor:currentUser,
+        action:`Deleted staff member with names ${first_name} ${last_name}`,
+        time:new Date().toString()
+    }
+        auditTrail.logTrail(trail)
+        navigation.navigate('Staff',{memberId}) 
+      }
 
     return (
         <View style={styles.container}>
@@ -29,23 +48,25 @@ const ViewStaff = ({route, navigation} ) => {
                         <Text>{position}</Text>
                         <Text style={styles.ttle }>Qualification</Text>
                         <Text>{qualification}</Text>
-                        <Text style={styles.ttle}>Age</Text>
-                        <Text>{age}</Text>
+                        <Text style={styles.ttle}>Date of birth</Text>
+                        <Text> </Text>
                          
                       
 
                     </View>
                     <View style={{flexDirection:'row',justifyContent:'space-evenly',width:'100%',marginTop:220,height:40,position:'absolute'}}>
                         <TouchableOpacity 
-                        onPress={()=>navigation.navigate('EditStaff',{first_name,last_name,id,age,position,qualification,image,experience})}
+                        onPress={()=>navigation.navigate('EditStaff',{first_name,last_name,id,position,qualification,image,experience})}
                         style={styles.button}
                         >
                             <Text>Edit</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity 
-                        onPress={()=>alert('Delete ?')}
-                        style={styles.button}
+                        onPress={()=>{del(id)
+                          deleteMember(id)
+                          navigation.navigate('Home')}}
+                          style={styles.button}
                         >
                             <Text>Delete</Text>
                         </TouchableOpacity>
@@ -151,5 +172,14 @@ const styles = StyleSheet.create({
     }
 
 })
+const mapStateToProps = ({ user,staff }) => ({
+    currentUser: user.currentUser,
+    allStaff:staff.staff
+  });
 
-export default ViewStaff
+  const mapDispatchToProps = dispatch => ({
+    setCurrentUser: user => dispatch(setCurrentUser(user)),
+    setStaff: members => dispatch(setStaff(members))
+  });
+
+export default connect(mapStateToProps, mapDispatchToProps)(ViewStaff)

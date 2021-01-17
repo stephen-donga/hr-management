@@ -11,6 +11,7 @@ import Notifications from '../components/Notifications'
 const BottomTab  = createMaterialBottomTabNavigator();
 
 const BottomTabs = () =>{
+  
     return(
         <BottomTab.Navigator
             initialRouteName="users"

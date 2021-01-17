@@ -1,16 +1,29 @@
 import React from 'react'
 import { View, Text,Dimensions,StyleSheet } from 'react-native'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 import HeaderBar from '../custom/HeaderBar'
 
 const {width, height} = Dimensions.get('window')
 
-const Events = () => {
+const Events = ({navigation}) => {
     return (
         <View style={styles.container}>
             <HeaderBar />
             <View style={styles.details}>
-            <Text style={styles.title}>Events</Text>
+            
+            <View style={{width:'100%'}}>
+                <TouchableOpacity 
+                onPress={()=>navigation.navigate('AddEvent')}
+                style={{width:'100%',height:'100%',backgroundColor:'darkgreen',alignItems:'center',justifyContent:'center', height:30}}
+                >
+                    <Text style={{fontSize:18,color:'white'}}>Add Event</Text>
+                </TouchableOpacity>
+            </View>
+            <Text style={styles.title}>All Events</Text>
+            <View style={{flex:1,backgroundColor:'white',marginTop:5}}>
+
+            </View>
 
             </View>
         </View>
@@ -27,10 +40,12 @@ const styles = StyleSheet.create({
         padding:10
     },
     title:{
-        fontSize:15,
+        fontSize:18,
         fontWeight:'bold',
-        alignSelf:'center',
-        color:'darkblue'
+        alignSelf:'flex-start',
+        color:'black',
+        marginTop:10,
+        paddingLeft:10
     }
 })
 

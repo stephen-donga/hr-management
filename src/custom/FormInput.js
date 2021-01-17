@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
         paddingLeft:5
     },
     label:{
-        fontSize:15
+        fontSize:17
     },
     error:{
         fontSize:14,

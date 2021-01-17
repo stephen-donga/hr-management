@@ -1,23 +1,22 @@
 import React,{useState, useEffect} from 'react'
-import { View, Text, StyleSheet,TouchableOpacity,Dimensions} from 'react-native'
+import { View, StyleSheet,TouchableOpacity,Dimensions} from 'react-native'
 import DropDownPicker from 'react-native-dropdown-picker';
 import { FlatList, TextInput } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
 import {connect} from 'react-redux'
 
-
 import HeaderBar from '../custom/HeaderBar'
-import db from '../utils/database'
 import UserCard from './UserCard'
+import db from '../utils/database'
 
 import { StackActions, useNavigation } from '@react-navigation/native';
 
 
 const {width, height} = Dimensions.get('window')
 
-const Staff = (props) => {
+const Staff = () => {
 
-    const navigation = useNavigation();
+    const navigator = useNavigation();
 
     const [members,setMembers] = useState([])
     const [searchField,setSearchField] = useState("")
@@ -30,9 +29,7 @@ const Staff = (props) => {
         {label: 'Qualification', value: 'qualification' },
         {label: 'Position', value: 'position' }
 
-    ])
-
-    console.log(members)
+    ]);
 
     const fetchMembers = ()=>{
         db.transaction(tx=>{
@@ -42,8 +39,15 @@ const Staff = (props) => {
         })
     }
 
+    const del =(id)=>{
+        setMembers(prev =>{
+            return prev.filter(staff =>staff.id !=id)
+        })
+    }
+
     useEffect(()=>{
-        fetchMembers();
+        fetchMembers()
+        
     },[])
     
     let controller;
@@ -53,7 +57,7 @@ const Staff = (props) => {
     }
 
     let filter = searchField.toString()
-    const filteredUsers = members.filter(member =>  member.first_name.toLowerCase().includes(filter)||member.last_name.toLowerCase().includes(filter))
+    const filteredUsers = members.length <1?null: members.filter(member =>  member.first_name.toLowerCase().includes(filter)||member.last_name.toLowerCase().includes(filter))
     return (
         <View style={styles.container}>
             <HeaderBar />
@@ -90,21 +94,19 @@ const Staff = (props) => {
                 </View>
                 <View style={styles.button}>
                     <TouchableOpacity
-                    onPress={()=>navigation.dispatch(StackActions.push('Addmember')) } 
+                    onPress={()=>navigator.dispatch(StackActions.push('Addmember',{fetchMembers})) } 
                     style={styles.addbutton}
                     >
                          <Feather name="user-plus"size={24} color='white' />
                     </TouchableOpacity>
             
                 </View>
-                 
-                
             </View>
             <View style={styles.details}>
                 
                 <FlatList 
                     data={filteredUsers}
-                    renderItem={({item})=> <UserCard {...item}/>}
+                    renderItem={({item})=> <UserCard del={del} {...item}/>}
                     keyExtractor={member =>member.id.toString()}
                     showsVerticalScrollIndicator={false}
                 />
@@ -162,16 +164,14 @@ const styles = StyleSheet.create({
         alignSelf:'center',
         marginBottom:80
     }
+});
 
-     
-})
+const mapStateToProps = ({ staff }) => ({
+    allStaff: staff.staff
+  });
 
-const mapStateToProps =(state) =>{
-    return {
-          user:state.users
-    }
-}
+  const mapDispatchToProps = dispatch => ({
+    setStaff: members => dispatch(setStaff(members))
+  });
 
-
-
-export default connect(mapStateToProps)(Staff)
+export default connect(mapStateToProps, mapDispatchToProps)(Staff)
