@@ -8,13 +8,14 @@ import {connect} from 'react-redux'
 import HeaderBar from '../custom/HeaderBar'
 import UserCard from './UserCard'
 import db from '../utils/database'
+import {setStaff} from '../redux/staff/staffActions'
 
 import { StackActions, useNavigation } from '@react-navigation/native';
 
 
 const {width, height} = Dimensions.get('window')
 
-const Staff = () => {
+const Staff = ({allStaff,setStaff}) => {
 
     const navigator = useNavigation();
 
@@ -31,6 +32,7 @@ const Staff = () => {
 
     ]);
 
+
     const fetchMembers = ()=>{
         db.transaction(tx=>{
             tx.executeSql('SELECT * FROM staff_members',null,
@@ -38,6 +40,8 @@ const Staff = () => {
             (txObj, error)=>console.log('Error',error)
         })
     }
+
+    setStaff(members)
 
     const del =(id)=>{
         setMembers(prev =>{
@@ -47,6 +51,7 @@ const Staff = () => {
 
     useEffect(()=>{
         fetchMembers()
+        setStaff(members)
         
     },[])
     
@@ -107,14 +112,10 @@ const Staff = () => {
                 <FlatList 
                     data={filteredUsers}
                     renderItem={({item})=> <UserCard del={del} {...item}/>}
-                    keyExtractor={member =>member.id.toString()}
+                    keyExtractor={member =>member.date_of_birth.toString()}
                     showsVerticalScrollIndicator={false}
                 />
-                 
              </View>
-
-             
-
         </View>
     )
 }

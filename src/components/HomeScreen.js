@@ -3,14 +3,14 @@ import { View, Text ,StyleSheet, Image,Dimensions} from 'react-native'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import { AntDesign } from '@expo/vector-icons'; 
 import {connect} from 'react-redux'
+import { StackActions,useNavigation } from '@react-navigation/native';
 
 import HeaderBar from '../custom/HeaderBar'
 import Homepage from './Homepage'
-import { StackActions,useNavigation } from '@react-navigation/native';
 
 const {width, height} = Dimensions.get('window')
 
-const HomeScreen = ({currentUser}) => {
+const HomeScreen = ({currentUser, allStaff}) => {
 
     const navigation = useNavigation()
 
@@ -24,6 +24,8 @@ const HomeScreen = ({currentUser}) => {
         setShowDropDown(!showDropDown)
         navigation.navigate('EditStaff',{fname,lname,id,age,position,qualification,image,experience})
     }
+
+    let totalStaff = allStaff.length
     return (
         <View style={styles.container}>
             <HeaderBar />
@@ -35,7 +37,7 @@ const HomeScreen = ({currentUser}) => {
                     </View>
                     <View style={styles.headerRight}>
                         <TouchableOpacity 
-                        onPress={()=>setShowDropDown(!showDropDown)}
+                          onPress={()=>setShowDropDown(!showDropDown)}
                         >
                             <Image style={{width:50,borderWidth:1,borderColor:'teal',height:50,borderRadius:50}} source={require('../../assets/profile.jpg')}/>
                         </TouchableOpacity>
@@ -79,7 +81,7 @@ const HomeScreen = ({currentUser}) => {
             <View style={styles.lastsection}>
                 <Text style={styles.title}>All members</Text>
                     <FlatList 
-                    data={[{name:'Staff',urls:require('../../assets/staff2.png'),number:4},
+                    data={[{name:'Staff',urls:require('../../assets/staff2.png'),number:totalStaff},
                     {name:'Users',urls:require('../../assets/user.png'),number:1}]}
                     renderItem={({item})=>{
                         return(
@@ -91,7 +93,7 @@ const HomeScreen = ({currentUser}) => {
                                     paddingLeft:width/3,
                                     height:90,
                                     backgroundColor:'white'}} source={item.urls}/>
-                            <View style={styles.numbercircle}>
+                                <View style={styles.numbercircle}>
                                 <Text>{item.number}</Text>
                                 </View>
                             </View>
@@ -207,8 +209,9 @@ const styles = StyleSheet.create({
         justifyContent:'center'}
 })
 
-const mapStateToProps = ({ user }) => ({
-    currentUser: user.currentUser
+const mapStateToProps = ({user,staff}) => ({
+    currentUser: user.currentUser,
+    allStaff: staff.staff
   });
 
 export default connect(mapStateToProps)(HomeScreen)
