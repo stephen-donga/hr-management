@@ -13,6 +13,7 @@ import Leaves from '../components/Leaves'
 import Training from '../components/Training'
 import Events from '../components/Events'
 import AddEvent from '../components/AddEvent'
+import NewUser from '../components/NewUser'
 
 const Stack = createStackNavigator()
 
@@ -31,6 +32,7 @@ const StackNavigation = ()=>{
             <Stack.Screen name="AddEvent" component={AddEvent} />
             <Stack.Screen name="Leaves" component={Leaves} />
             <Stack.Screen name="Training" component={Training} />
+            <Stack.Screen name="NewUser" component={NewUser} />
             <Stack.Screen name="Home" component={BottomTabs} />
             <Stack.Screen name='Userprofile' component={UserProfile} />
         </Stack.Navigator>

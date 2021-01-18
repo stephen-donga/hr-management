@@ -76,7 +76,6 @@ const Staff = ({allStaff,setStaff}) => {
                 value={searchField}
                 onChangeText={handleSearch}
             /> 
-
             </View>
                 <View style={{width:'42%'}}>
                 <DropDownPicker
@@ -104,15 +103,13 @@ const Staff = ({allStaff,setStaff}) => {
                     >
                          <Feather name="user-plus"size={24} color='white' />
                     </TouchableOpacity>
-            
                 </View>
             </View>
             <View style={styles.details}>
-                
                 <FlatList 
                     data={filteredUsers}
                     renderItem={({item})=> <UserCard del={del} {...item}/>}
-                    keyExtractor={member =>member.date_of_birth.toString()}
+                    keyExtractor={member =>member.id.toString()}
                     showsVerticalScrollIndicator={false}
                 />
              </View>

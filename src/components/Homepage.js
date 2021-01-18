@@ -7,7 +7,9 @@ import Card from './Card'
 const items = [
     {title:'Events', icon:'grid',screen:'Events'},
     {title:'Training', icon:'book',screen:'Training'},
-    {title:'Leaves', icon:'users',screen:'Leaves'}
+    {title:'Leaves', icon:'users',screen:'Leaves'},
+     {title:'Payroll', icon:'dolar-sign',screen:'Payroll'}
+
 ]
 
 

@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { View, Text ,StyleSheet, Image,Dimensions} from 'react-native'
+import { View, Text ,StyleSheet, Image,Dimensions, Button} from 'react-native'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import { AntDesign } from '@expo/vector-icons'; 
 import {connect} from 'react-redux'
@@ -11,6 +11,7 @@ import Homepage from './Homepage'
 const {width, height} = Dimensions.get('window')
 
 const HomeScreen = ({currentUser, allStaff}) => {
+
 
     const navigation = useNavigation()
 
@@ -60,7 +61,14 @@ const HomeScreen = ({currentUser, allStaff}) => {
                     <Text style={styles.labels}>Title:</Text>
                     <Text style={styles.detail}>C.T.O</Text>
                     <Text style={styles.labels}></Text>
-                    <View style={{width:'100%',alignSelf:"baseline",height:40,flexDirection:'row',justifyContent:"space-evenly"}}>
+                        <Button 
+                        onPress={()=>{
+                            setShowDropDown(!showDropDown)
+                            navigation.dispatch(StackActions.push('NewUser'))
+                        }}
+                        title='Add new User'
+                        />
+                    <View style={{width:'100%',alignSelf:"baseline",height:40,flexDirection:'row',marginTop:25,justifyContent:"space-evenly"}}>
                         <TouchableOpacity
                         onPress={handleEdit} 
                         style={{width:50,height:25,borderWidth:1,borderColor:'teal',borderRadius:5,alignItems:'center',justifyContent:'center',backgroundColor:'white'}}
@@ -176,7 +184,7 @@ const styles = StyleSheet.create({
         marginTop:90,
         position:'absolute',
         width:width/2,
-        height:height/3-50,
+        height:height/3,
         padding:10,
         backgroundColor:'whitesmoke',
         borderRadius:5,
