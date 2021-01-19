@@ -1,4 +1,3 @@
-import { concat } from 'react-native-reanimated';
 import {StaffActionTypes } from './staffActionTypes'
 
 const INITIAL_STATE = {
@@ -11,13 +10,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         staff:action.payload
-      };
-
-  case StaffActionTypes.ADD_STAFF:
-    return {
-      ...state,
-      staff:concat(action.payload)
-    }
+      }
     default:
       return state;
   }

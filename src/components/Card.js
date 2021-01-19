@@ -1,4 +1,4 @@
-import { DrawerActions, StackActions, useNavigation } from '@react-navigation/native'
+import { StackActions, useNavigation } from '@react-navigation/native'
 import React from 'react'
 import { View, Text ,StyleSheet ,Dimensions,TouchableOpacity} from 'react-native'
 import { Feather as Icon } from '@expo/vector-icons'; 

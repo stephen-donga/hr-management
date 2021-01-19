@@ -34,7 +34,7 @@ const HomeScreen = ({currentUser, allStaff}) => {
                 <View style={styles.top}>
                     <View style={styles.headerLeft}>
                         <Text style={styles.heading}>HRMS</Text>
-                        <Text style={styles.phrase}>Welcome {currentUser}</Text>
+                        <Text style={styles.phrase}>Welcome  {currentUser}</Text>
                     </View>
                     <View style={styles.headerRight}>
                         <TouchableOpacity 
@@ -56,11 +56,9 @@ const HomeScreen = ({currentUser, allStaff}) => {
            {
                showDropDown&&(
                 <View style={styles.dropdown}>
-                    <Text style={styles.labels}>Username:</Text>
-                    <Text style={styles.detail}>{currentUser}</Text>
-                    <Text style={styles.labels}>Title:</Text>
+                    <Text style={styles.labels}>{currentUser}</Text>
                     <Text style={styles.detail}>C.T.O</Text>
-                    <Text style={styles.labels}></Text>
+                    <Text style={{marginBottom:10,marginTop:10}}>Adam</Text>
                         <Button 
                         onPress={()=>{
                             setShowDropDown(!showDropDown)
@@ -196,7 +194,7 @@ const styles = StyleSheet.create({
         flexDirection:'row'
     },
     labels:{
-        fontSize:16,
+        fontSize:18,
         fontWeight:'bold'
     },
     detail:{

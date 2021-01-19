@@ -35,8 +35,8 @@ const Notifications = () => {
             {
                 data.map(item=>(
                     
-                        <View  key={item.id} style={{width:width/2+180,height:height/8+40,justifyContent:'center',paddingLeft:20,backgroundColor:'pink',marginBottom:25}}>
-                        <Text>{item.actor} </Text>
+                        <View  key={item.id} style={{width:width/2+130,height:height/8+40,justifyContent:'center',paddingLeft:20,backgroundColor:'pink',marginBottom:25}}>
+                        <Text style={{fontSize:18,fontWeight:'bold'}}>{item.actor} </Text>
                         <Text>{item.action}</Text>
                         <Text> {item.time}</Text>
                         </View>
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
         marginTop:5
     },
     hr:{
-        width:width/2+180,
+        width:width/2+130,
         borderWidth:1,
         borderColor:'darkgrey'
     }

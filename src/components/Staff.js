@@ -1,27 +1,31 @@
 import React,{useState, useEffect} from 'react'
-import { View, StyleSheet,TouchableOpacity,Dimensions} from 'react-native'
+import { View,Text,Dimensions,TouchableOpacity,StyleSheet} from 'react-native'
 import DropDownPicker from 'react-native-dropdown-picker';
 import { FlatList, TextInput } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
 import {connect} from 'react-redux'
+import {setDetails} from '../redux/showUserDetails/detailsActions'
+import {setStaff} from '../redux/staff/staffActions'
 
 import HeaderBar from '../custom/HeaderBar'
 import UserCard from './UserCard'
 import db from '../utils/database'
-import {setStaff} from '../redux/staff/staffActions'
+import ViewStaff from '../components/ViewStaff'
 
 import { StackActions, useNavigation } from '@react-navigation/native';
 
 
 const {width, height} = Dimensions.get('window')
 
-const Staff = ({allStaff,setStaff}) => {
+const Staff = ({showDetails,staff,setStaff,setDetails}) => {
 
     const navigator = useNavigation();
-
+ 
     const [members,setMembers] = useState([])
+    setStaff(members);
     const [searchField,setSearchField] = useState("")
     const [filterBy, setFilterBy] = useState("")
+
     const [items,setItems] = useState([
         
         {label: 'Name', value: 'name' },
@@ -36,22 +40,17 @@ const Staff = ({allStaff,setStaff}) => {
     const fetchMembers = ()=>{
         db.transaction(tx=>{
             tx.executeSql('SELECT * FROM staff_members',null,
-            (txObj,{rows:{_array}})=>setMembers(members.concat(_array))),
+            (txObj,{rows:{_array}})=>setMembers(_array)),
             (txObj, error)=>console.log('Error',error)
         })
     }
 
-    setStaff(members)
 
-    const del =(id)=>{
-        setMembers(prev =>{
-            return prev.filter(staff =>staff.id !=id)
-        })
-    }
+
 
     useEffect(()=>{
         fetchMembers()
-        setStaff(members)
+        setMembers([])
         
     },[])
     
@@ -62,7 +61,7 @@ const Staff = ({allStaff,setStaff}) => {
     }
 
     let filter = searchField.toString()
-    const filteredUsers = members.length <1?null: members.filter(member =>  member.first_name.toLowerCase().includes(filter)||member.last_name.toLowerCase().includes(filter))
+    const filteredUsers = staff.length <1?null: staff.filter(member =>  member.first_name.toLowerCase().includes(filter)||member.last_name.toLowerCase().includes(filter))
     return (
         <View style={styles.container}>
             <HeaderBar />
@@ -78,6 +77,7 @@ const Staff = ({allStaff,setStaff}) => {
             /> 
             </View>
                 <View style={{width:'42%'}}>
+                
                 <DropDownPicker
                     items={items}
                     containerStyle={{height:30}}
@@ -105,14 +105,26 @@ const Staff = ({allStaff,setStaff}) => {
                     </TouchableOpacity>
                 </View>
             </View>
+            
             <View style={styles.details}>
                 <FlatList 
                     data={filteredUsers}
-                    renderItem={({item})=> <UserCard del={del} {...item}/>}
+                    renderItem={({item})=> <UserCard {...item}/>}
                     keyExtractor={member =>member.id.toString()}
                     showsVerticalScrollIndicator={false}
                 />
              </View>
+             
+             {
+                 showDetails&&(
+                     <View
+                     style={styles.popsection} 
+                     >
+                         <ViewStaff fetch ={fetchMembers}/>
+
+                     </View>
+                 )
+             }
         </View>
     )
 }
@@ -161,15 +173,27 @@ const styles = StyleSheet.create({
         marginTop:10,
         alignSelf:'center',
         marginBottom:80
+    },
+    popsection:{
+        width:'45%',
+        height:'45%',
+        position:'absolute',
+        borderWidth:1,
+        borderColor:'grey',
+        marginTop:'30%',
+        marginLeft:'50%',
+        borderRadius:5
     }
 });
 
-const mapStateToProps = ({ staff }) => ({
-    allStaff: staff.staff
+const mapStateToProps = ({details,staff}) => ({
+     showDetails:details.showDetails,
+     staff:staff.staff 
   });
 
   const mapDispatchToProps = dispatch => ({
-    setStaff: members => dispatch(setStaff(members))
+    setStaff: members => dispatch(setStaff(members)),
+    setDetails: act =>dispatch(setDetails(act))
   });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Staff)
+export default connect(mapStateToProps,mapDispatchToProps)(Staff)

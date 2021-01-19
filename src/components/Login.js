@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {View,SafeAreaView ,Button,Text,StyleSheet,TouchableOpacity} from 'react-native';
+import {View,Button,Text,StyleSheet,TouchableOpacity} from 'react-native';
 import auditTrail from '../utils/trails'
 import db from '../utils/database'
 import {connect} from  'react-redux'
@@ -43,11 +43,6 @@ const Login = ({navigation,setCurrentUser}) => {
     const [passwordError,setPasswordError] = useState("")
 
     const filteredUser = fetched.filter(user =>user.username==username &&user.password==password)
-    const use =[ {
-        username:username,
-        password:password
-    }]
-    
     const handleUsernameChange = (text) => {
         setUsername(text)
     }
@@ -105,7 +100,7 @@ const Login = ({navigation,setCurrentUser}) => {
     }
   
         return (
-            <SafeAreaView style={styles.container}>
+            <View style={styles.container}>
                 <View style={{width:'100%',height:'40%',backgroundColor:'white'}} >
                     <View style={{height:120,width:'100%',paddingTop:20,borderRadius:30,backgroundColor:'#B0AAA7',position:'relative',alignItems:'center'}}>
                         <View style={{width:'100%',height:25,backgroundColor:'#827C79',...StyleSheet.absoluteFillObject}}/>
@@ -159,7 +154,7 @@ const Login = ({navigation,setCurrentUser}) => {
                </View>
 
                 
-            </SafeAreaView>
+            </View>
         )
     }
  

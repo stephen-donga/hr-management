@@ -1,6 +1,5 @@
 import React from 'react'
 import {View, SafeAreaView,FlatList, StyleSheet } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
 
 import Card from './Card'
 
@@ -8,13 +7,11 @@ const items = [
     {title:'Events', icon:'grid',screen:'Events'},
     {title:'Training', icon:'book',screen:'Training'},
     {title:'Leaves', icon:'users',screen:'Leaves'},
-     {title:'Payroll', icon:'dolar-sign',screen:'Payroll'}
+    {title:'Payroll', icon:'dollar-sign',screen:'Payroll'}
 
 ]
 
-
 const Homepage = () => {
-    const navigation = useNavigation()
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.cardsection}>
@@ -43,6 +40,6 @@ const styles = StyleSheet.create({
         justifyContent:'center'
      }
     
-})
+});
 
 export default Homepage

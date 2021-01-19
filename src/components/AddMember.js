@@ -5,14 +5,13 @@ import DateTimePicker from "@react-native-community/datetimepicker"
 import auditTrail from '../utils/trails'
 import db from '../utils/database'
 import {connect} from 'react-redux'
-import {addStaff} from '../redux/staff/staffActions'
 
 import HeaderBar from '../custom/HeaderBar'
 import FormInput from '../custom/FormInput'
 
 const {width, height} = Dimensions.get('window');
 
-const AddMember = ({navigation,currentUser,addStaff, route}) => {
+const AddMember = ({navigation,currentUser,route}) => {
 
     const {fetchMembers} = route.params;
 
@@ -38,8 +37,6 @@ const AddMember = ({navigation,currentUser,addStaff, route}) => {
     const [date, setDate] = useState(new Date(96400000));
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
-
-    const [result, setResult] = useState([])
 
     const validDate = new Date(date).toLocaleDateString()
 
@@ -88,7 +85,7 @@ const AddMember = ({navigation,currentUser,addStaff, route}) => {
                 return;
             }
 
-        if(firstname == ""&& lastname==""&&qualification==""&&experience==""){
+        if(firstname ==""&& lastname==""&&qualification==""&&experience==""){
             alert('Enter details before you submit')
         }else{
             setFirstName("")
@@ -100,22 +97,11 @@ const AddMember = ({navigation,currentUser,addStaff, route}) => {
             db.transaction(tx => {
                 tx.executeSql('INSERT INTO staff_members (first_name, last_name,position,qualification,experience,date_of_birth) values (?,?,?,?,?,?)', 
                 [firstname,lastname,filterBy,qualification,experience,validDate],
-                  (txObj, resultSet) => setResult(result.concat(resultSet)),
+                  (txObj,{rows:{_array}}) =>console.log(_array),
                   (txObj, error) => console.log('Error', error))
-              })
-        let staff = [
-            {
-                first_name:firstname,
-                last_name:lastname,
-                position:filterBy,
-                qualification:qualification,
-                experience:experience,
-                date_of_birth:validDate
-            }
-        ]
+              });
 
-        addStaff(staff)
-        fetchMembers();
+              fetchMembers();
 
 
         let trail={
@@ -275,8 +261,6 @@ const mapStateToProps = ({ user }) => ({
     currentUser: user.currentUser,
   });
 
-const mapDispatchToProps = dispatch => ({
-addStaff: arr => dispatch(addStaff(arr))
-});
+ 
 
-export default connect(mapStateToProps,mapDispatchToProps)(AddMember)
+export default connect(mapStateToProps)(AddMember)
