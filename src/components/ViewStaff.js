@@ -1,5 +1,5 @@
 import React,{useState} from 'react'
-import { View, Text,StyleSheet} from 'react-native'
+import { View, Alert,Text,StyleSheet} from 'react-native'
 import{Feather as Icon} from "@expo/vector-icons"
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import {connect} from 'react-redux'
@@ -7,16 +7,15 @@ import db from '../utils/database'
 import auditTrail from '../utils/trails'
 import {setStaff} from '../redux/staff/staffActions'
 import {setDetails} from '../redux/showUserDetails/detailsActions'
+import { StackActions, useNavigation } from '@react-navigation/native'
 
 
 const ViewStaff = ({details,showDetails,fetch,allStaff, currentUser,setDetails}) => {
-     
-    const {id,first_name,last_name,position} =details;
 
-    const [members, setMembers] = useState(allStaff)
-    
-    // const remainingMembers = members.filter(member =>member.id !==id)
-    
+    const navigation = useNavigation();
+     
+    const {id,first_name,last_name,position,image} =details;
+
     const deleteMember = (memberId) =>{
         db.transaction(tx =>{
             tx.executeSql('DELETE FROM staff_members WHERE id=?',[memberId],
@@ -47,7 +46,11 @@ const ViewStaff = ({details,showDetails,fetch,allStaff, currentUser,setDetails})
                     <Text>Grant Leave</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity 
+                <TouchableOpacity
+                onPress={()=>{
+                    setDetails(!showDetails)
+                    navigation.dispatch(StackActions.push('EditStaff'))
+                }} 
                  style={styles.option}
                 >
                     <Text>Edit</Text>
@@ -55,9 +58,20 @@ const ViewStaff = ({details,showDetails,fetch,allStaff, currentUser,setDetails})
 
                 <TouchableOpacity 
                 onPress={()=>{
-                    deleteMember(id)
-                    setDetails(!showDetails)
-                    fetch();
+                    Alert.alert('Delete',"Delete member ?",[
+                        {
+                          text: 'Cancel',
+                          onPress: () => alert('Cancelled'),
+                          style: 'cancel'
+                        },
+                        { text: 'OK', onPress: () =>{
+                            alert('Staff Deleted')
+                            deleteMember(id)
+                            setDetails(!showDetails)
+                            fetch();
+                
+                          } }
+                    ],{cancelable:true})
                 }}
                 style={styles.option}
                 >
@@ -93,7 +107,7 @@ const styles = StyleSheet.create({
         color:'darkblue'
     },
     title:{
-        fontSize:17,
+        fontSize:14,
         fontWeight:'bold',
         alignSelf:'center',
         marginTop:10
@@ -104,13 +118,13 @@ const styles = StyleSheet.create({
     option:{
         width:'100%',
         height:30,
-        marginTop:15,
+        marginTop:5,
         backgroundColor:'whitesmoke',
         alignItems:'center',
         justifyContent:'center',
         borderWidth:1,
         borderColor:'grey',
-        borderRadius:5
+        borderRadius:5,
     }
 
 })

@@ -58,25 +58,19 @@ const HomeScreen = ({currentUser, allStaff}) => {
                 <View style={styles.dropdown}>
                     <Text style={styles.labels}>{currentUser}</Text>
                     <Text style={styles.detail}>C.T.O</Text>
-                    <Text style={{marginBottom:10,marginTop:10}}>Adam</Text>
-                        <Button 
-                        onPress={()=>{
-                            setShowDropDown(!showDropDown)
-                            navigation.dispatch(StackActions.push('NewUser'))
-                        }}
-                        title='Add new User'
-                        />
-                    <View style={{width:'100%',alignSelf:"baseline",height:40,flexDirection:'row',marginTop:25,justifyContent:"space-evenly"}}>
+                    <Text style={{marginBottom:10,marginTop:10}}> </Text>
+                        
+                    <View style={{width:'100%',alignSelf:"baseline",height:100,marginTop:25,alignItems:'center',justifyContent:'space-evenly'}}>
                         <TouchableOpacity
-                        onPress={handleEdit} 
-                        style={{width:50,height:25,borderWidth:1,borderColor:'teal',borderRadius:5,alignItems:'center',justifyContent:'center',backgroundColor:'white'}}
+                        onPress={()=>alert('Not yet available')} 
+                        style={{width:150,height:35,borderWidth:1,borderColor:'teal',borderRadius:5,alignItems:'center',justifyContent:'center',backgroundColor:'white'}}
                         >
                              <Text>Edit</Text>
                              </TouchableOpacity>
 
                              <TouchableOpacity
                              onPress={handleLogOut}
-                             style={{backgroundColor:'white',borderColor:'teal',borderWidth:1,width:50,alignItems:'center',justifyContent:'center',padding:2,borderRadius:5,height:25}} 
+                             style={{backgroundColor:'white',borderColor:'teal',borderWidth:1,width:150,alignItems:'center',justifyContent:'center',padding:2,borderRadius:5,height:35}} 
                              >
                                 <AntDesign name="logout" size={15} color="black" />
                              </TouchableOpacity>
@@ -179,12 +173,14 @@ const styles = StyleSheet.create({
     },
     dropdown:{
         marginLeft:width/2-10,
-        marginTop:90,
+        marginTop:"30%",
         position:'absolute',
         width:width/2,
         height:height/3,
         padding:10,
         backgroundColor:'whitesmoke',
+        alignItems:'center',
+        justifyContent:'center',
         borderRadius:5,
         borderColor:'teal',
         borderWidth:1

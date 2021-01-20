@@ -1,10 +1,12 @@
-import React,{useState} from 'react'
+import React,{useState, useEffect} from 'react'
 import { View, Text,Button, StyleSheet, ScrollView, TouchableOpacity,Dimensions } from 'react-native'
 import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePicker from "@react-native-community/datetimepicker"
 import auditTrail from '../utils/trails'
 import db from '../utils/database'
 import {connect} from 'react-redux'
+import * as ImagePicker from 'expo-image-picker';
+import Constants from 'expo-constants';
 
 import HeaderBar from '../custom/HeaderBar'
 import FormInput from '../custom/FormInput'
@@ -38,7 +40,35 @@ const AddMember = ({navigation,currentUser,route}) => {
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
 
+    const [image, setImage] = useState(null)
+
     const validDate = new Date(date).toLocaleDateString()
+
+    useEffect(() => {
+        (async () => {
+          if (Platform.OS !== 'web') {
+            const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+            if (status !== 'granted') {
+              alert('Sorry, we need camera roll permissions to make this work!');
+            }
+          }
+        })();
+      }, []);
+
+      const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+        });
+    
+        console.log(result);
+    
+        if (!result.cancelled) {
+          setImage(result.uri);
+        }
+      };
 
     const handleFirstNameChange = (value) => {
         setFirstName(value)
@@ -95,8 +125,8 @@ const AddMember = ({navigation,currentUser,route}) => {
             setQualification("")
 
             db.transaction(tx => {
-                tx.executeSql('INSERT INTO staff_members (first_name, last_name,position,qualification,experience,date_of_birth) values (?,?,?,?,?,?)', 
-                [firstname,lastname,filterBy,qualification,experience,validDate],
+                tx.executeSql('INSERT INTO staff_members (first_name, last_name,position,qualification,experience,date_of_birth,image) values (?,?,?,?,?,?,?)', 
+                [firstname,lastname,filterBy,qualification,experience,validDate,image],
                   (txObj,{rows:{_array}}) =>console.log(_array),
                   (txObj, error) => console.log('Error', error))
               });
@@ -193,7 +223,10 @@ const AddMember = ({navigation,currentUser,route}) => {
                     value={experience}
                     changeHandler={handleExperienceChange}
                 />
-                <View  style={{marginTop:20,marginBottom:20}}>
+                 <View  style={{marginTop:20,marginBottom:20}}>
+                  <Button  onPress={pickImage} title="Select Image"  />
+                </View>
+                <View  style={{marginTop:5,marginBottom:20}}>
 
                  <Button  onPress={showDatepicker} title="Select date of birth"  />
                  </View>
@@ -209,6 +242,8 @@ const AddMember = ({navigation,currentUser,route}) => {
                     
       )}
                  <View  style={{marginBottom:20}}>
+                    
+
                  <Button 
                     title="Submit"
                     color="green"

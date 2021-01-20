@@ -59,23 +59,23 @@ const Staff = ({showDetails,staff,setStaff,setDetails}) => {
     const handleSearch = (text)=>{
         setSearchField(text)
     }
-
-    let filter = searchField.toString()
+    
+    let filter = searchField.toString().toLocaleLowerCase()
     const filteredUsers = staff.length <1?null: staff.filter(member =>  member.first_name.toLowerCase().includes(filter)||member.last_name.toLowerCase().includes(filter))
     return (
         <View style={styles.container}>
             <HeaderBar />
             
-            <View style={styles.section}>
+            {/* <View style={styles.section}>
 
-            <View style={styles.search}>
-            <TextInput 
-                style={styles.input}
-                placeholder='Search'
+<View style={styles.search}>
+<TextInput 
+style={styles.input}
+placeholder='Search'
                 value={searchField}
                 onChangeText={handleSearch}
-            /> 
-            </View>
+                /> 
+                </View>
                 <View style={{width:'42%'}}>
                 
                 <DropDownPicker
@@ -88,22 +88,26 @@ const Staff = ({showDetails,staff,setStaff,setDetails}) => {
                     controller={instance => controller = instance}
                     onChangeList={(items, callback) => {
                         new Promise((resolve, reject) => resolve(setItems(items)))
-                            .then(() => callback())
-                            .catch(() => {});
+                        .then(() => callback())
+                        .catch(() => {});
                     }}
-
+                    
                     defaultValue={filterBy}
                     onChangeItem={item => setFilterBy(item.value)}
             />
-                </View>
-                <View style={styles.button}>
-                    <TouchableOpacity
-                    onPress={()=>navigator.dispatch(StackActions.push('Addmember',{fetchMembers})) } 
-                    style={styles.addbutton}
-                    >
-                         <Feather name="user-plus"size={24} color='white' />
-                    </TouchableOpacity>
-                </View>
+            </View>
+            <View style={styles.button}>
+            <TouchableOpacity
+            onPress={()=>navigator.dispatch(StackActions.push('Addmember',{fetchMembers})) } 
+            style={styles.addbutton}
+            >
+            <Feather name="user-plus"size={24} color='white' />
+            </TouchableOpacity>
+            </View>
+        </View> */}
+            <View style={{width:width,height:30,paddingLeft:15,paddingTop:10}}>
+                <Text style={{fontSize:16}}>All staff members</Text>
+
             </View>
             
             <View style={styles.details}>
@@ -124,7 +128,14 @@ const Staff = ({showDetails,staff,setStaff,setDetails}) => {
 
                      </View>
                  )
-             }
+                }
+             <View style={{position:'absolute',marginLeft:'80%',width:50,height:50,borderRadius:150,marginTop:450}}>
+                 <TouchableOpacity 
+                    onPress={()=>navigator.dispatch(StackActions.push('Addmember',{fetchMembers}))}
+                    style={{width:'100%',height:'100%',borderRadius:150,justifyContent:'center',alignItems:'center'}}>
+                    <Feather name='plus-circle'color="#83C091" size={35} />
+                 </TouchableOpacity>
+             </View>
         </View>
     )
 }
@@ -134,11 +145,13 @@ const styles = StyleSheet.create({
         flex:1,
         width:'100%',
         height:'100%',
-        backgroundColor:'white'
+        backgroundColor:'white',
+        position:'relative'
     },
     section:{
         flexDirection:'row',
-        marginTop:20
+        marginTop:20,
+        position:'relative'
     },
     search:{
         width:'30%',

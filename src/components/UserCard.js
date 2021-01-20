@@ -1,11 +1,11 @@
 import React from 'react'
-import { View,StyleSheet, Text,TouchableOpacity,TouchableWithoutFeedback} from 'react-native'
+import { View,StyleSheet,Image, Text,TouchableOpacity,TouchableWithoutFeedback} from 'react-native'
 import {Feather as Icon} from '@expo/vector-icons'
 import { StackActions, useNavigation } from '@react-navigation/native'
 import {connect} from 'react-redux'
 import {setDetails,detailsAdd} from '../redux/showUserDetails/detailsActions'
 
-const UserCard = ({first_name,last_name,id,date_of_birth,position,qualification,experience,del, showDetails,setDetails,addDetails}) => {
+const UserCard = ({first_name,last_name,id,date_of_birth,position,qualification,experience,showDetails,setDetails,addDetails,image}) => {
 
     
     const handlePress =()=>{
@@ -13,7 +13,11 @@ const UserCard = ({first_name,last_name,id,date_of_birth,position,qualification,
             first_name,
             last_name,
             position,
-            id
+            id,
+            date_of_birth,
+            qualification,
+            experience,
+            image
         }
         
             addDetails(detail)
@@ -25,14 +29,14 @@ const UserCard = ({first_name,last_name,id,date_of_birth,position,qualification,
                 >
             <View style={styles.container}>
                 
-                <View style={{flexDirection:'row',flex:1}}>
+                <View style={{flexDirection:'row',flex:1,paddingLeft:5}}>
                     <View style={{width:'35%',height:'90%',alignSelf:'center' ,margin:5}}>
-                        
+                        <Image source={{uri:image}} style={{ alignSelf:'center',width: 110, height: 110,borderRadius:60,borderWidth:3,borderColor:'grey' }}/>
                     </View>
 
                     <View style={{width:'50%',height:'90%',alignItems:'center',justifyContent:'center'}}>
-                        <Text style={{fontSize:15,fontWeight:'bold'}}>{first_name}{" "}{last_name}</Text>
-                        <Text style={{fontSize:17,color:'steelblue'}}>{position}</Text>
+                        <Text style={{fontSize:14,fontWeight:'bold'}}>{first_name}{" "}{last_name}</Text>
+                        <Text style={{fontSize:14,color:'steelblue'}}>{position}</Text>
                     </View>
 
                     <TouchableOpacity

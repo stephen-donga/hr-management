@@ -4,6 +4,8 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePicker from "@react-native-community/datetimepicker"
 import auditTrail from '../utils/trails'
 import db from '../utils/database'
+import {connect} from 'react-redux'
+import {StackActions, useNavigation} from '@react-navigation/native'
 
 import HeaderBar from '../custom/HeaderBar'
 import FormInput from '../custom/FormInput'
@@ -11,8 +13,9 @@ import FormInput from '../custom/FormInput'
 
 const {width, height} = Dimensions.get('window')
 
-const EditStaff = ({route,navigation}) => {
-    const {first_name,last_name,id,position,qualification,experience} = route.params;
+const EditStaff = ({details, currentUser}) => {
+    const {first_name,last_name,id,position,qualification,experience} = details;
+    const navigation = useNavigation();
     const [filterBy, setFilterBy] = useState(null)
     const [items,setItems] = useState([
         {label: 'Intern Developer', value: 'intern' },
@@ -46,14 +49,14 @@ const EditStaff = ({route,navigation}) => {
             alert('Staff Edited')
 
             let trail = {
-                actor:'steven',
+                actor:currentUser,
                 action:`${first_name} ${last_name} to ${firstname} ${lastname}`,
                 time: new Date().toString()
             }
 
             auditTrail.logTrail(trail)
             
-            navigation.navigate('Home')
+            navigation.dispatch(StackActions.push('Home'))
           } }
     ],{cancelable:true})
      }
@@ -174,5 +177,11 @@ const styles = StyleSheet.create({
         paddingBottom:10
     }
 })
+const mapStateToProps = ({ user,staff,details }) => ({
+    currentUser: user.currentUser,
+    allStaff:staff.staff ,
+    details:details.details,
+    showDetails:details.showDetails
+  });
 
-export default EditStaff;
+export default connect(mapStateToProps)(EditStaff);

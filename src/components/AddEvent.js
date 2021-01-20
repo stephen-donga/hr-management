@@ -111,7 +111,7 @@ const AddEvent = ({currentUser,route, navigation}) => {
                 }}
                 style={{width:'100%',height:40,marginTop:10,backgroundColor:'darkblue',alignItems:'center',justifyContent:'center'}}
                 >
-               <Text style={{fontSize:17,color:'white'}}>Add Member</Text>
+               <Text style={{fontSize:17,color:'white'}}>Add Event</Text>
            </TouchableOpacity>
            </View>
           
