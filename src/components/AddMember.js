@@ -171,6 +171,10 @@ const AddMember = ({navigation,currentUser,route}) => {
     return (
         <View style={styles.container} >
              <HeaderBar />
+             <View style={{width:width,height:40,backgroundColor:'#eee',padding:10,paddingLeft:15,paddingTop:10}}>
+                <Text style={{fontSize:16,fontWeight:'bold',alignSelf:'center',color:'darkblue'}}>Add staff member</Text>
+
+            </View>
              
             <ScrollView style={styles.section}
                 showsVerticalScrollIndicator={false}

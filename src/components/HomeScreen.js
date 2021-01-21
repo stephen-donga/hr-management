@@ -58,19 +58,18 @@ const HomeScreen = ({currentUser, allStaff}) => {
                 <View style={styles.dropdown}>
                     <Text style={styles.labels}>{currentUser}</Text>
                     <Text style={styles.detail}>C.T.O</Text>
-                    <Text style={{marginBottom:10,marginTop:10}}> </Text>
                         
-                    <View style={{width:'100%',alignSelf:"baseline",height:100,marginTop:25,alignItems:'center',justifyContent:'space-evenly'}}>
+                    <View style={{width:'100%',alignSelf:"baseline",marginBottom:15,height:80,marginTop:25,alignItems:'center',justifyContent:'space-evenly'}}>
                         <TouchableOpacity
                         onPress={()=>alert('Not yet available')} 
-                        style={{width:150,height:35,borderWidth:1,borderColor:'teal',borderRadius:5,alignItems:'center',justifyContent:'center',backgroundColor:'white'}}
+                        style={{width:50,height:30,borderWidth:1,borderColor:'teal',borderRadius:5,alignItems:'center',justifyContent:'center',backgroundColor:'white'}}
                         >
                              <Text>Edit</Text>
                              </TouchableOpacity>
 
                              <TouchableOpacity
                              onPress={handleLogOut}
-                             style={{backgroundColor:'white',borderColor:'teal',borderWidth:1,width:150,alignItems:'center',justifyContent:'center',padding:2,borderRadius:5,height:35}} 
+                             style={{backgroundColor:'white',borderColor:'teal',borderWidth:1,width:50,alignItems:'center',justifyContent:'center',padding:2,borderRadius:5,height:30}} 
                              >
                                 <AntDesign name="logout" size={15} color="black" />
                              </TouchableOpacity>

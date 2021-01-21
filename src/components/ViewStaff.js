@@ -79,9 +79,13 @@ const ViewStaff = ({details,showDetails,fetch,allStaff, currentUser,setDetails})
                 </TouchableOpacity>
 
                 <TouchableOpacity 
+                onPress={()=>{
+                    setDetails(!showDetails)
+                    navigation.navigate('New')}
+                }
                 style={styles.option}
                 >
-                    <Text>Add to users</Text>
+                    <Text>Make user</Text>
                 </TouchableOpacity>
                 
             </ScrollView>
@@ -113,7 +117,7 @@ const styles = StyleSheet.create({
         marginTop:10
     },
     scroll:{
-        paddingTop:15
+        paddingTop:10
     },
     option:{
         width:'100%',

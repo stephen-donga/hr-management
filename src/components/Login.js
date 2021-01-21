@@ -3,27 +3,37 @@ import {View,Button,Text,StyleSheet,TouchableOpacity} from 'react-native';
 import auditTrail from '../utils/trails'
 import db from '../utils/database'
 import {connect} from  'react-redux'
-import {setCurrentUser} from '../redux/user/userAction'
+import {setCurrentUser,setRole,setActions} from '../redux/user/userAction'
 
 import Inputfield from '../custom/Inputfield'
 
-const Login = ({navigation,setCurrentUser}) => {
+const Login = ({navigation,user_role,setCurrentUser, setUserRole, setActs}) => {
 
     const [fetched, setFetched] = useState([])
+    const [get_role, setGetRole] = useState([])
 
     const fetchUsers = () => {
         db.transaction(tx=>{
-            tx.executeSql('SELECT * FROM all_users',null,
-            (txObj,{rows:{_array}})=>setFetched(fetched.concat(_array))),
+            tx.executeSql('SELECT * FROM users',null,
+            (txObj,{rows:{_array}})=>setFetched(_array)),
             (txObj, error)=>console.log('Error',error)
         })
-
-
+        // db.transaction(tx =>{
+        //     tx.executeSql('INSERT INTO  roles_table (role,create_new_user,assign_roles,edit_user,delete_user,add_staff,edit_staff,delete_staff) values (?,?,?,?,?,?,?,?)',[ 'default',1,1,1,1,0,0,0],
+        //     (txObj,resultSet)=>console.log(resultSet),
+        //     (txObj, error)=>console.log('Error', error)
+        //     )
+        //     })
+        db.transaction(tx=>{
+            tx.executeSql('SELECT * FROM roles_table',null,
+            (txObj,{rows:{_array}})=>setGetRole(_array)),
+            (txObj, error)=>console.log('Error',error)
+        })
     }
-
+    
     const insertIfDbEmpty = ()=>{
         db.transaction(tx =>{
-        tx.executeSql('INSERT INTO all_users (username,password) values (?,?)',[ 'root','hrms123'],
+        tx.executeSql('INSERT INTO  user (username,password,user_id,role) values (?,?,?,?)',[ 'steven','edonga',1,'admin'],
         (txObj,resultSet)=>console.log(resultSet),
         (txObj, error)=>console.log('Error', error)
         )
@@ -32,6 +42,7 @@ const Login = ({navigation,setCurrentUser}) => {
 
     useEffect(() => {
         fetchUsers();
+        alert(user_role)
         return () => {
           
         }
@@ -70,10 +81,13 @@ const Login = ({navigation,setCurrentUser}) => {
                     time:new Date().toString()
                 }
                 setCurrentUser(username)
+                let role = filteredUser[0].role
+                alert(role)
+                let role_got = get_role.filter(item => item.role==role)
+                setActs(role_got)
                 auditTrail.logTrail(trail)
-    
-                navigation.navigate('Home');
-
+                setUserRole(role)
+                navigation.navigate('Home')
             }
             else{
                 alert('Enter correct credentials please !')
@@ -139,9 +153,9 @@ const Login = ({navigation,setCurrentUser}) => {
                
                     <View style={{width:200,marginLeft:35,height:50}}>
                     <Button 
-                    title="Login"
-                    color='darkgreen'
-                    onPress={handleLogin}
+                        title="Login"
+                        color='darkgreen'
+                        onPress={handleLogin}
                     />
                     </View>
                  
@@ -171,11 +185,14 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = ({ user, staff }) => ({
     currentUser: user.currentUser,
+    user_role: user.role,
     allS:staff.staff
   });
   
   const mapDispatchToProps = dispatch => ({
     setCurrentUser: user => dispatch(setCurrentUser(user)),
+    setUserRole: role => dispatch (setRole(role)),
+    setActs: acts => dispatch(setActions(acts))
   });
 
 export default connect(mapStateToProps,mapDispatchToProps)(Login);

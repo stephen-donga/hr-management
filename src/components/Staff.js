@@ -105,8 +105,8 @@ placeholder='Search'
             </TouchableOpacity>
             </View>
         </View> */}
-            <View style={{width:width,height:30,paddingLeft:15,paddingTop:10}}>
-                <Text style={{fontSize:16}}>All staff members</Text>
+            <View style={{width:width,height:40,backgroundColor:'#eee',padding:10,paddingLeft:15,paddingTop:10}}>
+                <Text style={{fontSize:16,fontWeight:'bold',alignSelf:'center',color:'darkblue'}}>All staff members</Text>
 
             </View>
             
@@ -131,7 +131,10 @@ placeholder='Search'
                 }
              <View style={{position:'absolute',marginLeft:'80%',width:50,height:50,borderRadius:150,marginTop:450}}>
                  <TouchableOpacity 
-                    onPress={()=>navigator.dispatch(StackActions.push('Addmember',{fetchMembers}))}
+                    onPress={()=>{
+                        showDetails ?setDetails(!showDetails):null
+                        navigator.dispatch(StackActions.push('Addmember',{fetchMembers}))}
+                    }
                     style={{width:'100%',height:'100%',borderRadius:150,justifyContent:'center',alignItems:'center'}}>
                     <Feather name='plus-circle'color="#83C091" size={35} />
                  </TouchableOpacity>
@@ -189,7 +192,7 @@ const styles = StyleSheet.create({
     },
     popsection:{
         width:'45%',
-        height:'45%',
+        height:'50%',
         position:'absolute',
         borderWidth:1,
         borderColor:'grey',

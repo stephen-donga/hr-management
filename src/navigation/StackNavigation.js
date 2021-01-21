@@ -33,7 +33,7 @@ const StackNavigation = ()=>{
             <Stack.Screen name="AddEvent" component={AddEvent} />
             <Stack.Screen name="Leaves" component={Leaves} />
             <Stack.Screen name="Training" component={Training} />
-            <Stack.Screen name="NewUser" component={NewUser} />
+            <Stack.Screen name="New" component={NewUser} />
             <Stack.Screen name="Payroll" component={Payroll} />
             <Stack.Screen name="Home" component={BottomTabs} />
             <Stack.Screen name='Userprofile' component={UserProfile} />

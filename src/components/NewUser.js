@@ -1,95 +1,134 @@
-import { setStatusBarBackgroundColor } from 'expo-status-bar'
-import React, {useState} from 'react'
-import { View, Text, Dimensions, TouchableOpacity} from 'react-native'
-import {connect} from 'react-redux'
+ import React,{useState} from 'react'
+ import { View,ScrollView, Text,StyleSheet,Dimensions,TouchableOpacity } from 'react-native'
+ import DropDownPicker from 'react-native-dropdown-picker';
 
-import HeaderBar from '../custom/HeaderBar'
-import InputField from '../custom/Inputfield'
-import db from '../utils/database'
-import auditTrail from '../utils/trails'
 
-const {width, height} = Dimensions.get('window')
-const NewUser = ({navigation, currentUser}) => {
+ // custom imports
+ import HeaderBar from '../custom/HeaderBar'
+ import Input from '../custom/Inputs'
+ 
+ const {width, height} = Dimensions.get('window');
+ const NewUser = ({navigation}) => {
 
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
-    const [confirm, setConfirm] = useState('')
+    const [items,setItems] = useState([
+        
+        {label: 'Admin', value: 'admin' },
+        {label: 'Cashier', value: 'cashier' },
+        {label: 'Tech lead', value: 'lead' },
+    ])
+    const [filterBy, setFilterBy]= useState('admin')
+     let controller
 
-    const createUser = ()=>{
-        db.transaction(tx =>{
-        tx.executeSql('INSERT INTO all_users (username,password) values (?,?)',[ username,password],
-        (txObj,resultSet)=>console.log(resultSet),
-        (txObj, error)=>console.log('Error', error)
-        )
-        })
-        let trail ={
-            actor:currentUser,
-            action:`Created new user with username "${username}"`,
-            time: new Date().toString()
-        }
-        auditTrail.logTrail(trail)
-    }
-    const handleAddUser =()=>{
-        if(password===confirm){
-            createUser();
-            navigation.navigate('Home')
-        }else{
-            alert('Passwords don\'t match')
-        }
-    }
+     const handleFirstNameChange =(e)=>{
+        
+     } 
 
-    return (
-        <View style={{width:width,height:height,backgroundColor:'white'}}>
-            <HeaderBar />
-             <View style={{width:'100%',
-                height:'100%', 
-                backgroundColor:'whitesmoke',
-                padding:10,
-                alignItems:'center',
-                justifyContent:'center'
-                }}>
-                <Text style={{fontSize:20,color:'darkblue',fontWeight:'bold',alignSelf:'center',marginBottom:50}}>Create New User</Text>
-                 <InputField 
-                    label ="Username"
-                    icon='user'
-                    placeholder="Input a username here"
-                    value={username}
-                    changeHandler={(e)=>setUsername(e)}
-                    />
-                    <InputField 
-                        label ="Password"
-                        icon='lock'
-                        placeholder="Enter password"
-                        value={password}
+     return (
+         <View styles={styles.conatiner}>
+             <HeaderBar />
+             <View style={styles.form}>
+                 <View style={{...StyleSheet.absoluteFillObject,backgroundColor:'teal'}} />
+                 <View style={styles.overlay}>
+                    <Text style={styles.heading}>Create new User</Text>
+                    <ScrollView 
+                    showsVerticalScrollIndicator={false}
+                    style={styles.formarea}>
+                        <Input
+                        label="First name"
+                        changeHandler={()=>alert('clicked')}
+                        />
+                        <Input
+                        label="Last name" 
+                        />
+                         <Input
+                        label="Email" 
+                        />
+                        <DropDownPicker
+                            items={items}
+                            containerStyle={{height:30}}
+                            itemStyle={{
+                                justifyContent: 'flex-start'
+                            }}
+                            labelStyle={{color:'black',fontSize:14}}
+                            controller={instance => controller = instance}
+                            onChangeList={(items, callback) => {
+                                new Promise((resolve, reject) => resolve(setItems(items)))
+                                    .then(() => callback())
+                                    .catch(() => {});
+                            }}
+
+                            defaultValue={filterBy}
+                            onChangeItem={item => setFilterBy(item.value)}
+                        />
+                         <Input
+                        label="Password"
                         textEntry={true}
-                        changeHandler={(e)=>setPassword(e)}
-                    />
-                    <InputField 
-                        label ="Confirm Password"
-                        icon='lock'
-                        placeholder="Confirm password"
-                        value={confirm}
-                        textEntry={true}
-                        changeHandler={(e)=>setConfirm(e)}
-                    />
+                        />
+                         <Input
+                        label="Confirm password"
+                        textEntry={true} 
+                        />
 
-                        <TouchableOpacity
-                        onPress={handleAddUser}
-                        style={{width:150,height:40,backgroundColor:'blue',alignItems:'center',justifyContent:'center'}} 
-                        >
-                            <Text style={{fontWeight:'bold',fontSize:15,color:'white'}}>Create</Text>
-                        </TouchableOpacity>
-
-
-
+                    </ScrollView>
+                 </View>
              </View>
-        </View>
-    )
-}
+             <View style={styles.buttonsection}>
+                 <TouchableOpacity 
+                 onPress={()=>navigation.navigate('Home')}
+                 style={styles.button}>
+                     <Text>Create User</Text>
 
-const mapStateToProps = ({user}) => ({
-    currentUser: user.currentUser,
-     
-  });
+                 </TouchableOpacity>
+             </View>
+         </View>
+     )
+ }
 
-export default connect(mapStateToProps)(NewUser)
+ const styles = StyleSheet.create({
+     conatiner:{
+        flex:1,
+        backgroundColor:'whitesmoke',
+     },
+     form:{
+         width:width,
+         height:height/2+150,
+     },
+     buttonsection:{
+         width:width,
+         height:'100%',
+         backgroundColor:'teal'
+     },
+     overlay:{
+         width:'100%',
+         height:'100%',
+         backgroundColor:'white',
+         borderBottomLeftRadius:35,
+         borderBottomRightRadius:35,
+         alignItems:'center'
+     },
+     formarea:{
+         width:'95%',
+         height:'80%',
+         padding:10,
+         marginBottom:25
+     },
+     heading:{
+         fontSize:16,
+         fontWeight:'bold',
+         color:'darkblue',
+         marginTop:15,marginBottom:15
+     },
+     button:{
+         width:width/2,
+         height:40,
+         backgroundColor:'white',
+         alignSelf:'center',
+         marginTop:30,
+         borderRadius:15,
+         alignItems:'center',
+         justifyContent:'center'
+     }
+ })
+ 
+ export default NewUser
+ 
