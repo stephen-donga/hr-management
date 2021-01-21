@@ -157,12 +157,23 @@ const Login = ({navigation,user_role,setCurrentUser, setUserRole, setActs}) => {
                     />
                     </View>
                  
+                 <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+
                  <TouchableOpacity
                     style={{marginTop:10,height:30,width:150}}
                     onPress={()=>alert('Reset password ?')}
                  >
                    <Text style={{color:'grey',paddingLeft:20,paddingTop:5}}>Forgot password ?</Text>
                  </TouchableOpacity>
+
+                 <TouchableOpacity
+                    style={{marginTop:10,height:30,width:80}}
+                    onPress={()=>navigation.navigate('New')}
+                 >
+                   <Text style={{color:'grey',paddingLeft:5,paddingTop:5}}>Create user</Text>
+                 </TouchableOpacity>
+
+                 </View>
                </View>
 
                 

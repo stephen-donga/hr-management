@@ -74,7 +74,7 @@
              </View>
              <View style={styles.buttonsection}>
                  <TouchableOpacity 
-                 onPress={()=>navigation.navigate('Home')}
+                 onPress={()=>navigation.navigate('Login')}
                  style={styles.button}>
                      <Text>Create User</Text>
 
@@ -123,7 +123,7 @@
          height:40,
          backgroundColor:'white',
          alignSelf:'center',
-         marginTop:30,
+         marginTop:50,
          borderRadius:15,
          alignItems:'center',
          justifyContent:'center'

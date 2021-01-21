@@ -2,6 +2,7 @@ import React,{useState,useEffect} from 'react'
 import { View,FlatList,Text,Dimensions,StyleSheet } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import {Feather as Icon} from '@expo/vector-icons'
+import {connect} from 'react-redux'
 
 import HeaderBar from '../custom/HeaderBar'
 import db from '../utils/database'
@@ -9,9 +10,12 @@ import EventCard from './EventCard'
 
 const {width, height} = Dimensions.get('window')
 
-const Events = ({navigation}) => {
+const Events = ({navigation,roles }) => {
 
     const [events, setEvents] = useState([])
+    
+    let roleObj = roles[0]
+    alert(roleObj.assign_roles)
 
     const fetchEvents = ()=>{
         db.transaction(tx=>{
@@ -33,6 +37,9 @@ const Events = ({navigation}) => {
             <HeaderBar />
             <View style={{width:width,height:40,backgroundColor:'#eee',padding:10,paddingLeft:15,paddingTop:10}}>
                 <Text style={{fontSize:16,fontWeight:'bold',alignSelf:'center',color:'darkblue'}}>Events</Text>
+                 
+                  <Text> {}</Text>
+      
 
             </View>
             <View style={styles.details}>
@@ -80,4 +87,7 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Events;
+const mapStateToProps = ({user})=>({
+    roles: user.actions
+})
+export default connect(mapStateToProps)(Events);

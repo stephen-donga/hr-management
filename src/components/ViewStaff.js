@@ -10,9 +10,13 @@ import {setDetails} from '../redux/showUserDetails/detailsActions'
 import { StackActions, useNavigation } from '@react-navigation/native'
 
 
-const ViewStaff = ({details,showDetails,fetch,allStaff, currentUser,setDetails}) => {
+const ViewStaff = ({details,showDetails,roles,fetch,currentUser,setDetails}) => {
 
     const navigation = useNavigation();
+
+    let roleObj = roles[0]
+    let edit =roleObj.edit_staff
+    let del = roleObj.delete_staff
      
     const {id,first_name,last_name,position,image} =details;
 
@@ -31,6 +35,23 @@ const ViewStaff = ({details,showDetails,fetch,allStaff, currentUser,setDetails})
         auditTrail.logTrail(trail)
       }
       
+      const handleDelete = ()=>{
+        Alert.alert('Delete',"Delete member ?",[
+            {
+              text: 'Cancel',
+              onPress:null,
+              style: 'cancel'
+            },
+            { text: 'OK', onPress: () =>{
+                alert('Staff Deleted')
+                deleteMember(id)
+                setDetails(!showDetails)
+                fetch();
+    
+              } }
+        ],{cancelable:true})
+    
+      }
     
     return (
         <View style={styles.container}>
@@ -46,48 +67,33 @@ const ViewStaff = ({details,showDetails,fetch,allStaff, currentUser,setDetails})
                     <Text>Grant Leave</Text>
                 </TouchableOpacity>
 
+                <TouchableOpacity 
+                  onPress={()=>{
+                    setDetails(!showDetails)
+                    navigation.navigate('StaffUser')}
+                    }
+                    style={styles.option}
+                >
+                    <Text>Make user</Text>
+                </TouchableOpacity>
                 <TouchableOpacity
-                onPress={()=>{
+                onPress={edit ?()=>{
                     setDetails(!showDetails)
                     navigation.dispatch(StackActions.push('EditStaff'))
-                }} 
+                }:null} 
                  style={styles.option}
                 >
                     <Text>Edit</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity 
-                onPress={()=>{
-                    Alert.alert('Delete',"Delete member ?",[
-                        {
-                          text: 'Cancel',
-                          onPress: () => alert('Cancelled'),
-                          style: 'cancel'
-                        },
-                        { text: 'OK', onPress: () =>{
-                            alert('Staff Deleted')
-                            deleteMember(id)
-                            setDetails(!showDetails)
-                            fetch();
+
                 
-                          } }
-                    ],{cancelable:true})
-                }}
+                <TouchableOpacity 
+                onPress={del ? handleDelete :null}
                 style={styles.option}
                 >
                     <Text>Delete</Text>
                 </TouchableOpacity>
-
-                <TouchableOpacity 
-                onPress={()=>{
-                    setDetails(!showDetails)
-                    navigation.navigate('New')}
-                }
-                style={styles.option}
-                >
-                    <Text>Make user</Text>
-                </TouchableOpacity>
-                
             </ScrollView>
             
                
@@ -134,6 +140,7 @@ const styles = StyleSheet.create({
 })
 const mapStateToProps = ({ user,staff,details }) => ({
     currentUser: user.currentUser,
+    roles:user.actions,
     allStaff:staff.staff ,
     details:details.details,
     showDetails:details.showDetails
