@@ -42,7 +42,6 @@ const Login = ({navigation,user_role,setCurrentUser, setUserRole, setActs}) => {
 
     useEffect(() => {
         fetchUsers();
-        alert(user_role)
         return () => {
           
         }
@@ -82,7 +81,6 @@ const Login = ({navigation,user_role,setCurrentUser, setUserRole, setActs}) => {
                 }
                 setCurrentUser(username)
                 let role = filteredUser[0].role
-                alert(role)
                 let role_got = get_role.filter(item => item.role==role)
                 setActs(role_got)
                 auditTrail.logTrail(trail)
