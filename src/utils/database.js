@@ -1,6 +1,6 @@
 import *as SqlLite from 'expo-sqlite'
 
-const db = SqlLite.openDatabase('human_resource_management_database')
+const db = SqlLite.openDatabase('human_resource_dbsm')
 
 //Roles table
 db.transaction(tx =>{
@@ -8,10 +8,14 @@ db.transaction(tx =>{
   )
 });
 
-
 // users table,
 db.transaction(tx =>{
   tx.executeSql('CREATE TABLE IF NOT EXISTS  users (id INTEGER PRIMARY KEY AUTOINCREMENT, username Text, password Text,user_id INT,role Text)'
+  )
+});
+
+db.transaction(tx =>{
+  tx.executeSql('CREATE TABLE IF NOT EXISTS  new_users (id INTEGER PRIMARY KEY AUTOINCREMENT, first_name Text, last_name Text,email Text, role Text, password Text)'
   )
 });
 

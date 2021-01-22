@@ -10,7 +10,7 @@ import Homepage from './Homepage'
 
 const {width, height} = Dimensions.get('window')
 
-const HomeScreen = ({currentUser, allStaff}) => {
+const HomeScreen = ({currentUser,users,roles, allStaff}) => {
 
 
     const navigation = useNavigation()
@@ -27,6 +27,7 @@ const HomeScreen = ({currentUser, allStaff}) => {
     }
 
     let totalStaff = allStaff.length
+    let totalUsers = users.length
     return (
         <View style={styles.container}>
             <HeaderBar />
@@ -57,23 +58,16 @@ const HomeScreen = ({currentUser, allStaff}) => {
                showDropDown&&(
                 <View style={styles.dropdown}>
                     <Text style={styles.labels}>{currentUser}</Text>
-                    <Text style={styles.detail}>C.T.O</Text>
-                        
-                    <View style={{width:'100%',alignSelf:"baseline",marginBottom:15,height:80,marginTop:25,alignItems:'center',justifyContent:'space-evenly'}}>
-                        <TouchableOpacity
-                        onPress={()=>alert('Not yet available')} 
-                        style={{width:50,height:30,borderWidth:1,borderColor:'teal',borderRadius:5,alignItems:'center',justifyContent:'center',backgroundColor:'white'}}
-                        >
-                             <Text>Edit</Text>
-                             </TouchableOpacity>
-
-                             <TouchableOpacity
-                             onPress={handleLogOut}
-                             style={{backgroundColor:'white',borderColor:'teal',borderWidth:1,width:50,alignItems:'center',justifyContent:'center',padding:2,borderRadius:5,height:30}} 
-                             >
-                                <AntDesign name="logout" size={15} color="black" />
-                             </TouchableOpacity>
-                    </View>
+                    <TouchableOpacity 
+                    onPress={()=>navigation.navigate('New')}
+                    style={{width:'100%',backgroundColor:'white',borderRadius:50}}>
+                        <Button title="Create new User" color='green'/>
+                    </TouchableOpacity > 
+                      <TouchableOpacity
+                        onPress={handleLogOut}
+                       style={{width:150,alignItems:'center',justifyContent:'center',height:30,backgroundColor:'blue',borderRadius:50}}>
+                          <AntDesign name="logout" size={24} color='white'/>
+                    </TouchableOpacity> 
                </View>
                )
            }
@@ -81,10 +75,10 @@ const HomeScreen = ({currentUser, allStaff}) => {
                 <Text style={styles.title}>All members</Text>
                     <FlatList 
                     data={[{name:'Staff',urls:require('../../assets/staff2.png'),number:totalStaff},
-                    {name:'Users',urls:require('../../assets/user.png'),number:1}]}
+                    {name:'Users',urls:require('../../assets/user.png'),number:totalUsers}]}
                     renderItem={({item})=>{
                         return(
-                            <TouchableOpacity onPress={()=>alert(item.name)}>
+                            <TouchableOpacity onPress={()=>null}>
                             <View style={{position:'relative',}}>
                                 <Image style={{width:110,
                                     margin:20,
@@ -171,15 +165,15 @@ const styles = StyleSheet.create({
         color:'steelblue'
     },
     dropdown:{
-        marginLeft:width/2-10,
+        marginLeft:width/2-60,
         marginTop:"30%",
         position:'absolute',
-        width:width/2,
-        height:height/3,
-        padding:10,
+        width:width/2+50,
+        height:height/3-50,
+        padding:5,
         backgroundColor:'whitesmoke',
         alignItems:'center',
-        justifyContent:'center',
+        justifyContent:"space-evenly",
         borderRadius:5,
         borderColor:'teal',
         borderWidth:1
@@ -189,8 +183,7 @@ const styles = StyleSheet.create({
         flexDirection:'row'
     },
     labels:{
-        fontSize:18,
-        fontWeight:'bold'
+        fontSize:14,
     },
     detail:{
         fontSize:15,
@@ -212,7 +205,9 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = ({user,staff}) => ({
     currentUser: user.currentUser,
-    allStaff: staff.staff
+    allStaff: staff.staff,
+    users:user.user,
+    roles: user.actions
   });
 
 export default connect(mapStateToProps)(HomeScreen)

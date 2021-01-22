@@ -3,7 +3,8 @@ import { UserActionTypes } from './userType';
 const INITIAL_STATE = {
   currentUser:null,
   role:null,
-  actions:[]
+  actions:[],
+  user:[]
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -22,6 +23,12 @@ const userReducer = (state = INITIAL_STATE, action) => {
       return{
         ...state,
         actions:action.payload
+      }
+    case UserActionTypes.SET_NUMBER_OF_USERS:
+      return {
+        ...state,
+        user:action.payload
+
       }
     default:
       return state;

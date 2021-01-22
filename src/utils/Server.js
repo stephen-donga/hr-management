@@ -10,10 +10,10 @@ app.use(parser.json());
 
 // Creating database connection
 const connection = mysql.createConnection({
-    host:'localhost',
-    user:"root",
-    password:'',
-    database:'staff_management'
+    host:'https://remotemysql.com/phpmyadmin/db_structure.php?server=1&db=cocAo8GntH',
+    username:"cocAo8GntH",
+    password:'EDNrmA4xKa',
+    // database:'staff_management'
 })
 
  connection.connect(error=>{

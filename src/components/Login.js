@@ -3,13 +3,15 @@ import {View,Button,Text,StyleSheet,TouchableOpacity} from 'react-native';
 import auditTrail from '../utils/trails'
 import db from '../utils/database'
 import {connect} from  'react-redux'
-import {setCurrentUser,setRole,setActions} from '../redux/user/userAction'
+import {setCurrentUser,setRole,setActions,setNumberOfUsers} from '../redux/user/userAction'
+import {setStaff} from '../redux/staff/staffActions'
 
 import Inputfield from '../custom/Inputfield'
 
-const Login = ({navigation,user_role,setCurrentUser, setUserRole, setActs}) => {
+const Login = ({navigation,setCurrentUser,setStf, setUserRole,setUserNumber, setActs}) => {
 
     const [fetched, setFetched] = useState([])
+    const [newUser, setNewUser] = useState([])
     const [get_role, setGetRole] = useState([])
 
     const fetchUsers = () => {
@@ -18,29 +20,36 @@ const Login = ({navigation,user_role,setCurrentUser, setUserRole, setActs}) => {
             (txObj,{rows:{_array}})=>setFetched(_array)),
             (txObj, error)=>console.log('Error',error)
         })
-        // db.transaction(tx =>{
-        //     tx.executeSql('INSERT INTO  roles_table (role,create_new_user,assign_roles,edit_user,delete_user,add_staff,edit_staff,delete_staff) values (?,?,?,?,?,?,?,?)',[ 'default',1,1,1,1,0,0,0],
-        //     (txObj,resultSet)=>console.log(resultSet),
-        //     (txObj, error)=>console.log('Error', error)
-        //     )
-        //     })
+
+        db.transaction(tx=>{
+            tx.executeSql('SELECT * FROM new_users',null,
+            (txObj,{rows:{_array}})=>setNewUser(_array)),
+            (txObj, error)=>console.log('Error',error)
+        })
+
+        db.transaction(tx=>{
+            tx.executeSql('SELECT * FROM staff_members',null,
+            (txObj,{rows:{_array}})=>setStf(_array)),
+            (txObj, error)=>console.log('Error',error)
+        })
+        
         db.transaction(tx=>{
             tx.executeSql('SELECT * FROM roles_table',null,
             (txObj,{rows:{_array}})=>setGetRole(_array)),
             (txObj, error)=>console.log('Error',error)
         })
     }
-    
     const insertIfDbEmpty = ()=>{
         db.transaction(tx =>{
-        tx.executeSql('INSERT INTO  user (username,password,user_id,role) values (?,?,?,?)',[ 'steven','edonga',1,'admin'],
+        tx.executeSql('INSERT INTO  users (username,password,user_id,role) values (?,?,?,?)',[ 'root','hrms1',1,'default'],
         (txObj,resultSet)=>console.log(resultSet),
         (txObj, error)=>console.log('Error', error)
         )
         })
     }
-
-    useEffect(() => {
+     let allUserz = fetched.concat(newUser)
+     setUserNumber(allUserz)
+     useEffect(() => {
         fetchUsers();
         return () => {
           
@@ -52,7 +61,7 @@ const Login = ({navigation,user_role,setCurrentUser, setUserRole, setActs}) => {
     const [userError,setUserError] = useState("")
     const [passwordError,setPasswordError] = useState("")
 
-    const filteredUser = fetched.filter(user =>user.username==username &&user.password==password)
+    const filteredUser = allUserz.filter(user =>user.username==username||user.email==username &&user.password==password)
     const handleUsernameChange = (text) => {
         setUsername(text)
     }
@@ -126,11 +135,11 @@ const Login = ({navigation,user_role,setCurrentUser, setUserRole, setActs}) => {
                <View style={{width:'85%',borderRadius:10,padding:11}}>
                      
                      <Inputfield 
-                         label="Username"
+                         label="Username or Email"
                          icon="user"
                          value={username}
                          message={username ?'':userError}
-                         placeholder="Enter Username"
+                         placeholder="username or email"
                          changeHandler={handleUsernameChange }
  
                   />
@@ -166,13 +175,6 @@ const Login = ({navigation,user_role,setCurrentUser, setUserRole, setActs}) => {
                    <Text style={{color:'grey',paddingLeft:20,paddingTop:5}}>Forgot password ?</Text>
                  </TouchableOpacity>
 
-                 <TouchableOpacity
-                    style={{marginTop:10,height:30,width:80}}
-                    onPress={()=>navigation.navigate('New')}
-                 >
-                   <Text style={{color:'grey',paddingLeft:5,paddingTop:5}}>Create user</Text>
-                 </TouchableOpacity>
-
                  </View>
                </View>
 
@@ -201,7 +203,9 @@ const mapStateToProps = ({ user, staff }) => ({
   const mapDispatchToProps = dispatch => ({
     setCurrentUser: user => dispatch(setCurrentUser(user)),
     setUserRole: role => dispatch (setRole(role)),
-    setActs: acts => dispatch(setActions(acts))
+    setActs: acts => dispatch(setActions(acts)),
+    setUserNumber:users => dispatch(setNumberOfUsers(users)),
+    setStf: staff => dispatch(setStaff(staff))
   });
 
 export default connect(mapStateToProps,mapDispatchToProps)(Login);

@@ -14,3 +14,8 @@ export const setActions = action => ({
   type: UserActionTypes.SET_ACTIONS,
   payload:action
 });
+
+export const setNumberOfUsers = users =>({
+  type: UserActionTypes.SET_NUMBER_OF_USERS,
+  payload:users
+})

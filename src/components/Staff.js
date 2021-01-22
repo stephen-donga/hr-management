@@ -20,7 +20,6 @@ const {width, height} = Dimensions.get('window')
 const Staff = ({showDetails,roles,staff,setStaff,setDetails}) => {
 
     const navigator = useNavigation();
-
     let roleObj = roles[0]
     let add = roleObj.add_staff
 

@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
         color:'teal'
     },
     error:{
-        fontSize:14,
+        fontSize:16,
         color:'red'
     }
 })

@@ -15,7 +15,6 @@ const Events = ({navigation,roles }) => {
     const [events, setEvents] = useState([])
     
     let roleObj = roles[0]
-    alert(roleObj.assign_roles)
 
     const fetchEvents = ()=>{
         db.transaction(tx=>{
