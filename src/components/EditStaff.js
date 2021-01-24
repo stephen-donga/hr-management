@@ -16,21 +16,21 @@ const {width, height} = Dimensions.get('window')
 const EditStaff = ({details, currentUser}) => {
     const {first_name,last_name,id,position,qualification,experience} = details;
     const navigation = useNavigation();
-    const [filterBy, setFilterBy] = useState(null)
+    const [filterBy, setFilterBy] = useState(position)
     const [items,setItems] = useState([
-        {label: 'Intern Developer', value: 'intern' },
-        {label: 'Fullstack Developer', value: 'fullstack' },
-        {label: 'Backend Engineer', value: 'backend' },
-        {label: 'Frontend Engineer', value: 'frontend' }
+        {label: 'Intern Developer', value: 'Intern Developer' },
+        {label: 'Fullstack Developer', value: 'Fullstack Developer' },
+        {label: 'Backend Engineer', value: 'Backend Developer' },
+        {label: 'Frontend Engineer', value: 'Frontend Developer' }
     ])
     const [firstname, setFirstName] = useState(first_name)
     const [lastname, setLastName] = useState(last_name)
     const [qualify, setQualify] = useState(qualification)
-    const [positn, setPosition] = useState(position)
+    const [positn, setPosition] = useState(filterBy)
     const [exprence, setExprence] = useState(experience)
 
 
-    const [date, setDate] = useState(new Date(1598051730000).toString());
+    const [date, setDate] = useState(new Date(96400000));
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
 
@@ -39,6 +39,11 @@ const EditStaff = ({details, currentUser}) => {
    
 
    const handleUserEdit =()=>{
+     db.transaction(tx => {
+       tx.executeSql(`UPDATE staff_members SET first_name = ${firstname} last_name = ${lastname} position = ${positn} qualification= ${qualify} experience= ${exprence} date_of_birth =${date} WHERE id = ?`, [id],
+         (txObj,resultSet) => alert(resultSet)),
+         (txObj, error)=>console.log('Error',error) 
+        })
        Alert.alert('Edit',"Apply changes ?",[
         {
           text: 'Cancel',
@@ -46,11 +51,9 @@ const EditStaff = ({details, currentUser}) => {
           style: 'cancel'
         },
         { text: 'OK', onPress: () =>{
-            alert('Staff Edited')
-
             let trail = {
                 actor:currentUser,
-                action:`${first_name} ${last_name} to ${firstname} ${lastname}`,
+                action:`Edited staff${first_name} ${last_name} to ${firstname} ${lastname}`,
                 time: new Date().toString()
             }
 
@@ -77,11 +80,6 @@ const EditStaff = ({details, currentUser}) => {
         showMode('date');
       };
 
-      db.transaction(tx => {
-        tx.executeSql(`UPDATE staff_members SET first_name = ${firstname} last_name = ${lastname} position = ${positn} qualification= ${qualify} experience= ${exprence} date_of_birth =${date} WHERE id = ?`, [id],
-          (txObj,resultSet) => console.log(resultSet)),
-          (txObj, error)=>console.log('Error',error) 
-         })
     
 
     return (

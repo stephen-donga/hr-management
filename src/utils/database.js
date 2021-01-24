@@ -10,7 +10,7 @@ db.transaction(tx =>{
 
 // users table,
 db.transaction(tx =>{
-  tx.executeSql('CREATE TABLE IF NOT EXISTS  users (id INTEGER PRIMARY KEY AUTOINCREMENT, username Text, password Text,user_id INT,role Text)'
+  tx.executeSql('CREATE TABLE IF NOT EXISTS  users (id INTEGER PRIMARY KEY AUTOINCREMENT, email Text, password Text,user_id INT,role Text)'
   )
 });
 
@@ -25,6 +25,12 @@ db.transaction(tx =>{
       )
   });
 
+  db.transaction(tx =>{
+    tx.executeSql('INSERT INTO  users (username,password,user_id,role) values (?,?,?,?)',[ 'root','hrms1',1,'default'],
+    (txObj,resultSet)=>console.log(resultSet),
+    (txObj, error)=>console.log('Error', error)
+    )
+    })
 
   db.transaction(tx =>{
     tx.executeSql('CREATE TABLE IF NOT EXISTS audit_trail (id INTEGER PRIMARY KEY AUTOINCREMENT, actor Text, action Text,time Text)'

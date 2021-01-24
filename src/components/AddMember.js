@@ -8,14 +8,14 @@ import {connect} from 'react-redux'
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 
+import {setStaff} from '../redux/staff/staffActions'
+
 import HeaderBar from '../custom/HeaderBar'
 import FormInput from '../custom/FormInput'
 
 const {width, height} = Dimensions.get('window');
 
-const AddMember = ({navigation,currentUser,route}) => {
-
-    const {fetchMembers} = route.params;
+const AddMember = ({navigation,currentUser,setStf}) => {
 
     const [firstname, setFirstName] = useState("");
     const [lastname, setLastName] = useState("");
@@ -127,11 +127,15 @@ const AddMember = ({navigation,currentUser,route}) => {
             db.transaction(tx => {
                 tx.executeSql('INSERT INTO staff_members (first_name, last_name,position,qualification,experience,date_of_birth,image) values (?,?,?,?,?,?,?)', 
                 [firstname,lastname,filterBy,qualification,experience,validDate,image],
-                  (txObj,{rows:{_array}}) =>console.log(_array),
+                  (txObj,resultSet) =>console.log(resultSet.rowsAffected),
                   (txObj, error) => console.log('Error', error))
               });
 
-              fetchMembers();
+              db.transaction(tx => {
+                tx.executeSql('SELECT * FROM staff_members',null,
+                  (txObj,{rows:{_array}}) =>setStf(_array),
+                  (txObj, error) => console.log('Error', error))
+              });
 
 
         let trail={
@@ -299,7 +303,9 @@ const styles = StyleSheet.create({
 const mapStateToProps = ({ user }) => ({
     currentUser: user.currentUser,
   });
-
+const mapDispatchToProps = dispatch =>({
+    setStf: staff => dispatch(setStaff(staff))
+})
  
 
-export default connect(mapStateToProps)(AddMember)
+export default connect(mapStateToProps,mapDispatchToProps)(AddMember)

@@ -6,9 +6,12 @@ import DropDownPicker from 'react-native-dropdown-picker';
 // custom imports
 import HeaderBar from '../custom/HeaderBar'
 import Input from '../custom/Inputs'
+import db from '../utils/database'
 
 const {width, height} = Dimensions.get('window');
-const NewUser = ({navigation}) => {
+const NewUser = ({route,navigation}) => {
+
+    const {id} = route.params;
 
    const [items,setItems] = useState([
        
@@ -16,12 +19,29 @@ const NewUser = ({navigation}) => {
        {label: 'Tech lead', value: 'lead' },
    ])
    const [email, setEmail] = useState("")
+   const [password, setPassword] = useState("")
+   const [confirmPassword, setConfirmPassword] = useState("")
    const [filterBy, setFilterBy]= useState('admin')
     let controller
 
     const handleEmailChange =(e)=>{
        setEmail(e)
     } 
+    const handlePsswordChange = (text)=>{
+            setPassword(text)
+    }
+    const handleConfirmPassword = (text) =>{
+        setConfirmPassword(text)
+    }
+
+    const handleSubmit =()=>{
+        db.transaction(tx => {
+            tx.executeSql('INSERT INTO users (email,role,user_id,password) values (?,?,?,?)', 
+            [email,filterBy,id,password],
+              (txObj,resultSet) =>console.log(resultSet.rowsAffected),
+              (txObj, error) => console.log('Error', error))
+          });
+    }
 
     return (
         <View styles={styles.conatiner}>
@@ -42,6 +62,7 @@ const NewUser = ({navigation}) => {
                             value={email}
                             changeHandler={handleEmailChange}
                             />
+                        <Text style={styles.title}>Role</Text>
                        <DropDownPicker
                            items={items}
                            containerStyle={{height:30}}
@@ -60,12 +81,16 @@ const NewUser = ({navigation}) => {
                            onChangeItem={item => setFilterBy(item.value)}
                        />
                         <Input
-                       label="Password"
-                       textEntry={true}
+                            label="Password"
+                            textEntry={true}
+                            value={password}
+                            changeHandler={handlePsswordChange}
                        />
                         <Input
-                       label="Confirm password"
-                       textEntry={true} 
+                            label="Confirm password"
+                            textEntry={true} 
+                            value={confirmPassword}
+                            changeHandler={handleConfirmPassword}
                        />
 
                    </ScrollView>
@@ -73,7 +98,10 @@ const NewUser = ({navigation}) => {
             </View>
             <View style={styles.buttonsection}>
                 <TouchableOpacity 
-                onPress={()=>navigation.navigate('Home')}
+                onPress={()=>{
+                    handleSubmit
+                    navigation.navigate('Home')
+                }}
                 style={styles.button}>
                     <Text>Create User</Text>
 
@@ -143,6 +171,10 @@ const styles = StyleSheet.create({
         alignItems:'center',
         justifyContent:'center',
         backgroundColor:'#2C7E84'
+    },
+    title:{
+        fontSize:17,
+        color:'teal'
     }
 })
 

@@ -3,16 +3,15 @@ import {View,Button,Text,StyleSheet,TouchableOpacity} from 'react-native';
 import auditTrail from '../utils/trails'
 import db from '../utils/database'
 import {connect} from  'react-redux'
-import {setCurrentUser,setRole,setActions,setNumberOfUsers} from '../redux/user/userAction'
+import {setCurrentUser,setNumberOfUsers} from '../redux/user/userAction'
 import {setStaff} from '../redux/staff/staffActions'
 
 import Inputfield from '../custom/Inputfield'
 
-const Login = ({navigation,setCurrentUser,setStf, setUserRole,setUserNumber, setActs}) => {
+const Login = ({navigation,setStaf,setCurrentUser}) => {
 
     const [fetched, setFetched] = useState([])
     const [newUser, setNewUser] = useState([])
-    const [get_role, setGetRole] = useState([])
 
     const fetchUsers = () => {
         db.transaction(tx=>{
@@ -29,26 +28,14 @@ const Login = ({navigation,setCurrentUser,setStf, setUserRole,setUserNumber, set
 
         db.transaction(tx=>{
             tx.executeSql('SELECT * FROM staff_members',null,
-            (txObj,{rows:{_array}})=>setStf(_array)),
+            (txObj,{rows:{_array}})=>setStaf(_array)),
             (txObj, error)=>console.log('Error',error)
         })
         
-        db.transaction(tx=>{
-            tx.executeSql('SELECT * FROM roles_table',null,
-            (txObj,{rows:{_array}})=>setGetRole(_array)),
-            (txObj, error)=>console.log('Error',error)
-        })
+       
     }
-    const insertIfDbEmpty = ()=>{
-        db.transaction(tx =>{
-        tx.executeSql('INSERT INTO  users (username,password,user_id,role) values (?,?,?,?)',[ 'root','hrms1',1,'default'],
-        (txObj,resultSet)=>console.log(resultSet),
-        (txObj, error)=>console.log('Error', error)
-        )
-        })
-    }
+     
      let allUserz = fetched.concat(newUser)
-     setUserNumber(allUserz)
      useEffect(() => {
         fetchUsers();
         return () => {
@@ -89,15 +76,10 @@ const Login = ({navigation,setCurrentUser,setStf, setUserRole,setUserNumber, set
                     time:new Date().toString()
                 }
                 setCurrentUser(username)
-                let role = filteredUser[0].role
-                let role_got = get_role.filter(item => item.role==role)
-                setActs(role_got)
                 auditTrail.logTrail(trail)
-                setUserRole(role)
                 navigation.navigate('Home')
             }
             else{
-                alert('Enter correct credentials please !')
                 trail={
                     actor:username,
                     action:'Failed login with password',
@@ -105,13 +87,12 @@ const Login = ({navigation,setCurrentUser,setStf, setUserRole,setUserNumber, set
                 }
     
                 auditTrail.logTrail(trail)
+                navigation.navigate('Login')
             }
     }
 
     const handleLogin = () => {
         if(fetched.length<1){
-            alert('Please restart and login with default username and password')
-            insertIfDbEmpty();
         }
         validate();
         setUsername("");
@@ -170,7 +151,7 @@ const Login = ({navigation,setCurrentUser,setStf, setUserRole,setUserNumber, set
 
                  <TouchableOpacity
                     style={{marginTop:10,height:30,width:150}}
-                    onPress={()=>alert('Reset password ?')}
+                    onPress={()=>null}
                  >
                    <Text style={{color:'grey',paddingLeft:20,paddingTop:5}}>Forgot password ?</Text>
                  </TouchableOpacity>
@@ -202,10 +183,9 @@ const mapStateToProps = ({ user, staff }) => ({
   
   const mapDispatchToProps = dispatch => ({
     setCurrentUser: user => dispatch(setCurrentUser(user)),
-    setUserRole: role => dispatch (setRole(role)),
-    setActs: acts => dispatch(setActions(acts)),
-    setUserNumber:users => dispatch(setNumberOfUsers(users)),
-    setStf: staff => dispatch(setStaff(staff))
+    setStaf: user => dispatch(setStaff(user)),
+    setUsers: user => dispatch(setNumberOfUsers(user)),
+   
   });
 
 export default connect(mapStateToProps,mapDispatchToProps)(Login);

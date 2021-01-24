@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useEffect} from 'react'
 import { View, Alert,Text,StyleSheet} from 'react-native'
 import{Feather as Icon} from "@expo/vector-icons"
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
@@ -10,13 +10,11 @@ import {setDetails} from '../redux/showUserDetails/detailsActions'
 import { StackActions, useNavigation } from '@react-navigation/native'
 
 
-const ViewStaff = ({details,showDetails,roles,fetch,currentUser,setDetails}) => {
+const ViewStaff = ({details,showDetails,setStff,currentUser,setDetails}) => {
 
     const navigation = useNavigation();
 
-    let roleObj = roles[0]
-    let edit =roleObj.edit_staff
-    let del = roleObj.delete_staff
+    
      
     const {id,first_name,last_name,position,image} =details;
 
@@ -26,6 +24,7 @@ const ViewStaff = ({details,showDetails,roles,fetch,currentUser,setDetails}) => 
             (txObj,resultSet)=>console.log(resultSet)),
             (txObj, error) => console.log('Error', error)
         });
+       
 
       let trail={
         actor:currentUser,
@@ -33,6 +32,13 @@ const ViewStaff = ({details,showDetails,roles,fetch,currentUser,setDetails}) => 
         time:new Date().toString()
     }
         auditTrail.logTrail(trail)
+      }
+      const refetch = () =>{
+        db.transaction(tx => {
+            tx.executeSql('SELECT * FROM staff_members',null,
+              (txObj,{rows:{_array}}) =>setStff(_array),
+              (txObj, error) => console.log('Error', error))
+          });
       }
       
       const handleDelete = ()=>{
@@ -43,15 +49,22 @@ const ViewStaff = ({details,showDetails,roles,fetch,currentUser,setDetails}) => 
               style: 'cancel'
             },
             { text: 'OK', onPress: () =>{
-                alert('Staff Deleted')
                 deleteMember(id)
                 setDetails(!showDetails)
-                fetch();
+                refetch()
+                
+               
     
               } }
         ],{cancelable:true})
     
       }
+
+      useEffect(() => {
+        refetch()
+          return () => {
+          }
+      }, [])
     
     return (
         <View style={styles.container}>
@@ -70,17 +83,17 @@ const ViewStaff = ({details,showDetails,roles,fetch,currentUser,setDetails}) => 
                 <TouchableOpacity 
                   onPress={()=>{
                     setDetails(!showDetails)
-                    navigation.navigate('StaffUser')}
+                    navigation.navigate('StaffUser',{id})}
                     }
                     style={styles.option}
                 >
                     <Text>Make user</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                onPress={edit ?()=>{
+                onPress={ ()=>{
                     setDetails(!showDetails)
                     navigation.dispatch(StackActions.push('EditStaff'))
-                }:null} 
+                } } 
                  style={styles.option}
                 >
                     <Text>Edit</Text>
@@ -89,7 +102,7 @@ const ViewStaff = ({details,showDetails,roles,fetch,currentUser,setDetails}) => 
 
                 
                 <TouchableOpacity 
-                onPress={del ? handleDelete :null}
+                onPress={ handleDelete }
                 style={styles.option}
                 >
                     <Text>Delete</Text>
@@ -148,7 +161,7 @@ const mapStateToProps = ({ user,staff,details }) => ({
 
   const mapDispatchToProps = dispatch => ({
     setCurrentUser: user => dispatch(setCurrentUser(user)),
-    setStaff: members => dispatch(setStaff(members)),
+    setStff: members => dispatch(setStaff(members)),
     setDetails: act =>dispatch(setDetails(act))
   });
 

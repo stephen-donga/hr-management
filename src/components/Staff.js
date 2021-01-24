@@ -17,14 +17,19 @@ import { StackActions, useNavigation } from '@react-navigation/native';
 
 const {width, height} = Dimensions.get('window')
 
-const Staff = ({showDetails,roles,staff,setStaff,setDetails}) => {
+const Staff = ({showDetails,staff,setStaff,setDetails}) => {
+
+    const fetch =()=>{
+        db.transaction(tx=>{
+            tx.executeSql('SELECT * FROM staff_members',null,
+            (txObj,{rows:{_array}})=>setStaff(_array)),
+            (txObj, error)=>console.log('Error',error)
+        })
+    }
 
     const navigator = useNavigation();
-    let roleObj = roles[0]
-    let add = roleObj.add_staff
 
     const [members,setMembers] = useState([])
-    setStaff(members);
     const [searchField,setSearchField] = useState("")
     const [filterBy, setFilterBy] = useState("")
 
@@ -38,21 +43,9 @@ const Staff = ({showDetails,roles,staff,setStaff,setDetails}) => {
 
     ]);
 
-
-    const fetchMembers = ()=>{
-        db.transaction(tx=>{
-            tx.executeSql('SELECT * FROM staff_members',null,
-            (txObj,{rows:{_array}})=>setMembers(_array)),
-            (txObj, error)=>console.log('Error',error)
-        })
-    }
-
-
-
-
     useEffect(()=>{
-        fetchMembers()
         setMembers([])
+        fetch()
         
     },[])
     
@@ -126,25 +119,24 @@ placeholder='Search'
                      <View
                      style={styles.popsection} 
                      >
-                         <ViewStaff fetch ={fetchMembers}/>
+                         <ViewStaff />
 
                      </View>
                  )
                 }
-            {
-                add ? (
+            
                     <View style={{position:'absolute',marginLeft:'80%',width:50,height:50,borderRadius:150,marginTop:450}}>
                     <TouchableOpacity 
                        onPress={()=>{
                            showDetails ?setDetails(!showDetails):null
-                           navigator.dispatch(StackActions.push('Addmember',{fetchMembers}))}
+                           navigator.dispatch(StackActions.push('Addmember'))}
                        }
                        style={{width:'100%',height:'100%',borderRadius:150,justifyContent:'center',alignItems:'center'}}>
                        <Feather name='plus-circle'color="#83C091" size={35} />
                     </TouchableOpacity>
                 </View>
-                ):null
-            }
+               
+             
         </View>
     )
 }
