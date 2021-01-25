@@ -17,15 +17,7 @@ import { StackActions, useNavigation } from '@react-navigation/native';
 
 const {width, height} = Dimensions.get('window')
 
-const Staff = ({showDetails,staff,setStaff,setDetails}) => {
-
-    const fetch =()=>{
-        db.transaction(tx=>{
-            tx.executeSql('SELECT * FROM staff_members',null,
-            (txObj,{rows:{_array}})=>setStaff(_array)),
-            (txObj, error)=>console.log('Error',error)
-        })
-    }
+const Staff = ({showDetails,staff,setStaf,setDetails}) => {
 
     const navigator = useNavigation();
 
@@ -44,9 +36,6 @@ const Staff = ({showDetails,staff,setStaff,setDetails}) => {
     ]);
 
     useEffect(()=>{
-        setMembers([])
-        fetch()
-        
     },[])
     
     let controller;
@@ -61,18 +50,18 @@ const Staff = ({showDetails,staff,setStaff,setDetails}) => {
         <View style={styles.container}>
             <HeaderBar />
             
-            {/* <View style={styles.section}>
+            <View style={styles.section}>
 
-<View style={styles.search}>
-<TextInput 
-style={styles.input}
-placeholder='Search'
-                value={searchField}
-                onChangeText={handleSearch}
-                /> 
+            {/* <View style={styles.search}>
+                <TextInput 
+                    style={styles.input}
+                    placeholder='Search'
+                    value={searchField}
+                    onChangeText={handleSearch}
+                    /> 
                 </View>
-                <View style={{width:'42%'}}>
-                
+                <View style={{width:'45%'}}> */}
+{/*                 
                 <DropDownPicker
                     items={items}
                     containerStyle={{height:30}}
@@ -90,16 +79,9 @@ placeholder='Search'
                     defaultValue={filterBy}
                     onChangeItem={item => setFilterBy(item.value)}
             />
-            </View>
-            <View style={styles.button}>
-            <TouchableOpacity
-            onPress={()=>navigator.dispatch(StackActions.push('Addmember',{fetchMembers})) } 
-            style={styles.addbutton}
-            >
-            <Feather name="user-plus"size={24} color='white' />
-            </TouchableOpacity>
-            </View>
-        </View> */}
+            </View> */}
+            
+        </View>
             <View style={{width:width,height:40,backgroundColor:'#eee',padding:10,paddingLeft:15,paddingTop:10}}>
                 <Text style={{fontSize:16,fontWeight:'bold',alignSelf:'center',color:'darkblue'}}>All staff members</Text>
 
@@ -155,7 +137,7 @@ const styles = StyleSheet.create({
         position:'relative'
     },
     search:{
-        width:'30%',
+        width:'50%',
         paddingLeft:10
     },
     button:{
@@ -175,7 +157,7 @@ const styles = StyleSheet.create({
         justifyContent:'center'
     },
     input:{
-        width:width/3-30,
+        width:width/3+30,
         fontSize:15,
         borderColor:'grey',
         borderRadius:5,
@@ -207,7 +189,7 @@ const mapStateToProps = ({details,user,staff}) => ({
   });
 
   const mapDispatchToProps = dispatch => ({
-    setStaff: members => dispatch(setStaff(members)),
+    setStaf: members => dispatch(setStaff(members)),
     setDetails: act =>dispatch(setDetails(act))
   });
 

@@ -9,12 +9,11 @@ import Input from '../custom/Inputs'
 import db from '../utils/database'
 
 const {width, height} = Dimensions.get('window');
-const NewUser = ({route,navigation}) => {
-
-    const {id} = route.params;
+const NewUser = (props) => {
+    console.log(props)
 
    const [items,setItems] = useState([
-       
+
        {label: 'Admin', value: 'admin' },
        {label: 'Tech lead', value: 'lead' },
    ])
@@ -26,7 +25,7 @@ const NewUser = ({route,navigation}) => {
 
     const handleEmailChange =(e)=>{
        setEmail(e)
-    } 
+    }
     const handlePsswordChange = (text)=>{
             setPassword(text)
     }
@@ -35,12 +34,28 @@ const NewUser = ({route,navigation}) => {
     }
 
     const handleSubmit =()=>{
-        db.transaction(tx => {
-            tx.executeSql('INSERT INTO users (email,role,user_id,password) values (?,?,?,?)', 
-            [email,filterBy,id,password],
-              (txObj,resultSet) =>console.log(resultSet.rowsAffected),
-              (txObj, error) => console.log('Error', error))
-          });
+      fetch('http://192.168.43.6:8000//users/add',{
+        method:'post',
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            email:email,
+            role:role,
+            user_id:id,
+            password:password,
+          })
+      })
+      .then(res =>res.json())
+      .then(server=>console.warn(server))
+      .catch(error=>console.warn(error))
+        // db.transaction(tx => {
+        //     tx.executeSql('INSERT INTO users (email,role,user_id,password) values (?,?,?,?)',
+        //     [email,filterBy,id,password],
+        //       (txObj,resultSet) =>console.log(resultSet.rowsAffected),
+        //       (txObj, error) => console.log('Error', error))
+        //   });
     }
 
     return (
@@ -53,12 +68,12 @@ const NewUser = ({route,navigation}) => {
                 <View style={{...StyleSheet.absoluteFillObject,backgroundColor:'teal'}} />
                 <View style={styles.overlay}>
                    <Text style={styles.heading}>Enroll staff as User</Text>
-                   <ScrollView 
+                   <ScrollView
                    showsVerticalScrollIndicator={false}
                    style={styles.formarea}>
-                       
+
                         <Input
-                            label="Email" 
+                            label="Email"
                             value={email}
                             changeHandler={handleEmailChange}
                             />
@@ -88,7 +103,7 @@ const NewUser = ({route,navigation}) => {
                        />
                         <Input
                             label="Confirm password"
-                            textEntry={true} 
+                            textEntry={true}
                             value={confirmPassword}
                             changeHandler={handleConfirmPassword}
                        />
@@ -97,7 +112,7 @@ const NewUser = ({route,navigation}) => {
                 </View>
             </View>
             <View style={styles.buttonsection}>
-                <TouchableOpacity 
+                <TouchableOpacity
                 onPress={()=>{
                     handleSubmit
                     navigation.navigate('Home')

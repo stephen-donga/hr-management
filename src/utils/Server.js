@@ -24,7 +24,7 @@ const connection = mysql.createConnection({
          console.log('Connection error')
      }
  })
- 
+
  app.get('/users',(req, res)=>{
      connection.query('SELECT * FROM users',(error, results,fields)=>{
             if(error) throw error;
@@ -45,6 +45,14 @@ const connection = mysql.createConnection({
          res.send(result)
      })
  });
+ app.delete('/users/delete/:id',(req, res)=>{
+     let sql = 'DELETE FROM users WHERE id = ?'
+     connection.query(sql,[req.params.id],(err, result) => {
+        if(err)throw err;
+        res.send(result)
+        console.log(result)
+    })
+ })
 
  app.get('/staff',(req, res)=>{
     connection.query('SELECT * FROM staff_members',(error, results,fields)=>{
@@ -60,7 +68,7 @@ const connection = mysql.createConnection({
         position:req.body.position,
         qualification:req.body.qualification,
         experience:req.body.experience,
-        date_of_birth:req.body.birthday,
+        date_of_birth:req.body.date,
         image:req.body.image
     }
     let sql = 'INSERT INTO staff_members SET ?'
@@ -70,6 +78,33 @@ const connection = mysql.createConnection({
         console.log(result)
     })
 });
+
+app.put('/staff/update',(req, res)=>{
+    let firstname = req.body.firstname
+    let lastname = req.body.lastname
+    let position = req.body.position
+    let qualification = req.body.qualification
+    let exp = req.body.experience
+    let experience = parseInt(exp)
+    let date = req.body.date
+    let id = req.body.id
+  let sql = `UPDATE staff_members SET  (first_name, last_name) VALUES (?,?) WHERE id =${id}`
+  connection.query(sql,[firstname, lastname],(err, result) => {
+    if(err)throw err;
+    res.send(result)
+    console.log(result)
+})
+})
+
+app.delete('/staff/delete/:id',(req, res)=>{
+
+    let sql = 'DELETE FROM staff_members WHERE id=?'
+    connection.query(sql,[req.params.id],(err, result) => {
+        if(err)throw err;
+        res.send(result)
+        console.log(result)
+    })
+})
 
 app.get('/new',(req, res)=>{
     connection.query('SELECT * FROM new_users',(error, results,fields)=>{
@@ -83,6 +118,7 @@ app.post('/new/adduser',(req, res)=>{
         first_name:req.body.firstname,
         last_name:req.body.lastname,
         email:req.body.email,
+        role:req.body.role,
         password:req.body.password
     }
 
@@ -93,6 +129,15 @@ app.post('/new/adduser',(req, res)=>{
         console.log(result)
     })
 });
+
+app.delete('/new/delete/:id',(req, res)=>{
+    let sql = 'DELETE FROM new_users WHERE id=?'
+    connection.query(sql,[req.params.id],(err, result) => {
+        if(err)throw err;
+        res.send(result)
+        console.log(result)
+    })
+})
 
 app.get('/events',(req, res)=>{
     connection.query('SELECT * FROM events',(error, results,fields)=>{
@@ -114,6 +159,14 @@ app.post('/events/add',(req, res)=>{
         console.log(result)
     })
 });
+app.delete('/events/delete/:id',(req, res)=>{
+    let sql = 'DELETE FROM events WHERE id=?'
+    connection.query(sql,[req.params.id],(err, result) => {
+        if(err)throw err;
+        res.send(result)
+        console.log(result)
+    })
+})
 
 app.get('/trail',(req, res)=>{
     connection.query('SELECT * FROM audit_trail',(error, results,fields)=>{
@@ -140,5 +193,3 @@ app.post('/trail/add',(req, res)=>{
 app.listen(8000,()=>{
     console.log('Server started on port:8000')
 });
-
- 

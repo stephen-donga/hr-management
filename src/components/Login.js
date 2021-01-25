@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import {View,Button,Text,StyleSheet,TouchableOpacity} from 'react-native';
+import {View,Button,Text,StyleSheet,TouchableOpacity,ActivityIndicator} from 'react-native';
+import Spinner from 'react-native-loading-spinner-overlay';
 import auditTrail from '../utils/trails'
 import db from '../utils/database'
 import {connect} from  'react-redux'
@@ -12,27 +13,36 @@ const Login = ({navigation,setStaf,setCurrentUser}) => {
 
     const [fetched, setFetched] = useState([])
     const [newUser, setNewUser] = useState([])
+    const [loading, setLoading] = useState(false)
+
+    const startSpinner = () =>{
+        setLoading(true)
+        setTimeout(()=>{
+            setLoading(false)
+            setUsername("");
+            setPassword("")
+            navigation.navigate('Home')
+        },2000)
+    }
+
+    
 
     const fetchUsers = () => {
-        db.transaction(tx=>{
-            tx.executeSql('SELECT * FROM users',null,
-            (txObj,{rows:{_array}})=>setFetched(_array)),
-            (txObj, error)=>console.log('Error',error)
-        })
+        fetch('http://192.168.0.106:8000/users')
+        .then(res =>res.json())
+        .then(server=>setFetched(server))
+        .catch(error=>console.log(error))
 
-        db.transaction(tx=>{
-            tx.executeSql('SELECT * FROM new_users',null,
-            (txObj,{rows:{_array}})=>setNewUser(_array)),
-            (txObj, error)=>console.log('Error',error)
-        })
+        fetch('http://192.168.0.106:8000/new')
+        .then(res =>res.json())
+        .then(server=>setNewUser(server))
+        .catch(error=>console.log(error))
 
-        db.transaction(tx=>{
-            tx.executeSql('SELECT * FROM staff_members',null,
-            (txObj,{rows:{_array}})=>setStaf(_array)),
-            (txObj, error)=>console.log('Error',error)
-        })
-        
-       
+        fetch('http://192.168.0.106:8000/staff')
+        .then(res =>res.json())
+        .then(server=>setStaf(server))
+        .catch(error=>console.log(error))
+
     }
      
      let allUserz = fetched.concat(newUser)
@@ -77,7 +87,7 @@ const Login = ({navigation,setStaf,setCurrentUser}) => {
                 }
                 setCurrentUser(username)
                 auditTrail.logTrail(trail)
-                navigation.navigate('Home')
+                startSpinner()
             }
             else{
                 trail={
@@ -87,7 +97,8 @@ const Login = ({navigation,setStaf,setCurrentUser}) => {
                 }
     
                 auditTrail.logTrail(trail)
-                navigation.navigate('Login')
+               navigation.navigate('Login')
+ 
             }
     }
 
@@ -95,14 +106,20 @@ const Login = ({navigation,setStaf,setCurrentUser}) => {
         if(fetched.length<1){
         }
         validate();
-        setUsername("");
-        setPassword("")
+        
       
       
     }
   
         return (
             <View style={styles.container}>
+                <View style={{position:'absolute',marginTop:'60%',marginLeft:'40%',width:250,height:150,alignItems:'center',justifyContent:'center'}}>
+                <Spinner
+                    visible={loading}
+                    size='large'
+                    
+                    />
+                </View>
                 <View style={{width:'100%',height:'40%',backgroundColor:'white'}} >
                     <View style={{height:120,width:'100%',paddingTop:20,borderRadius:30,backgroundColor:'#B0AAA7',position:'relative',alignItems:'center'}}>
                         <View style={{width:'100%',height:25,backgroundColor:'#827C79',...StyleSheet.absoluteFillObject}}/>
@@ -114,6 +131,7 @@ const Login = ({navigation,setStaf,setCurrentUser}) => {
 
                <View style={{height:'60%',paddingTop:10}}>
                <View style={{width:'85%',borderRadius:10,padding:11}}>
+                 
                      
                      <Inputfield 
                          label="Username or Email"

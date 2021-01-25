@@ -68,12 +68,28 @@
             return
         }
 
-        db.transaction(tx =>{
-            tx.executeSql('INSERT INTO  new_users (first_name,last_name,email,role,password) values (?,?,?,?,?)',[ firstName,lastName,email,filterBy,password],
-            (txObj,resultSet)=>console.log(resultSet),
-            (txObj, error)=>console.log('Error', error)
-            )
-            })
+        // db.transaction(tx =>{
+        //     tx.executeSql('INSERT INTO  new_users (first_name,last_name,email,role,password) values (?,?,?,?,?)',[ firstName,lastName,email,filterBy,password],
+        //     (txObj,resultSet)=>console.log(resultSet),
+        //     (txObj, error)=>console.log('Error', error)
+        //     )
+        //     })
+        fetch('http://172.18.100.1:8000/users',{
+            method:'post',
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({
+                firstname:firstname,
+                lastname:lastname,
+                position:filterBy,
+                qualification:qualification,
+                experience:experience,
+                date:validDate,
+                image:image
+              })
+        })
 
             navigation.navigate('Login')
             setFirstName("")

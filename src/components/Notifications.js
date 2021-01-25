@@ -8,12 +8,16 @@ const Notifications = () => {
     const [data, setData] = useState([])
 
     const fetchNotifications =()=>{
+        fetch('http://172.18.100.1:8000/trail')
+        .then(res =>res.json())
+        .then(server=>setData(server))
+        .catch(error=>console.log(error))
 
-        db.transaction(tx=>{
-            tx.executeSql('SELECT * FROM audit_trail',null,
-            (txObj,{rows:{_array}})=>setData(data.concat(_array)),
-            (txObj,error)=>console.warn(error))
-          })
+        // db.transaction(tx=>{
+        //     tx.executeSql('SELECT * FROM audit_trail',null,
+        //     (txObj,{rows:{_array}})=>setData(data.concat(_array)),
+        //     (txObj,error)=>console.warn(error))
+        //   })
     }
 
 

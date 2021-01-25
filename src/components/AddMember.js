@@ -1,5 +1,5 @@
 import React,{useState, useEffect} from 'react'
-import { View, Text,Button, StyleSheet, ScrollView, TouchableOpacity,Dimensions } from 'react-native'
+import { View, Text,Button, StyleSheet, ScrollView,ToastAndroid, TouchableOpacity,Dimensions } from 'react-native'
 import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePicker from "@react-native-community/datetimepicker"
 import auditTrail from '../utils/trails'
@@ -43,6 +43,10 @@ const AddMember = ({navigation,currentUser,setStf}) => {
     const [image, setImage] = useState(null)
 
     const validDate = new Date(date).toLocaleDateString()
+
+    const showToast = () => {
+        ToastAndroid.show('Member added successfully !', ToastAndroid.SHORT);
+      };
 
     useEffect(() => {
         (async () => {
@@ -118,25 +122,41 @@ const AddMember = ({navigation,currentUser,setStf}) => {
         if(firstname ==""&& lastname==""&&qualification==""&&experience==""){
             alert('Enter details before you submit')
         }else{
+            showToast()
+            setTimeout(() => {
+                
+                navigation.navigate('Home')
+            }, 200);
             setFirstName("")
             setLastName("")
             setExperience("")
             setDate("")
             setQualification("")
 
-            db.transaction(tx => {
-                tx.executeSql('INSERT INTO staff_members (first_name, last_name,position,qualification,experience,date_of_birth,image) values (?,?,?,?,?,?,?)', 
-                [firstname,lastname,filterBy,qualification,experience,validDate,image],
-                  (txObj,resultSet) =>console.log(resultSet.rowsAffected),
-                  (txObj, error) => console.log('Error', error))
-              });
+            fetch('http://192.168.0.106:8000/staff/add',{
+                method:'post',
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json"
+                  },
+                  body: JSON.stringify({
+                    firstname:firstname,
+                    lastname:lastname,
+                    position:filterBy,
+                    qualification:qualification,
+                    experience:experience,
+                    date:validDate,
+                    image:image
+                  })
+            })
+            .then(res =>res.json())
+            .then(server=>console.log(server))
+            .catch(error=>console.log(error))
 
-              db.transaction(tx => {
-                tx.executeSql('SELECT * FROM staff_members',null,
-                  (txObj,{rows:{_array}}) =>setStf(_array),
-                  (txObj, error) => console.log('Error', error))
-              });
-
+            fetch('http://192.168.0.106:8000/staff')
+            .then(res =>res.json())
+            .then(server=>setStf(server))
+            .catch(error=>console.log(error))
 
         let trail={
                 actor:currentUser,
@@ -145,8 +165,6 @@ const AddMember = ({navigation,currentUser,setStf}) => {
             }
     
             auditTrail.logTrail(trail)
-
-            navigation.navigate('Home')
 
             //clearing errors
             setQualifyErr("")
@@ -250,7 +268,6 @@ const AddMember = ({navigation,currentUser,setStf}) => {
                     
       )}
                  <View  style={{marginBottom:20}}>
-                    
 
                  <Button 
                     title="Submit"

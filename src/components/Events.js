@@ -5,28 +5,25 @@ import {Feather as Icon} from '@expo/vector-icons'
 import {connect} from 'react-redux'
 
 import HeaderBar from '../custom/HeaderBar'
-import db from '../utils/database'
 import EventCard from './EventCard'
 
 const {width, height} = Dimensions.get('window')
 
-const Events = ({navigation,roles }) => {
+const Events = ({navigation}) => {
 
     const [events, setEvents] = useState([])
     
-    let roleObj = roles[0]
-
     const fetchEvents = ()=>{
-        db.transaction(tx=>{
-            tx.executeSql('SELECT * FROM events',null,
-            (txObj,{rows:{_array}})=>setEvents(events.concat(_array))),
-            (txObj, error)=>console.log('Error',error)
-        })
+        fetch('http://172.18.100.1:8000/events')
+        .then(res =>res.json())
+        .then(server=>setEvents(server))
+        .catch(error=>console.log(error))
     }
 
     useEffect(() => {
        fetchEvents()
         return () => {
+            fetchEvents
         }
     }, [])
 

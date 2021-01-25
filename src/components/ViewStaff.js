@@ -1,16 +1,15 @@
 import React,{useEffect} from 'react'
-import { View, Alert,Text,StyleSheet} from 'react-native'
+import { View, Alert,Text,ToastAndroid,StyleSheet} from 'react-native'
 import{Feather as Icon} from "@expo/vector-icons"
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import {connect} from 'react-redux'
-import db from '../utils/database'
 import auditTrail from '../utils/trails'
 import {setStaff} from '../redux/staff/staffActions'
 import {setDetails} from '../redux/showUserDetails/detailsActions'
 import { StackActions, useNavigation } from '@react-navigation/native'
 
 
-const ViewStaff = ({details,showDetails,setStff,currentUser,setDetails}) => {
+const ViewStaff = ({details,showDetails,setStf,currentUser,setDetails}) => {
 
     const navigation = useNavigation();
 
@@ -19,11 +18,23 @@ const ViewStaff = ({details,showDetails,setStff,currentUser,setDetails}) => {
     const {id,first_name,last_name,position,image} =details;
 
     const deleteMember = (memberId) =>{
-        db.transaction(tx =>{
-            tx.executeSql('DELETE FROM staff_members WHERE id=?',[memberId],
-            (txObj,resultSet)=>console.log(resultSet)),
-            (txObj, error) => console.log('Error', error)
-        });
+        // db.transaction(tx =>{
+        //     tx.executeSql('DELETE FROM staff_members WHERE id=?',[memberId],
+        //     (txObj,resultSet)=>console.log(resultSet)),
+        //     (txObj, error) => console.log('Error', error)
+        // });
+
+        fetch(`http://192.168.0.106:8000/staff/delete/${memberId}`,{
+            method:'DELETE'
+        })
+        .then(res=>res.json())
+        .then(res=>console.log(res))
+        .catch(err=>console.log(err))
+
+        fetch('http://192.168.0.106:8000/staff')
+        .then(res =>res.json())
+        .then(server=>setStf(server))
+        .catch(error=>console.log(error))
        
 
       let trail={
@@ -33,14 +44,11 @@ const ViewStaff = ({details,showDetails,setStff,currentUser,setDetails}) => {
     }
         auditTrail.logTrail(trail)
       }
-      const refetch = () =>{
-        db.transaction(tx => {
-            tx.executeSql('SELECT * FROM staff_members',null,
-              (txObj,{rows:{_array}}) =>setStff(_array),
-              (txObj, error) => console.log('Error', error))
-          });
-      }
       
+      const showToast = () => {
+        ToastAndroid.show('Delete successful !', ToastAndroid.SHORT);
+      };
+
       const handleDelete = ()=>{
         Alert.alert('Delete',"Delete member ?",[
             {
@@ -50,8 +58,8 @@ const ViewStaff = ({details,showDetails,setStff,currentUser,setDetails}) => {
             },
             { text: 'OK', onPress: () =>{
                 deleteMember(id)
+                showToast()
                 setDetails(!showDetails)
-                refetch()
                 
                
     
@@ -61,7 +69,6 @@ const ViewStaff = ({details,showDetails,setStff,currentUser,setDetails}) => {
       }
 
       useEffect(() => {
-        refetch()
           return () => {
           }
       }, [])
@@ -161,7 +168,7 @@ const mapStateToProps = ({ user,staff,details }) => ({
 
   const mapDispatchToProps = dispatch => ({
     setCurrentUser: user => dispatch(setCurrentUser(user)),
-    setStff: members => dispatch(setStaff(members)),
+    setStf: members => dispatch(setStaff(members)),
     setDetails: act =>dispatch(setDetails(act))
   });
 

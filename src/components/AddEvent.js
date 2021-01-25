@@ -11,9 +11,8 @@ import db from '../utils/database'
 import auditTrail from '../utils/trails'
 
 const {width, height} = Dimensions.get('window')
-const AddEvent = ({currentUser,route, navigation}) => {
 
-    const {fetchEvents} = route.params;
+const AddEvent = ({currentUser,navigation}) => {
 
     const [event, setEvent] = useState('');
     const [describe, setDescribe] = useState('')
@@ -40,12 +39,32 @@ const AddEvent = ({currentUser,route, navigation}) => {
         showMode('date');
       };
      const addEvent =()=>{
-        db.transaction(tx => {
-            tx.executeSql('INSERT INTO events (event, description,date) values (?,?,?)', 
-            [event,describe,validDate],
-              (txObj, resultSet) => setResult(result.concat(resultSet)),
-              (txObj, error) => console.log('Error', error))
+        // db.transaction(tx => {
+        //     tx.executeSql('INSERT INTO events (event, description,date) values (?,?,?)', 
+        //     [event,describe,validDate],
+        //       (txObj, resultSet) => setResult(result.concat(resultSet)),
+        //       (txObj, error) => console.log('Error', error))
+        //   })
+
+        let id = 2
+
+          fetch('http://172.18.100.1:8000/events/add',{
+            method:'post',
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({
+                 event:event,
+                 describe:describe,
+                 time:validDate,
+                 user_id:id
+              })
           })
+          .then(res =>res.json())
+          .then(server=>setResult(result.concat(server)))
+          .catch(error=>console.warn(error))
+
           let trail ={
               actor:currentUser,
               action:`Added an event "${event}"`,

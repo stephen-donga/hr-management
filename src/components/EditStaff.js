@@ -14,7 +14,7 @@ import FormInput from '../custom/FormInput'
 const {width, height} = Dimensions.get('window')
 
 const EditStaff = ({details, currentUser}) => {
-    const {first_name,last_name,id,position,qualification,experience} = details;
+    const {first_name,last_name,id,position,qualification,experience,image} = details;
     const navigation = useNavigation();
     const [filterBy, setFilterBy] = useState(position)
     const [items,setItems] = useState([
@@ -36,14 +36,30 @@ const EditStaff = ({details, currentUser}) => {
 
     const [data, setData] = useState([])
      
-   
+   let validDate = date.toDateString()
 
    const handleUserEdit =()=>{
-     db.transaction(tx => {
-       tx.executeSql(`UPDATE staff_members SET first_name = ${firstname} last_name = ${lastname} position = ${positn} qualification= ${qualify} experience= ${exprence} date_of_birth =${date} WHERE id = ?`, [id],
-         (txObj,resultSet) => alert(resultSet)),
-         (txObj, error)=>console.log('Error',error) 
+
+        fetch('http://192.168.0.106:8000/staff/update',{
+          method:'PUT',
+          headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              firstname:firstname,
+              lastname:lastname,
+              position:filterBy,
+              qualification:qualification,
+              experience:experience,
+              date:validDate,
+              id:id
+            })
         })
+        .then(res =>res.json())
+        .then(server=>console.log(server))
+        .catch(error=>console.log(error))
+
        Alert.alert('Edit',"Apply changes ?",[
         {
           text: 'Cancel',
