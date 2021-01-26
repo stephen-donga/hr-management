@@ -40,7 +40,7 @@ const EditStaff = ({details, currentUser}) => {
 
    const handleUserEdit =()=>{
 
-        fetch('http://192.168.0.106:8000/staff/update',{
+        fetch('http:// 172.18.69.193:8000/staff/update',{
           method:'PUT',
           headers: {
               Accept: "application/json",

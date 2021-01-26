@@ -3,26 +3,28 @@ import { View, Text,Button,TextInput, Dimensions } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import DateTimePicker from "@react-native-community/datetimepicker"
 import {connect} from 'react-redux'
+import {StackActions, useNavigation} from '@react-navigation/native'
 
 
 import FormInput from '../custom/FormInput'
 import HeaderBar from '../custom/HeaderBar'
-import db from '../utils/database'
 import auditTrail from '../utils/trails'
+import { setEvents } from '../redux/events/eventActions'
 
 const {width, height} = Dimensions.get('window')
 
-const AddEvent = ({currentUser,navigation}) => {
+const AddEvent = ({currentUser,addEvent}) => {
 
-    const [event, setEvent] = useState('');
+    const navigation = useNavigation();
+
+    const [event, setEvnt] = useState('');
     const [describe, setDescribe] = useState('')
 
     const [date, setDate] = useState(new Date(96400000));
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
-    const [result, setResult] = useState([])
 
-    let validDate =date.toString();
+    const validate = date.toDateString()
 
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
@@ -38,17 +40,10 @@ const AddEvent = ({currentUser,navigation}) => {
       const showDatepicker = () => {
         showMode('date');
       };
-     const addEvent =()=>{
-        // db.transaction(tx => {
-        //     tx.executeSql('INSERT INTO events (event, description,date) values (?,?,?)', 
-        //     [event,describe,validDate],
-        //       (txObj, resultSet) => setResult(result.concat(resultSet)),
-        //       (txObj, error) => console.log('Error', error))
-        //   })
-
+     const handleEvent =()=>{
         let id = 2
 
-          fetch('http://172.18.100.1:8000/events/add',{
+          fetch('http://172.18.69.193:8000/events/add',{
             method:'post',
             headers: {
                 Accept: "application/json",
@@ -57,20 +52,29 @@ const AddEvent = ({currentUser,navigation}) => {
               body: JSON.stringify({
                  event:event,
                  describe:describe,
-                 time:validDate,
+                 time:validate,
                  user_id:id
               })
           })
           .then(res =>res.json())
-          .then(server=>setResult(result.concat(server)))
+          .then(server=>console.log(server))
           .catch(error=>console.warn(error))
 
-          let trail ={
+          fetch('http://172.18.69.193:8000/events')
+          .then(res => res.json())
+          .then(res => addEvent(res))
+          .catch(err => console.log(err))
+
+          let trail = {
               actor:currentUser,
               action:`Added an event "${event}"`,
               time:new Date().toString()
             }
             auditTrail.logTrail(trail)
+            setEvnt("")
+            setDescribe('')
+
+            navigation.dispatch(StackActions.push('Events'))
      }
 
     return (
@@ -83,7 +87,7 @@ const AddEvent = ({currentUser,navigation}) => {
                     label='Event Name'
                     value={event}
                     changeHandler={(e)=>{
-                        setEvent(e)
+                        setEvnt(e)
                     }}
                />
            <View>
@@ -91,6 +95,7 @@ const AddEvent = ({currentUser,navigation}) => {
             <TextInput 
                 multiline={true}
                 value={describe}
+                placeholder='Description of event'
                 onChangeText={(e)=>{
                     setDescribe(e)
                 }}
@@ -112,22 +117,18 @@ const AddEvent = ({currentUser,navigation}) => {
                 <Button  onPress={showDatepicker} title="Select date"  />
                 </View>
                 {show && (
-                <DateTimePicker
-                testID="dateTimePicker"
-                value={date}
-                mode={mode}
-                is24Hour={true}
-                display="default"
-                onChange={onChange}
-                />
+                    <DateTimePicker
+                        testID="dateTimePicker"
+                        value={date}
+                        mode={mode}
+                        is24Hour={true}
+                        display="default"
+                        onChange={onChange}
+                    />
                 
                 )}
              <TouchableOpacity 
-                onPress={()=>{
-                    addEvent()
-                    fetchEvents()
-                    navigation.navigate('Events')
-                }}
+                onPress={handleEvent}
                 style={{width:'100%',height:40,marginTop:10,backgroundColor:'darkblue',alignItems:'center',justifyContent:'center'}}
                 >
                <Text style={{fontSize:17,color:'white'}}>Add Event</Text>
@@ -139,8 +140,13 @@ const AddEvent = ({currentUser,navigation}) => {
     )
 }
 
-const mapStateToProps = ({ user}) => ({
+const mapStateToProps = ({ user,events}) => ({
     currentUser: user.currentUser,
+    eventz: events.events 
   });
 
-export default connect(mapStateToProps)(AddEvent)
+  const mapDispatchToProps = dispatch => ({
+      addEvents: event =>dispatch(setEvents(event))
+  })
+
+export default connect(mapStateToProps,mapDispatchToProps)(AddEvent)

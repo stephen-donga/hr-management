@@ -22,7 +22,7 @@ const AddMember = ({navigation,currentUser,setStf}) => {
     const [qualification, setQualification] = useState("");
     const [experience, setExperience] = useState("");
 
-    const [filterBy, setFilterBy] = useState(null)
+    const [filterBy, setFilterBy] = useState('Intern Developer')
     const [items,setItems] = useState([
         
         {label: 'Intern Developer', value: 'Intern Developer' },
@@ -133,7 +133,7 @@ const AddMember = ({navigation,currentUser,setStf}) => {
             setDate("")
             setQualification("")
 
-            fetch('http://192.168.137.1:8000/staff/add',{
+            fetch('http:// 172.18.69.193:8000/staff/add',{
                 method:'post',
                 headers: {
                     Accept: "application/json",

@@ -34,7 +34,7 @@ const NewUser = (props) => {
     }
 
     const handleSubmit =()=>{
-      fetch('http://192.168.43.6:8000//users/add',{
+      fetch('http:// 172.18.69.193:8000//users/add',{
         method:'post',
         headers: {
             Accept: "application/json",
