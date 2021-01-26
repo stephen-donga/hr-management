@@ -50,7 +50,7 @@ const Staff = ({showDetails,staff,setStaf,setDetails}) => {
         <View style={styles.container}>
             <HeaderBar />
             
-            <View style={styles.section}>
+            {/* <View style={styles.section}> */}
 
             {/* <View style={styles.search}>
                 <TextInput 
@@ -81,7 +81,7 @@ const Staff = ({showDetails,staff,setStaf,setDetails}) => {
             />
             </View> */}
             
-        </View>
+        {/* </View> */}
             <View style={{width:width,height:40,backgroundColor:'#eee',padding:10,paddingLeft:15,paddingTop:10}}>
                 <Text style={{fontSize:16,fontWeight:'bold',alignSelf:'center',color:'darkblue'}}>All staff members</Text>
 

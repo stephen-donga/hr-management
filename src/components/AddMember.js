@@ -133,7 +133,7 @@ const AddMember = ({navigation,currentUser,setStf}) => {
             setDate("")
             setQualification("")
 
-            fetch('http://192.168.0.106:8000/staff/add',{
+            fetch('http://192.168.137.1:8000/staff/add',{
                 method:'post',
                 headers: {
                     Accept: "application/json",
@@ -153,7 +153,7 @@ const AddMember = ({navigation,currentUser,setStf}) => {
             .then(server=>console.log(server))
             .catch(error=>console.log(error))
 
-            fetch('http://192.168.0.106:8000/staff')
+            fetch('http://192.168.137.1:8000/staff')
             .then(res =>res.json())
             .then(server=>setStf(server))
             .catch(error=>console.log(error))

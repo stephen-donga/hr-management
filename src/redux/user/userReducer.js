@@ -4,7 +4,9 @@ const INITIAL_STATE = {
   currentUser:null,
   role:null,
   actions:[],
-  user:[]
+  user:[],
+  loggedIn:{},
+  newUsers:[]
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -29,6 +31,16 @@ const userReducer = (state = INITIAL_STATE, action) => {
         ...state,
         user:action.payload
 
+      }
+    case UserActionTypes.LOGGED_USER:
+      return {
+        ...state,
+        loggedIn: action.payload
+      }
+    case UserActionTypes.SET_NEW_USERS:
+      return {
+        ...state,
+        newUsers: action.payload
       }
     default:
       return state;

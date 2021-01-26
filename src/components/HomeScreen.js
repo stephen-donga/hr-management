@@ -15,17 +15,6 @@ const HomeScreen = ({currentUser,users,roles, allStaff}) => {
 
     const navigation = useNavigation()
 
-    const[showDropDown,setShowDropDown] = useState(false)
-
-    const handleLogOut = ()=>{
-        setShowDropDown(!showDropDown)
-        navigation.dispatch(StackActions.push('Login'))
-    }
-    const handleEdit = ()=>{
-        setShowDropDown(!showDropDown)
-        navigation.navigate('EditStaff',{fname,lname,id,age,position,qualification,image,experience})
-    }
-
     let totalStaff = allStaff.length
     let totalUsers = users.length
     return (
@@ -39,7 +28,7 @@ const HomeScreen = ({currentUser,users,roles, allStaff}) => {
                     </View>
                     <View style={styles.headerRight}>
                         <TouchableOpacity 
-                          onPress={()=>setShowDropDown(!showDropDown)}
+                          onPress={()=>navigation.navigate('Userprofile')}
                         >
                             <Image style={{width:50,borderWidth:1,borderColor:'teal',height:50,borderRadius:50}} source={require('../../assets/profile.jpg')}/>
                         </TouchableOpacity>
@@ -54,23 +43,7 @@ const HomeScreen = ({currentUser,users,roles, allStaff}) => {
                 <Homepage />
 
             </View>
-           {
-               showDropDown&&(
-                <View style={styles.dropdown}>
-                    <Text style={styles.labels}>{currentUser}</Text>
-                    <TouchableOpacity 
-                    onPress={()=>navigation.navigate('New')}
-                    style={{width:'100%',backgroundColor:'white',borderRadius:50}}>
-                        <Button title="Create new User" color='green'/>
-                    </TouchableOpacity > 
-                      <TouchableOpacity
-                        onPress={handleLogOut}
-                       style={{width:150,alignItems:'center',justifyContent:'center',height:30,backgroundColor:'blue',borderRadius:50}}>
-                          <AntDesign name="logout" size={24} color='white'/>
-                    </TouchableOpacity> 
-               </View>
-               )
-           }
+         
             <View style={styles.lastsection}>
                 <Text style={styles.title}>All members</Text>
                     <FlatList 

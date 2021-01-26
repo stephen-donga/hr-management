@@ -1,6 +1,8 @@
  import React,{useState} from 'react'
  import { View,ScrollView, Text,StyleSheet,Dimensions,TouchableOpacity } from 'react-native'
  import DropDownPicker from 'react-native-dropdown-picker';
+ import {connect} from 'react-redux'
+ import {setNewUser} from '../redux/user/userAction'
 
 
  // custom imports
@@ -9,7 +11,7 @@
  import db from '../utils/database'
  
  const {width, height} = Dimensions.get('window');
- const NewUser = ({navigation}) => {
+ const NewUser = ({navigation,setNewUsers}) => {
 
     const [items,setItems] = useState([
         {label: 'Admin', value: 'admin' },
@@ -64,32 +66,32 @@
             return;
         }
         if(password !==confirmPassword){
-            alert('Passwords don not match !')
+            setConfirmPassword('Passwords don\'t match !')
             return
         }
-
-        // db.transaction(tx =>{
-        //     tx.executeSql('INSERT INTO  new_users (first_name,last_name,email,role,password) values (?,?,?,?,?)',[ firstName,lastName,email,filterBy,password],
-        //     (txObj,resultSet)=>console.log(resultSet),
-        //     (txObj, error)=>console.log('Error', error)
-        //     )
-        //     })
-        fetch('http://172.18.100.1:8000/users',{
+ 
+        fetch('http://192.168.137.1:8000/new/adduser',{
             method:'post',
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json"
               },
               body: JSON.stringify({
-                firstname:firstname,
-                lastname:lastname,
-                position:filterBy,
-                qualification:qualification,
-                experience:experience,
-                date:validDate,
-                image:image
+                firstname:firstName,
+                lastname:lastName,
+                email:email,
+                role:filterBy,
+                password:password,
               })
         })
+        .then(res => res.json())
+        .then(res => console.log(res))
+        .catch(err =>console.log(err))
+
+        fetch('http://192.168.137.1:8000/new')
+        .then(res =>res.json())
+        .then(server=>setNewUsers(server))
+        .catch(error=>console.log(error))
 
             navigation.navigate('Login')
             setFirstName("")
@@ -97,10 +99,6 @@
             setEmail("")
             setPassword("")
             setConfirmPassword("")
-            
-
-
-
      }
 
      return (
@@ -221,7 +219,7 @@
          height:40,
          backgroundColor:'white',
          alignSelf:'center',
-         marginTop:30,
+         marginTop:40,
          borderRadius:15,
          alignItems:'center',
          justifyContent:'center'
@@ -230,7 +228,11 @@
          color:'teal',
          fontSize:18
      }
+ });
+
+ export const mapDispatchToProps = dispatch =>({
+     setNewUsers: users = dispatch(setNewUser(users))
  })
  
- export default NewUser
+ export default connect(null, mapDispatchToProps)(NewUser)
  

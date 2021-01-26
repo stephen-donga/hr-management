@@ -1,5 +1,5 @@
 import React,{useEffect} from 'react'
-import { View, Alert,Text,ToastAndroid,StyleSheet} from 'react-native'
+import { View, Alert,Text,Dimensions,Image, ToastAndroid,StyleSheet} from 'react-native'
 import{Feather as Icon} from "@expo/vector-icons"
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import {connect} from 'react-redux'
@@ -8,30 +8,27 @@ import {setStaff} from '../redux/staff/staffActions'
 import {setDetails} from '../redux/showUserDetails/detailsActions'
 import { StackActions, useNavigation } from '@react-navigation/native'
 
+const {width, height} = Dimensions.get('window')
 
 const ViewStaff = ({details,showDetails,setStf,currentUser,setDetails}) => {
 
     const navigation = useNavigation();
 
     
-     
-    const {id,first_name,last_name,position,image} =details;
-
+    
+    const {id,first_name,last_name,position,qualification,experience,date_of_birth,image} =details;
+    
     const deleteMember = (memberId) =>{
-        // db.transaction(tx =>{
-        //     tx.executeSql('DELETE FROM staff_members WHERE id=?',[memberId],
-        //     (txObj,resultSet)=>console.log(resultSet)),
-        //     (txObj, error) => console.log('Error', error)
-        // });
-
-        fetch(`http://192.168.0.106:8000/staff/delete/${memberId}`,{
+        
+        fetch(`http://192.168.137.1:8000/staff/delete/${memberId}`,{
             method:'DELETE'
         })
         .then(res=>res.json())
         .then(res=>console.log(res))
         .catch(err=>console.log(err))
+        showToast()
 
-        fetch('http://192.168.0.106:8000/staff')
+        fetch('http://192.168.137.1:8000/staff')
         .then(res =>res.json())
         .then(server=>setStf(server))
         .catch(error=>console.log(error))
@@ -58,8 +55,7 @@ const ViewStaff = ({details,showDetails,setStf,currentUser,setDetails}) => {
             },
             { text: 'OK', onPress: () =>{
                 deleteMember(id)
-                showToast()
-                setDetails(!showDetails)
+                navigation.navigate('Staff')
                 
                
     
@@ -68,55 +64,92 @@ const ViewStaff = ({details,showDetails,setStf,currentUser,setDetails}) => {
     
       }
 
-      useEffect(() => {
-          return () => {
-          }
-      }, [])
-    
     return (
         <View style={styles.container}>
-            <Text style={styles.boxtext}>{first_name}{" "}{last_name}</Text>
-            <Text style={styles.title}>{position}</Text>
-            <ScrollView
-            showsVerticalScrollIndicator={false} 
-            style={styles.scroll}
-            >
-                <TouchableOpacity 
-                style={styles.option}
-                >
-                    <Text>Grant Leave</Text>
-                </TouchableOpacity>
+               <View style={styles.uppersection}></View>
+               <View style={styles.extrudingsection}>
+                   <Image source={{uri:image}} style={{width:170,height:170,borderRadius:80 }} />
+               </View>
+               <ScrollView style={styles.lowersection}>
+                <View style={{width:'100%',height:50, flexDirection:'row',paddingHorizontal:40}}>
+                   <View style={{width:'40%',height:'100%'}}>
+                      <Text style={styles.title}>First name</Text>
+                   </View>
+                   <View style={{width:'60%',height:'100%'}}>
+                     <Text style={styles.text}>{first_name}</Text>
+                   </View>
+                </View>
+                <View style={{width:'100%',height:50, flexDirection:'row',paddingHorizontal:40}}>
+                   <View style={{width:'40%',height:'100%'}}>
+                      <Text style={styles.title}>Last name</Text>
+                   </View>
+                   <View style={{width:'60%',height:'100%'}}>
+                     <Text style={styles.text}>{last_name}</Text>
+                   </View>
+                </View>
 
-                <TouchableOpacity 
-                  onPress={()=>{
-                    setDetails(!showDetails)
-                    navigation.navigate('StaffUser',{id})}
-                    }
-                    style={styles.option}
-                >
-                    <Text>Make user</Text>
-                </TouchableOpacity>
+                <View style={{width:'100%',height:50, flexDirection:'row',paddingHorizontal:40}}>
+                   <View style={{width:'40%',height:'100%'}}>
+                      <Text style={styles.title}>Position</Text>
+                   </View>
+                   <View style={{width:'60%',height:'100%'}}>
+                     <Text style={styles.text}>{position}</Text>
+                   </View>
+                </View>
+
+                <View style={{width:'100%',height:50, flexDirection:'row',paddingHorizontal:40}}>
+                   <View style={{width:'40%',height:'100%'}}>
+                      <Text style={styles.title}>Qualification</Text>
+                   </View>
+                   <View style={{width:'60%',height:'100%'}}>
+                     <Text style={styles.text}>{qualification}</Text>
+                   </View>
+                </View>
+
+                <View style={{width:'100%',height:50, flexDirection:'row',paddingHorizontal:40}}>
+                   <View style={{width:'40%',height:'100%'}}>
+                      <Text style={styles.title}>Experience</Text>
+                   </View>
+                   <View style={{width:'60%',height:'100%'}}>
+                     {
+                         experience >1 ?(<Text style={styles.text}>{experience}{" "}years</Text>):(<Text style={styles.text}>{experience}{" "}year</Text>)
+                     }
+                   </View>
+                </View>
+
+                <View style={{width:'100%',height:50, flexDirection:'row',paddingHorizontal:40}}>
+                   <View style={{width:'40%',height:'100%'}}>
+                      <Text style={styles.title}>Date of birth</Text>
+                   </View>
+                   <View style={{width:'60%',height:'100%'}}>
+                     <Text style={styles.text}>{date_of_birth}</Text>
+                   </View>
+                </View>
                 <TouchableOpacity
-                onPress={ ()=>{
-                    setDetails(!showDetails)
-                    navigation.dispatch(StackActions.push('EditStaff'))
-                } } 
-                 style={styles.option}
-                >
-                    <Text>Edit</Text>
-                </TouchableOpacity>
-
-
+                style={{width:'90%',height:40,backgroundColor:'dodgerblue',alignItems:'center',justifyContent:'center',alignSelf:'center',marginBottom:10}}
+                onPress={()=>alert('Delete')}
                 
-                <TouchableOpacity 
-                onPress={ handleDelete }
-                style={styles.option}
                 >
-                    <Text>Delete</Text>
+                    <Text style={styles.btntext}>Grant Leave</Text>
                 </TouchableOpacity>
-            </ScrollView>
-            
-               
+
+                <TouchableOpacity
+                style={{width:'90%',height:40,backgroundColor:'green',alignItems:'center',justifyContent:'center',alignSelf:'center',marginBottom:10}}
+                onPress={()=>navigation.navigate('EditStaff')}
+                
+                >
+                    <Text style={styles.btntext}>Edit</Text>
+                </TouchableOpacity>
+                
+                <TouchableOpacity
+                style={{width:'90%',height:40,backgroundColor:'red',alignItems:'center',justifyContent:'center',alignSelf:'center',marginBottom:10}}
+                onPress={handleDelete}
+                
+                >
+                    <Text style={styles.btntext}>Delete</Text>
+                </TouchableOpacity>
+
+               </ScrollView>
         </View>
     )
 }
@@ -125,38 +158,49 @@ const styles = StyleSheet.create({
     container:{
         flex:1,
         height:'100%',
-        padding:10,
         width:'100%',
-        backgroundColor:'#B49F93'
+        backgroundColor:'white'
     },
-
-    boxtext:{
+    btntext:{
         fontSize:18,
         fontWeight:'bold',
+        color:'white'
+    },
+    uppersection:{
+        width:width,
+        height:height/3-80,
+        backgroundColor:'dodgerblue'
+    },
+    extrudingsection:{
+        position:'absolute',
+        width:width/3+40,
+        height:height/4-30,
+        padding:5,
+        justifyContent:'center',
+        alignItems:'center',
+        borderRadius:150,
+        backgroundColor:'white',
+        marginTop:'15%',
         alignSelf:'center',
-        color:'darkblue'
+        elevation:5
+    },
+    lowersection:{
+        flex:1,
+        backgroundColor:'white',
+        marginTop:120,
+        marginBottom:10
     },
     title:{
-        fontSize:14,
+        fontSize:18,
+        color:'black'
+    },
+    text:{
+        fontSize:18,
         fontWeight:'bold',
-        alignSelf:'center',
-        marginTop:10
-    },
-    scroll:{
-        paddingTop:10
-    },
-    option:{
-        width:'100%',
-        height:30,
-        marginTop:5,
-        backgroundColor:'whitesmoke',
-        alignItems:'center',
-        justifyContent:'center',
-        borderWidth:1,
-        borderColor:'grey',
-        borderRadius:5,
+        color:'darkblue'
     }
 
+   
 })
 const mapStateToProps = ({ user,staff,details }) => ({
     currentUser: user.currentUser,

@@ -8,24 +8,14 @@ const Notifications = () => {
     const [data, setData] = useState([])
 
     const fetchNotifications =()=>{
-        fetch('http://172.18.100.1:8000/trail')
+        fetch('http://192.168.137.1:8000/trail')
         .then(res =>res.json())
         .then(server=>setData(server))
         .catch(error=>console.log(error))
-
-        // db.transaction(tx=>{
-        //     tx.executeSql('SELECT * FROM audit_trail',null,
-        //     (txObj,{rows:{_array}})=>setData(data.concat(_array)),
-        //     (txObj,error)=>console.warn(error))
-        //   })
     }
-
 
    useEffect(() => {
        fetchNotifications()
-       return () => {
-            
-       }
    }, [])
 
     return (
@@ -39,7 +29,7 @@ const Notifications = () => {
             {
                 data.map(item=>(
                     
-                        <View  key={item.id} style={{width:width/2+130,height:height/8+40,justifyContent:'center',paddingLeft:20,backgroundColor:'pink',marginBottom:25}}>
+                        <View  key={item.id} style={{width:width/2+130,height:height/8+40,justifyContent:'center',paddingLeft:20,backgroundColor:'white',elevation:5,marginBottom:25}}>
                         <Text style={{fontSize:18,fontWeight:'bold'}}>{item.actor} </Text>
                         <Text>{item.action}</Text>
                         <Text> {item.time}</Text>

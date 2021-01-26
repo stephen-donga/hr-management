@@ -18,4 +18,14 @@ export const setActions = action => ({
 export const setNumberOfUsers = users =>({
   type: UserActionTypes.SET_NUMBER_OF_USERS,
   payload:users
+});
+
+export const setLoggedIn = user =>({
+  type: UserActionTypes.LOGGED_USER,
+  payload:user
+});
+
+export const setNewUser = users =>({
+  type:UserActionTypes.SET_NEW_USERS,
+  payload:users
 })

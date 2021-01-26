@@ -88,8 +88,8 @@ app.put('/staff/update',(req, res)=>{
     let experience = parseInt(exp)
     let date = req.body.date
     let id = req.body.id
-  let sql = `UPDATE staff_members SET  (first_name, last_name) VALUES (?,?) WHERE id =${id}`
-  connection.query(sql,[firstname, lastname],(err, result) => {
+  let sql = "UPDATE staff_members SET  last_name =`${lastname}` WHERE id=id"
+  connection.query(sql,(err, result) => {
     if(err)throw err;
     res.send(result)
     console.log(result)

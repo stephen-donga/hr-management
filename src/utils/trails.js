@@ -5,7 +5,7 @@ const auditTrail = () =>{
 }
 auditTrail.logTrail=(trail)=>{
 
-    fetch('http://172.18.100.1:8000',{
+    fetch('http://192.168.137.1:8000/trail/add',{
         method:'post',
             headers: {
                 Accept: "application/json",
@@ -21,13 +21,6 @@ auditTrail.logTrail=(trail)=>{
     .then(res =>res.json())
     .then(server=>console.log(server))
     .catch(error=>console.log(error))
-
-    // db.transaction(tx =>{
-    //     tx.executeSql('INSERT INTO audit_trail (actor,action,time) values (?,?,?)',[`${trail.actor}`,`${trail.action}`,`${trail.time}`],
-    //     null,
-    //     (txObj, error)=>console.log('Error', error)
-    //     )
-    // })
 }
 
 

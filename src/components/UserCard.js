@@ -3,11 +3,11 @@ import { View,StyleSheet,Image, Text,TouchableOpacity,TouchableWithoutFeedback} 
 import {Feather as Icon} from '@expo/vector-icons'
 import { StackActions, useNavigation } from '@react-navigation/native'
 import {connect} from 'react-redux'
-import {setDetails,detailsAdd} from '../redux/showUserDetails/detailsActions'
+import {detailsAdd} from '../redux/showUserDetails/detailsActions'
 
-const UserCard = ({first_name,last_name,id,date_of_birth,position,qualification,experience,showDetails,setDetails,addDetails,image}) => {
-
+const UserCard = ({first_name,last_name,id,date_of_birth,position,qualification,experience,addDetails,image}) => {
     
+    const navigation = useNavigation();
     const handlePress =()=>{
         let detail ={
             first_name,
@@ -21,45 +21,94 @@ const UserCard = ({first_name,last_name,id,date_of_birth,position,qualification,
         }
         
             addDetails(detail)
-            setDetails(!showDetails)
+            navigation.dispatch(StackActions.push('View'))
     }
     return (
-            <TouchableWithoutFeedback 
-                onPress={()=>setDetails(showDetails?!showDetails:null)}
-                >
-            <View style={styles.container}>
+        <TouchableOpacity 
+            onPress={handlePress}
+            style={styles.container}
+            >
+        <View style={styles.view}>
+            <View style={styles.leftsection}>
+                <Image source={{uri:image}}   style={styles.image}/>
+            </View>
+            <View style={styles.rightsection}>
+                <View style={styles.upper}>
+                <Text style={styles.text}>{first_name}{" "}{last_name}</Text>
+
+            </View>
+                <View style={styles.lower}>
+                    <Text style={styles.title}>{position}</Text>
+
+                </View>
+        </View>
                 
-                <View style={{flexDirection:'row',flex:1,paddingLeft:5}}>
-                    <View style={{width:'35%',height:'90%',alignSelf:'center' ,margin:5}}>
-                        <Image source={{uri:image}} style={{ alignSelf:'center',width: 110, height: 110,borderRadius:60,borderWidth:3,borderColor:'grey' }}/>
-                    </View>
-
-                    <View style={{width:'50%',height:'90%',alignItems:'center',justifyContent:'center'}}>
-                        <Text style={{fontSize:14,fontWeight:'bold'}}>{first_name}{" "}{last_name}</Text>
-                        <Text style={{fontSize:14,color:'steelblue'}}>{position}</Text>
-                    </View>
-
-                    <TouchableOpacity
-                        onPress={handlePress}
-                        style={{width:'10%',height:'100%',alignItems:'center',justifyContent:'center'}}>
-                        <Icon name='more-vertical' size={30}/>
-                    </TouchableOpacity>
-
-                </View>
-                </View>
-                </TouchableWithoutFeedback>
+                
+        </View>
+                </TouchableOpacity>
         
     )
 }
 
 const styles = StyleSheet.create({
     container:{
-        height:130,
-        borderRadius:10,
+        height:100,
+        borderRadius:5,
         marginBottom:10,
-        backgroundColor:'whitesmoke',
+        borderColor:'grey',
+        elevation:3
+    },
+    title:{
+        fontSize:15,
+        fontWeight:'bold',
+        color:'grey'
+    },
+    smalltext:{
+        fontSize:16,
+        fontWeight:'bold',
+        color:'#aaa'
+    },
+    view:{
+        width:'100%',
+        height:'100%',
+        flexDirection:'row',
+    },
+    upper:{
+        width:'100%',
+        height:'50%',
+        borderBottomWidth:1,
+        borderColor:'indigo',
+        justifyContent:'center'
+    },
+    leftsection:{
+        width:'30%',
+        height:'100%',
+        backgroundColor:'indigo',
+        justifyContent:'center',
+        paddingLeft:15,
+        borderTopLeftRadius:5,
+        borderBottomLeftRadius:5
+    },
+    text:{
+        fontSize:18,
+        color:'grey',
+        fontWeight:'bold',
+    },
+    image:{
+        width:80,
         borderWidth:1,
-        borderColor:'grey'
+        height:80,
+        borderRadius:80
+    },
+    rightsection:{
+        width:'70%',
+        height:'100%',
+        marginHorizontal:15
+    },
+    lower:{
+        width:'100%',
+        height:'50%',
+        justifyContent:'center'
     },
     card:{
         width:'100%',
@@ -67,7 +116,6 @@ const styles = StyleSheet.create({
     }
 })
 const mapStateToProps = ({details}) => ({
-    showDetails:details.showDetails
  });
 
 const mapDispatchToProps = dispatch => ({

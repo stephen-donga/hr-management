@@ -2,52 +2,50 @@ import React, { useState, useEffect } from 'react'
 import {View,Button,Text,StyleSheet,TouchableOpacity,ActivityIndicator} from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import auditTrail from '../utils/trails'
-import db from '../utils/database'
+import  {setLoggedIn} from '../redux/user/userAction'
 import {connect} from  'react-redux'
-import {setCurrentUser,setNumberOfUsers} from '../redux/user/userAction'
+import {setCurrentUser,setNewUser,setNumberOfUsers} from '../redux/user/userAction'
 import {setStaff} from '../redux/staff/staffActions'
 
 import Inputfield from '../custom/Inputfield'
 
-const Login = ({navigation,setStaf,setCurrentUser}) => {
+const Login = ({navigation,setStaf,setLoggedUser,newUsers,setNewUsers,setCurrentUser}) => {
 
     const [fetched, setFetched] = useState([])
-    const [newUser, setNewUser] = useState([])
     const [loading, setLoading] = useState(false)
 
     const startSpinner = () =>{
         setLoading(true)
         setTimeout(()=>{
             setLoading(false)
+            navigation.navigate('Home')
             setUsername("");
             setPassword("")
-            navigation.navigate('Home')
         },2000)
     }
-
     
 
     const fetchUsers = () => {
-        fetch('http://192.168.0.106:8000/users')
+        fetch('http://192.168.137.1:8000/users')
         .then(res =>res.json())
         .then(server=>setFetched(server))
         .catch(error=>console.log(error))
 
-        fetch('http://192.168.0.106:8000/new')
+        fetch('http://192.168.137.1:8000/new')
         .then(res =>res.json())
-        .then(server=>setNewUser(server))
+        .then(server=>setNewUsers(server))
         .catch(error=>console.log(error))
 
-        fetch('http://192.168.0.106:8000/staff')
+        fetch('http://192.168.137.1:8000/staff')
         .then(res =>res.json())
         .then(server=>setStaf(server))
         .catch(error=>console.log(error))
 
     }
      
-     let allUserz = fetched.concat(newUser)
+    let allUserz = fetched.concat(newUsers)
      useEffect(() => {
-        fetchUsers();
+         fetchUsers();
         return () => {
           
         }
@@ -57,7 +55,7 @@ const Login = ({navigation,setStaf,setCurrentUser}) => {
     const [password, setPassword] = useState("")
     const [userError,setUserError] = useState("")
     const [passwordError,setPasswordError] = useState("")
-
+    
     const filteredUser = allUserz.filter(user =>user.username==username||user.email==username &&user.password==password)
     const handleUsernameChange = (text) => {
         setUsername(text)
@@ -78,16 +76,19 @@ const Login = ({navigation,setStaf,setCurrentUser}) => {
         if(userError=="")setUserError("Please enter a valid username")
         
         if(passwordError=="")setPasswordError("Please enter a valid password")
-                       
-            if(filteredUser.length&&filteredUser[0].password===password){
-                trail ={
-                    actor:username,
-                    action:'Successfully logged in',
-                    time:new Date().toString()
-                }
-                setCurrentUser(username)
-                auditTrail.logTrail(trail)
-                startSpinner()
+        
+        if(filteredUser.length&&filteredUser[0].password===password){
+            trail ={
+                actor:username,
+                action:'Successfully logged in',
+                time:new Date().toString()
+            }
+            setCurrentUser(username)
+            let user = filteredUser[0]
+            setLoggedUser(user)
+
+            auditTrail.logTrail(trail)
+            startSpinner()
             }
             else{
                 trail={
@@ -196,13 +197,16 @@ const styles = StyleSheet.create({
 const mapStateToProps = ({ user, staff }) => ({
     currentUser: user.currentUser,
     user_role: user.role,
-    allS:staff.staff
+    allS:staff.staff,
+    newUsers:user.newUsers
   });
   
   const mapDispatchToProps = dispatch => ({
     setCurrentUser: user => dispatch(setCurrentUser(user)),
     setStaf: user => dispatch(setStaff(user)),
     setUsers: user => dispatch(setNumberOfUsers(user)),
+    setLoggedUser: user => dispatch(setLoggedIn(user)),
+    setNewUsers: user => dispatch(setNewUser(user))
    
   });
 
