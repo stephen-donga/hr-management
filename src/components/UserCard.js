@@ -38,7 +38,7 @@ const UserCard = ({first_name,last_name,id,date_of_birth,position,qualification,
 
             </View>
                 <View style={styles.lower}>
-                    <Text style={styles.title}>{position}</Text>
+                    <Text style={styles.title}>Position:{"  "}{position}</Text>
 
                 </View>
         </View>

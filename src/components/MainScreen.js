@@ -9,15 +9,7 @@ const {width,height} =Dimensions.get("window")
 
  function MainScreen() {
 
-  const [data,setData] = useState([])
  
-  useEffect(() => {
-      
-   
-    return () => {
-    }
-  }, [])
-
    return (
     <View style={styles.container}>
       <StatusBar style="light" />

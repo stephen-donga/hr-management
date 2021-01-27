@@ -8,7 +8,6 @@
  // custom imports
  import HeaderBar from '../custom/HeaderBar'
  import Input from '../custom/Inputs'
- import db from '../utils/database'
  
  const {width, height} = Dimensions.get('window');
  const NewUser = ({navigation,setNewUsers}) => {
@@ -231,7 +230,7 @@
  });
 
  export const mapDispatchToProps = dispatch =>({
-     setNewUsers: users = dispatch(setNewUser(users))
+     setNewUsers: x => dispatch(setNewUser(x))
  })
  
  export default connect(null, mapDispatchToProps)(NewUser)

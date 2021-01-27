@@ -142,11 +142,15 @@ const ViewStaff = ({details,showDetails,setStf,currentUser,setDetails}) => {
                 </TouchableOpacity>
                 
                 <TouchableOpacity
-                style={{width:'90%',height:40,backgroundColor:'red',alignItems:'center',justifyContent:'center',alignSelf:'center',marginBottom:10}}
+                style={{width:'90%',height:40,backgroundColor:'#eee',elevation:5,alignItems:'center',justifyContent:'center',alignSelf:'center',marginBottom:10}}
                 onPress={handleDelete}
                 
                 >
-                    <Text style={styles.btntext}>Delete</Text>
+                    <Text style={{
+                      fontSize:18,
+                      fontWeight:'bold',
+                      color:'red'
+                      }}>Delete</Text>
                 </TouchableOpacity>
 
                </ScrollView>

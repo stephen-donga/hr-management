@@ -1,19 +1,41 @@
-import React, {useState} from 'react'
+import React, {useState,useEffect} from 'react'
 import { View, Text ,StyleSheet, Image,Dimensions, Button} from 'react-native'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import { AntDesign } from '@expo/vector-icons'; 
 import {connect} from 'react-redux'
 import { StackActions,useNavigation } from '@react-navigation/native';
+import {setNumberOfUsers} from '../redux/user/userAction'
 
 import HeaderBar from '../custom/HeaderBar'
 import Homepage from './Homepage'
 
 const {width, height} = Dimensions.get('window')
 
-const HomeScreen = ({currentUser,users,roles, allStaff}) => {
+const HomeScreen = ({currentUser,setUsers,allStaff}) => {
 
 
     const navigation = useNavigation()
+
+    const [fetched, setFetched] = useState([])
+    const [newUsers, setNewUsers] = useState([])
+
+    const fetchUsers = () => {
+        fetch('http://192.168.130.161:8000/users')
+        .then(res =>res.json())
+        .then(server=>setFetched(server))
+        .catch(error=>console.log(error))
+
+        fetch('http://192.168.130.161:8000/new')
+        .then(res =>res.json())
+        .then(server=>setNewUsers(server))
+        .catch(error=>console.log(error))
+    }
+
+    useEffect(() => {
+        fetchUsers()
+    }, [])
+    const users  = fetched.concat(newUsers)
+    setUsers(users)
 
     let totalStaff = allStaff.length
     let totalUsers = users.length
@@ -47,11 +69,11 @@ const HomeScreen = ({currentUser,users,roles, allStaff}) => {
             <View style={styles.lastsection}>
                 <Text style={styles.title}>All members</Text>
                     <FlatList 
-                    data={[{name:'Staff',urls:require('../../assets/staff2.png'),number:totalStaff},
-                    {name:'Users',urls:require('../../assets/user.png'),number:totalUsers}]}
+                    data={[{name:'Staff',urls:require('../../assets/staff2.png'),number:totalStaff,screen:'Staff'},
+                    {name:'Users',urls:require('../../assets/user.png'),number:totalUsers,screen:'Users'}]}
                     renderItem={({item})=>{
                         return(
-                            <TouchableOpacity onPress={()=>null}>
+                            <TouchableOpacity onPress={()=>navigation.navigate(item.screen)}>
                             <View style={{position:'relative',}}>
                                 <Image style={{width:110,
                                     margin:20,
@@ -179,8 +201,11 @@ const styles = StyleSheet.create({
 const mapStateToProps = ({user,staff}) => ({
     currentUser: user.currentUser,
     allStaff: staff.staff,
-    users:user.user,
     roles: user.actions
   });
 
-export default connect(mapStateToProps)(HomeScreen)
+  const mapDispatchToProps = dispatch =>({
+      setUsers: users => dispatch(setNumberOfUsers(users))
+  })
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen)

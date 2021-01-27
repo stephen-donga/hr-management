@@ -1,27 +1,16 @@
 import React from 'react'
 import { View,StyleSheet,Image, Text,TouchableOpacity,TouchableWithoutFeedback} from 'react-native'
-import {Feather as Icon} from '@expo/vector-icons'
+import {Entypo} from '@expo/vector-icons'
 import { StackActions, useNavigation } from '@react-navigation/native'
 import {connect} from 'react-redux'
 import {setSingleTrainee} from '../redux/training/trainingActions'
 
-const UserCard = ({first_name,last_name,id,date_of_birth,position,qualification,experience,setPerson,image}) => {
+const UserCard = ({email,image,role}) => {
     
     const navigation = useNavigation();
 
     const handlePress = ()=>{
-        let personToAdd = {
-            first_name,
-            last_name,
-            id,
-            date_of_birth,
-            position,
-            qualification,
-            experience,
-            image
-        }
-        setPerson(personToAdd)
-        navigation.navigate('Trainee')
+        
     }
 
     
@@ -32,15 +21,17 @@ const UserCard = ({first_name,last_name,id,date_of_birth,position,qualification,
             >
         <View style={styles.view}>
             <View style={styles.leftsection}>
-                <Image source={{uri:image}}   style={styles.image}/>
+               {
+                   image==null || undefined ?<Entypo name='user' color='royalblue' size={80}/>  :<Image source={{uri:image}}   style={styles.image}/> 
+               }
             </View>
             <View style={styles.rightsection}>
                 <View style={styles.upper}>
-                <Text style={styles.text}>{first_name}{" "}{last_name}</Text>
+                <Text style={styles.text}>{email}</Text>
 
             </View>
                 <View style={styles.lower}>
-                    <Text style={styles.title}>Qualification:{"  "}{qualification}</Text>
+                    <Text style={styles.title}>Role:{" "}{role.toUpperCase()}</Text>
 
                 </View>
         </View>

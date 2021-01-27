@@ -107,14 +107,14 @@ const Staff = ({showDetails,staff,setStaf,setDetails}) => {
                  )
                 }
             
-                    <View style={{position:'absolute',marginLeft:'80%',width:50,height:50,borderRadius:150,marginTop:450}}>
+                    <View style={{position:'absolute',marginLeft:'80%',width:50,height:50,borderRadius:150,marginTop:'120%'}}>
                     <TouchableOpacity 
                        onPress={()=>{
                            showDetails ?setDetails(!showDetails):null
                            navigator.dispatch(StackActions.push('Addmember'))}
                        }
                        style={{width:'100%',height:'100%',borderRadius:150,justifyContent:'center',alignItems:'center'}}>
-                       <Feather name='plus-circle'color="#83C091" size={35} />
+                       <Feather name='plus-circle'color="green" size={35} />
                     </TouchableOpacity>
                 </View>
                

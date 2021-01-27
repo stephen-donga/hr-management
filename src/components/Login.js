@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import {View,Button,Text,StyleSheet,TouchableOpacity,ActivityIndicator} from 'react-native';
+import {View,Button,Text,StyleSheet,TouchableOpacity} from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import auditTrail from '../utils/trails'
 import  {setLoggedIn} from '../redux/user/userAction'
 import {connect} from  'react-redux'
-import {setCurrentUser,setNewUser,setNumberOfUsers} from '../redux/user/userAction'
+import {setCurrentUser,setNewUser} from '../redux/user/userAction'
 import {setStaff} from '../redux/staff/staffActions'
 
 import Inputfield from '../custom/Inputfield'
@@ -204,7 +204,6 @@ const mapStateToProps = ({ user, staff }) => ({
   const mapDispatchToProps = dispatch => ({
     setCurrentUser: user => dispatch(setCurrentUser(user)),
     setStaf: user => dispatch(setStaff(user)),
-    setUsers: user => dispatch(setNumberOfUsers(user)),
     setLoggedUser: user => dispatch(setLoggedIn(user)),
     setNewUsers: user => dispatch(setNewUser(user))
    
