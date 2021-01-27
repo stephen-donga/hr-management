@@ -20,7 +20,7 @@ const ViewStaff = ({details,showDetails,setStf,currentUser,setDetails}) => {
     
     const deleteMember = (memberId) =>{
         
-        fetch(`http://192.168.137.1:8000/staff/delete/${memberId}`,{
+        fetch(`http://192.168.130.161:8000/staff/delete/${memberId}`,{
             method:'DELETE'
         })
         .then(res=>res.json())

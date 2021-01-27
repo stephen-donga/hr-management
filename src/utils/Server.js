@@ -84,11 +84,10 @@ app.put('/staff/update',(req, res)=>{
     let lastname = req.body.lastname
     let position = req.body.position
     let qualification = req.body.qualification
-    let exp = req.body.experience
-    let experience = parseInt(exp)
+    let experience = req.body.experience
     let date = req.body.date
     let id = req.body.id
-  let sql = "UPDATE staff_members SET  last_name =`${lastname}` WHERE id=id"
+  let sql = "UPDATE staff_members SET  first_name ='"+firstname+"', last_name ='"+lastname+"',position ='"+position+"',qualification ='"+qualification+"', experience ='"+experience+"',date_of_birth ='"+date+"' WHERE  id ='"+id+"'"
   connection.query(sql,(err, result) => {
     if(err)throw err;
     res.send(result)
@@ -100,6 +99,15 @@ app.delete('/staff/delete/:id',(req, res)=>{
 
     let sql = 'DELETE FROM staff_members WHERE id=?'
     connection.query(sql,[req.params.id],(err, result) => {
+        if(err)throw err;
+        res.send(result)
+        console.log(result)
+    })
+})
+
+app.get('/trainee',(req, res)=>{
+    let sql = 'SELECT * FROM staff_members WHERE position = "Intern Developer"'
+    connection.query(sql,(err, result) => {
         if(err)throw err;
         res.send(result)
         console.log(result)

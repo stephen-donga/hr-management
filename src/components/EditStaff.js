@@ -3,8 +3,8 @@ import { View,ScrollView,Button, Alert,Text,Dimensions,TouchableOpacity,StyleShe
 import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePicker from "@react-native-community/datetimepicker"
 import auditTrail from '../utils/trails'
-import db from '../utils/database'
 import {connect} from 'react-redux'
+import {setStaff} from '../redux/staff/staffActions'
 import {StackActions, useNavigation} from '@react-navigation/native'
 
 import HeaderBar from '../custom/HeaderBar'
@@ -13,7 +13,7 @@ import FormInput from '../custom/FormInput'
 
 const {width, height} = Dimensions.get('window')
 
-const EditStaff = ({details, currentUser}) => {
+const EditStaff = ({details,addStaff,currentUser}) => {
     const {first_name,last_name,id,position,qualification,experience,image} = details;
     const navigation = useNavigation();
     const [filterBy, setFilterBy] = useState(position)
@@ -40,7 +40,7 @@ const EditStaff = ({details, currentUser}) => {
 
    const handleUserEdit =()=>{
 
-        fetch('http:// 172.18.69.193:8000/staff/update',{
+        fetch('http://192.168.130.161:8000/staff/update',{
           method:'PUT',
           headers: {
               Accept: "application/json",
@@ -59,6 +59,11 @@ const EditStaff = ({details, currentUser}) => {
         .then(res =>res.json())
         .then(server=>console.log(server))
         .catch(error=>console.log(error))
+
+        fetch('http://192.168.130.161:8000/staff')
+        .then(res => res.json())
+        .then(res => addStaff(res))
+        .catch(err =>console.log(err))
 
        Alert.alert('Edit',"Apply changes ?",[
         {
@@ -198,4 +203,8 @@ const mapStateToProps = ({ user,staff,details }) => ({
     showDetails:details.showDetails
   });
 
-export default connect(mapStateToProps)(EditStaff);
+  const mapDispatchToProps = dispatch =>({
+    addStaff: staff => dispatch(setStaff(staff))
+  })
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditStaff);

@@ -26,17 +26,17 @@ const Login = ({navigation,setStaf,setLoggedUser,newUsers,setNewUsers,setCurrent
     
 
     const fetchUsers = () => {
-        fetch('http://172.18.69.193:8000/users')
+        fetch('http://192.168.130.161:8000/users')
         .then(res =>res.json())
         .then(server=>setFetched(server))
         .catch(error=>console.log(error))
 
-        fetch('http://172.18.69.193:8000/new')
+        fetch('http://192.168.130.161:8000/new')
         .then(res =>res.json())
         .then(server=>setNewUsers(server))
         .catch(error=>console.log(error))
 
-        fetch('http://172.18.69.193:8000/staff')
+        fetch('http://192.168.130.161:8000/staff')
         .then(res =>res.json())
         .then(server=>setStaf(server))
         .catch(error=>console.log(error))

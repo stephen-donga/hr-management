@@ -51,12 +51,12 @@ const Events = ({navigation,addEvents,events}) => {
             </View>
 
             </View>
-            <View style={{position:'absolute',marginTop:"90%",marginLeft:'85%',width:80,height:80}}>
+            <View style={{position:'absolute',marginTop:"140%",borderRadius:160,marginLeft:'85%',width:80,padding:10,height:60}}>
                 <TouchableOpacity 
-                onPress={()=>navigation.navigate('AddEvent')}
-                style={{width:'100%',height:'100%',backgroundColor:'fff',alignItems:'center',justifyContent:'center', height:30}}
+                    onPress={()=>navigation.navigate('AddEvent')}
+                    style={{width:'100%',height:'100%',backgroundColor:'fff',alignItems:'center',justifyContent:'center', height:30}}
                 >
-                     <Icon name="plus-circle" color='blue' size={30}/>
+                     <Icon name="plus-circle" color='blue' size={34}/>
                 </TouchableOpacity>
             </View>
         </View>
