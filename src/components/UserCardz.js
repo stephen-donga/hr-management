@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     leftsection:{
         width:'30%',
         height:'100%',
-        backgroundColor:'dodgerblue',
+        backgroundColor:'indigo',
         justifyContent:'center',
         paddingLeft:15,
         borderTopLeftRadius:5,

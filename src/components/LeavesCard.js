@@ -1,10 +1,14 @@
 import React from 'react'
 import {Entypo} from '@expo/vector-icons'
-import { View, Text, StyleSheet,Image} from 'react-native'
+import { View, Text, StyleSheet,Image, TouchableOpacity} from 'react-native'
+import { StackActions, useNavigation } from '@react-navigation/native'
 
-const LeavesCard = ({name}) => {
+const LeavesCard = () => {
+
+    const navigation = useNavigation()
    let image =1
     return (
+        <TouchableOpacity onPress={()=>navigation.dispatch(StackActions.push('LeaveDetails'))}>
         <View style={styles.container}>
              <View style={styles.leftsection}>
                     {
@@ -21,18 +25,19 @@ const LeavesCard = ({name}) => {
                     </View>
 
                     <View style={styles.row}>
-                        <Text style={styles.label}>Leave start:</Text>
-                        <Text style={styles.title}>12/02/2021</Text>
+                        <Text style={styles.label}>Start:</Text>
+                        <Text style={styles.label1}> Eend:</Text>
                     </View>
 
                     <View style={styles.row}>
-                        <Text style={styles.label}>Leave end:</Text>
+                        <Text style={styles.title}>12/02/2021</Text>
                         <Text style={styles.title}>12/05/2021</Text>
                     </View>
 
                 </View>
              </View>
         </View>
+        </TouchableOpacity>
     )
 }
 
@@ -64,6 +69,11 @@ const styles = StyleSheet.create({
     label:{
         fontSize:15,
         color:'darkblue'
+    },
+    label1:{
+        fontSize:15,
+        color:'darkblue',
+        marginLeft:80
     },
     title:{
         marginLeft:15,
