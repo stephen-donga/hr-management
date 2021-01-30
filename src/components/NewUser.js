@@ -6,6 +6,7 @@
 
 
  // custom imports
+ import {urlConnection} from '../utils/url'
  import HeaderBar from '../custom/HeaderBar'
  import Input from '../custom/Inputs'
  
@@ -69,7 +70,7 @@
             return
         }
  
-        fetch('http://192.168.137.1:8000/new/adduser',{
+        fetch(urlConnection('new/adduser'),{
             method:'post',
             headers: {
                 Accept: "application/json",
@@ -87,7 +88,7 @@
         .then(res => console.log(res))
         .catch(err =>console.log(err))
 
-        fetch('http://192.168.137.1:8000/new')
+        fetch(urlConnection('new'))
         .then(res =>res.json())
         .then(server=>setNewUsers(server))
         .catch(error=>console.log(error))

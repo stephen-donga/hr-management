@@ -9,7 +9,6 @@ import {setStaff} from '../redux/staff/staffActions'
 
 import HeaderBar from '../custom/HeaderBar'
 import UserCard from './UserCard'
-import db from '../utils/database'
 import ViewStaff from '../components/ViewStaff'
 
 import { StackActions, useNavigation } from '@react-navigation/native';
@@ -35,9 +34,6 @@ const Staff = ({showDetails,staff,setStaf,setDetails}) => {
 
     ]);
 
-    useEffect(()=>{
-    },[])
-    
     let controller;
 
     const handleSearch = (text)=>{

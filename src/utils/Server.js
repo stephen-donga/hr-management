@@ -6,9 +6,8 @@ const mysql = require('mysql')
 const app = express()
 
 app.use(parser.json());
-// app.use(parser.urlencoded({extended:false}));
+// app.use(parser);
 
-// Creating database connection
 const connection = mysql.createConnection({
     host:'localhost',
     user:"root",
@@ -69,7 +68,8 @@ const connection = mysql.createConnection({
         qualification:req.body.qualification,
         experience:req.body.experience,
         date_of_birth:req.body.date,
-        image:req.body.image
+        image:req.body.image,
+        onleave:0
     }
     let sql = 'INSERT INTO staff_members SET ?'
     connection.query(sql, user, (err, result) => {
@@ -78,6 +78,25 @@ const connection = mysql.createConnection({
         console.log(result)
     })
 });
+
+app.put('/staff/leave',(req, res)=>{
+    let id = req.body.id
+    let onleave = 1
+    let sql = "UPDATE staff_members SET onleave ='"+onleave+"' WHERE  id ='"+id+"' "
+    connection.query(sql, (err, result)=>{
+        if(err) throw err;
+        res.send(result)
+    })
+})
+app.put('/staff/leave/cancel',(req, res)=>{
+    let id = req.body.id
+    let onleave = 0
+    let sql = "UPDATE staff_members SET onleave ='"+onleave+"' WHERE  id ='"+id+"' "
+    connection.query(sql, (err, result)=>{
+        if(err) throw err;
+        res.send(result)
+    })
+})
 
 app.put('/staff/update',(req, res)=>{
     let firstname = req.body.firstname
@@ -196,6 +215,48 @@ app.post('/trail/add',(req, res)=>{
         console.log(result)
     })
 });
+
+app.get('/payroll', (req,res)=>{
+    connection.query('SELECT * FROM payroll_table',(error, results, fields)=>{
+        if(error)throw error;
+        res.send(results)
+    })
+});
+
+app.post('/payroll/add',(req, res)=>{
+    let payroll ={
+        staff_id:req.body.id,
+        gross_pay:req.body.gross,
+        net_pay:req.body.net
+    }
+    let sql = 'INSERT INTO payroll_table SET ?'
+    connection.query(sql,payroll,(err, result)=> {
+        if(err)throw err;
+        res.send(result)
+    })
+});
+
+app.get('/leaves',(req, res)=>{
+    connection.query('SELECT * FROM leaves_table',(error, results, fields)=>{
+        if(error) throw error;
+        res.send(results)
+    })
+});
+
+app.post('/leaves/add',(req, res)=>{
+    let leaveDetails = {
+        type:req.body.type,
+        reason:req.body.reason,
+        start_date:req.body.starts,
+        end_date:req.body.ends,
+        staff_id:req.body.staffId
+    }
+    let sql = 'INSERT INTO leaves_table SET ?'
+    connection.query(sql,leaveDetails,(error, results, fields)=>{
+        if(error)throw error;
+        res.send(results)
+    })
+})
 
 
 app.listen(8000,()=>{

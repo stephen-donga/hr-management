@@ -5,7 +5,7 @@ import { StackActions, useNavigation } from '@react-navigation/native'
 import {connect} from 'react-redux'
 import {detailsAdd} from '../redux/showUserDetails/detailsActions'
 
-const UserCard = ({first_name,last_name,id,date_of_birth,position,qualification,experience,addDetails,image}) => {
+const UserCard = ({first_name,last_name,id,date_of_birth,position,qualification,experience,addDetails,onleave,image}) => {
     
     const navigation = useNavigation();
     const handlePress =()=>{
@@ -17,7 +17,8 @@ const UserCard = ({first_name,last_name,id,date_of_birth,position,qualification,
             date_of_birth,
             qualification,
             experience,
-            image
+            image,
+            onleave
         }
         
             addDetails(detail)

@@ -1,26 +1,30 @@
-import React,{useEffect} from 'react'
-import { View, Alert,Text,Dimensions,Image, ToastAndroid,StyleSheet} from 'react-native'
+import React,{useState,useEffect} from 'react'
+import { View, Alert,Text,Dimensions,Image,ToastAndroid,StyleSheet} from 'react-native'
 import{Feather as Icon} from "@expo/vector-icons"
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
+import DateTimePicker from "@react-native-community/datetimepicker"
+import { Modal, ModalContent } from 'react-native-modals';
+import { ScrollView ,TextInput,TouchableOpacity } from 'react-native-gesture-handler'
 import {connect} from 'react-redux'
 import auditTrail from '../utils/trails'
 import {setStaff} from '../redux/staff/staffActions'
 import {setDetails} from '../redux/showUserDetails/detailsActions'
 import { StackActions, useNavigation } from '@react-navigation/native'
 
+import {urlConnection} from '../utils/url'
+
 const {width, height} = Dimensions.get('window')
 
-const ViewStaff = ({details,showDetails,setStf,currentUser,setDetails}) => {
+const ViewStaff = ({details,setStf,currentUser}) => {
 
     const navigation = useNavigation();
 
+    const [modalVisible, setModalVisible] = useState(false);
     
-    
-    const {id,first_name,last_name,position,qualification,experience,date_of_birth,image} =details;
+    const {id,first_name,last_name,position,qualification,experience,onleave,date_of_birth,image} =details;
     
     const deleteMember = (memberId) =>{
         
-        fetch(`http://192.168.130.161:8000/staff/delete/${memberId}`,{
+        fetch(urlConnection(`staff/delete/:${memberId}`),{
             method:'DELETE'
         })
         .then(res=>res.json())
@@ -28,7 +32,7 @@ const ViewStaff = ({details,showDetails,setStf,currentUser,setDetails}) => {
         .catch(err=>console.log(err))
         showToast()
 
-        fetch('http://192.168.137.1:8000/staff')
+        fetch(urlConnection('staff'))
         .then(res =>res.json())
         .then(server=>setStf(server))
         .catch(error=>console.log(error))
@@ -56,9 +60,6 @@ const ViewStaff = ({details,showDetails,setStf,currentUser,setDetails}) => {
             { text: 'OK', onPress: () =>{
                 deleteMember(id)
                 navigation.navigate('Staff')
-                
-               
-    
               } }
         ],{cancelable:true})
     
@@ -66,6 +67,61 @@ const ViewStaff = ({details,showDetails,setStf,currentUser,setDetails}) => {
 
     return (
         <View style={styles.container}>
+          <Modal
+           visible={modalVisible}
+            onTouchOutside={() =>setModalVisible(!modalVisible)}
+  >
+    <ModalContent style={{width:width/2+170,height:height/2+200}}>
+      <View >
+        {/* <Text style={{fontSize:21,alignSelf:'center',fontWeight:'bold',color:'darkblue',marginBottom:30}}>Leave Request Form</Text>
+        <Text style={{fontSize:18}}>Reason</Text>
+        <TextInput 
+        multiline={true}
+        style={{width:'98%',padding:10,height:100,fontSize:19,marginBottom:10,backgroundColor:'#eee'}}
+          placeholder='Reason and leave details here'
+        />
+          <TouchableOpacity  onPress={()=>showDatepicker()} 
+          style={{width:'98%',height:50,backgroundColor:'blue',alignItems:'center',justifyContent:'center'}}
+          >
+            <Text style={{fontSize:17,marginBottom:10,fontWeight:'bold',color:'white'}}>Select start date</Text>
+          </TouchableOpacity>
+          <TouchableOpacity  onPress={showDatepicker2} 
+          style={{width:'98%',height:50,marginTop:10,backgroundColor:'steelblue',alignItems:'center',justifyContent:'center'}}
+          >
+            <Text style={{fontSize:17,fontWeight:'bold',color:'white'}}>Select end date</Text>
+          </TouchableOpacity>
+          {show && (
+                    <DateTimePicker
+                      testID="dateTimePicker"
+                      value={date}
+                      mode={mode}
+                      is24Hour={true}
+                      display="default"
+                      onChange={onChange}
+                      />
+                    
+      )}
+
+        <TouchableOpacity
+        style={{width:'98%',alignItems:'center',justifyContent:'center',height:50,marginTop:50,backgroundColor:'mediumaquamarine'}}
+        >
+          <Text style={{fontSize:18,fontWeight:'bold',color:'white'}}>Submit</Text>
+        </TouchableOpacity>
+
+        {show2 && (
+                    <DateTimePicker
+                      testID="dateTimePicker"
+                      value={date2}
+                      mode={mode2}
+                      is24Hour={true}
+                      display="default"
+                      onChange={onChange2}
+                      />
+                    
+      )} */}
+      </View>
+    </ModalContent>
+  </Modal>
                <View style={styles.uppersection}></View>
                <View style={styles.extrudingsection}>
                    <Image source={{uri:image}} style={{width:170,height:170,borderRadius:80 }} />
@@ -125,13 +181,15 @@ const ViewStaff = ({details,showDetails,setStf,currentUser,setDetails}) => {
                      <Text style={styles.text}>{date_of_birth}</Text>
                    </View>
                 </View>
-                <TouchableOpacity
-                style={{width:'90%',height:40,backgroundColor:'dodgerblue',alignItems:'center',justifyContent:'center',alignSelf:'center',marginBottom:10}}
-                onPress={()=>alert('Delete')}
-                
-                >
-                    <Text style={styles.btntext}>Grant Leave</Text>
-                </TouchableOpacity>
+                {
+                  !onleave?(<TouchableOpacity
+                  style={{width:'90%',height:40,backgroundColor:'dodgerblue',alignItems:'center',justifyContent:'center',alignSelf:'center',marginBottom:10}}
+                  onPress={()=>navigation.navigate('LeaveForm',{id})}
+                  
+                  >
+                      <Text style={styles.btntext}>Grant Leave</Text>
+                  </TouchableOpacity>) :null
+                }
 
                 <TouchableOpacity
                 style={{width:'90%',height:40,backgroundColor:'green',alignItems:'center',justifyContent:'center',alignSelf:'center',marginBottom:10}}
@@ -202,9 +260,7 @@ const styles = StyleSheet.create({
         fontSize:18,
         fontWeight:'bold',
         color:'darkblue'
-    }
-
-   
+    } 
 })
 const mapStateToProps = ({ user,staff,details }) => ({
     currentUser: user.currentUser,

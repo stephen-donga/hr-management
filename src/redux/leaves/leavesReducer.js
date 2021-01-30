@@ -1,7 +1,7 @@
 import {LeavesActionTypes} from './leavesTypes'
 
 const INITIAL_STATE = {
-    leaves:[{name:'obong',id:3}]
+    leaves:[]
 }
 
 const leavesReducer = (state=INITIAL_STATE,action)=>{

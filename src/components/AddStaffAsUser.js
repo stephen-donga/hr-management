@@ -6,8 +6,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 // custom imports
 import HeaderBar from '../custom/HeaderBar'
 import Input from '../custom/Inputs'
-import db from '../utils/database'
-
+import {urlConnection} from '../utils/url'
 const {width, height} = Dimensions.get('window');
 const NewUser = (props) => {
     console.log(props)
@@ -34,7 +33,7 @@ const NewUser = (props) => {
     }
 
     const handleSubmit =()=>{
-      fetch('http:// 172.18.69.193:8000//users/add',{
+      fetch(urlConnection('users/add'),{
         method:'post',
         headers: {
             Accept: "application/json",
@@ -50,12 +49,6 @@ const NewUser = (props) => {
       .then(res =>res.json())
       .then(server=>console.warn(server))
       .catch(error=>console.warn(error))
-        // db.transaction(tx => {
-        //     tx.executeSql('INSERT INTO users (email,role,user_id,password) values (?,?,?,?)',
-        //     [email,filterBy,id,password],
-        //       (txObj,resultSet) =>console.log(resultSet.rowsAffected),
-        //       (txObj, error) => console.log('Error', error))
-        //   });
     }
 
     return (

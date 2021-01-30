@@ -8,6 +8,7 @@ import {setCurrentUser,setNewUser} from '../redux/user/userAction'
 import {setStaff} from '../redux/staff/staffActions'
 
 import Inputfield from '../custom/Inputfield'
+import {urlConnection} from '../utils/url'
 
 const Login = ({navigation,setStaf,setLoggedUser,newUsers,setNewUsers,setCurrentUser}) => {
 
@@ -26,17 +27,17 @@ const Login = ({navigation,setStaf,setLoggedUser,newUsers,setNewUsers,setCurrent
     
 
     const fetchUsers = () => {
-        fetch('http://192.168.130.161:8000/users')
+        fetch(urlConnection('users'))
         .then(res =>res.json())
         .then(server=>setFetched(server))
         .catch(error=>console.log(error))
 
-        fetch('http://192.168.130.161:8000/new')
+        fetch(urlConnection('new'))
         .then(res =>res.json())
         .then(server=>setNewUsers(server))
         .catch(error=>console.log(error))
 
-        fetch('http://192.168.130.161:8000/staff')
+        fetch(urlConnection('staff'))
         .then(res =>res.json())
         .then(server=>setStaf(server))
         .catch(error=>console.log(error))

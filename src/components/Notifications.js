@@ -1,14 +1,14 @@
 import React,{useState, useEffect} from 'react'
 import { View,ScrollView, Text ,StyleSheet,Dimensions} from 'react-native'
 import HeaderBar from '../custom/HeaderBar'
-import db from '../utils/database'
+import {urlConnection} from '../utils/url'
 
 const {width,height} = Dimensions.get('window')
 const Notifications = () => {
     const [data, setData] = useState([])
 
     const fetchNotifications =()=>{
-        fetch('http://192.168.137.1:8000/trail')
+        fetch(urlConnection(trail))
         .then(res =>res.json())
         .then(server=>setData(server))
         .catch(error=>console.log(error))

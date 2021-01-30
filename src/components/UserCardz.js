@@ -10,7 +10,7 @@ const UserCard = ({email,image,role}) => {
     const navigation = useNavigation();
 
     const handlePress = ()=>{
-        
+        navigation.dispatch(StackActions.push('Userdetail',{email}))
     }
 
     

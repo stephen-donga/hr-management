@@ -5,13 +5,14 @@ import {setTrainingList} from '../redux/training/trainingActions'
 
 import HeaderBar from '../custom/HeaderBar'
 import TrainerCard from '../components/TrainerCard'
-
+import {urlConnection} from '../utils/url'
+ 
 const {width, height} = Dimensions.get('window')
 
 const Training = ({navigation,trainees,trainers}) => {
 
     const fetchTrainees = () =>{
-        fetch('http://192.168.130.161:8000/trainee')
+        fetch(urlConnection('trainee'))
         .then(res => res.json())
         .then(res => trainers(res))
         .catch(err => console.log(err))

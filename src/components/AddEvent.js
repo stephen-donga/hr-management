@@ -4,6 +4,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import DateTimePicker from "@react-native-community/datetimepicker"
 import {connect} from 'react-redux'
 import {StackActions, useNavigation} from '@react-navigation/native'
+import {urlConnection} from '../utils/url'
 
 
 import FormInput from '../custom/FormInput'
@@ -43,7 +44,7 @@ const AddEvent = ({currentUser,addEvent}) => {
      const handleEvent =()=>{
         let id = 2
 
-          fetch('http://172.18.69.193:8000/events/add',{
+          fetch(urlConnection('events/add'),{
             method:'post',
             headers: {
                 Accept: "application/json",
@@ -60,7 +61,7 @@ const AddEvent = ({currentUser,addEvent}) => {
           .then(server=>console.log(server))
           .catch(error=>console.warn(error))
 
-          fetch('http://172.18.69.193:8000/events')
+          fetch(urlConnection('events'))
           .then(res => res.json())
           .then(res => addEvent(res))
           .catch(err => console.log(err))

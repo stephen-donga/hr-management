@@ -7,6 +7,7 @@ import {setEvents} from '../redux/events/eventActions'
 
 import HeaderBar from '../custom/HeaderBar'
 import EventCard from './EventCard'
+import {urlConnection} from '../utils/url'
 
 const {width, height} = Dimensions.get('window')
 
@@ -15,7 +16,7 @@ const Events = ({navigation,addEvents,events}) => {
     const [ eventz, setEventz] = useState(events)
 
     const fetchEvents = ()=>{
-        fetch('http://172.18.69.193:8000/events')
+        fetch(urlConnection('events'))
         .then(res =>res.json())
         .then(server=>addEvents(server))
         .catch(error=>console.log(error))

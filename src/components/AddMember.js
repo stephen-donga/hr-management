@@ -3,10 +3,10 @@ import { View, Text,Button, StyleSheet, ScrollView,ToastAndroid, TouchableOpacit
 import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePicker from "@react-native-community/datetimepicker"
 import auditTrail from '../utils/trails'
-import db from '../utils/database'
 import {connect} from 'react-redux'
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
+import {urlConnection} from '../utils/url'
 
 import {setStaff} from '../redux/staff/staffActions'
 
@@ -133,7 +133,7 @@ const AddMember = ({navigation,currentUser,setStf}) => {
             setDate("")
             setQualification("")
 
-            fetch('http://192.168.130.161:8000/staff/add',{
+            fetch(urlConnection('staff/add'),{
                 method:'post',
                 headers: {
                     Accept: "application/json",
@@ -153,7 +153,7 @@ const AddMember = ({navigation,currentUser,setStf}) => {
             .then(server=>console.log(server))
             .catch(error=>console.log(error))
 
-            fetch('http://192.168.130.161:8000/staff')
+            fetch(urlConnection('staff'))
             .then(res =>res.json())
             .then(server=>setStf(server))
             .catch(error=>console.log(error))

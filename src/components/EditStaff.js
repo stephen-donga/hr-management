@@ -9,6 +9,7 @@ import {StackActions, useNavigation} from '@react-navigation/native'
 
 import HeaderBar from '../custom/HeaderBar'
 import FormInput from '../custom/FormInput'
+import {urlConnection} from '../utils/url'
 
 
 const {width, height} = Dimensions.get('window')
@@ -40,7 +41,7 @@ const EditStaff = ({details,addStaff,currentUser}) => {
 
    const handleUserEdit =()=>{
 
-        fetch('http://192.168.130.161:8000/staff/update',{
+        fetch(urlConnection('staff/update'),{
           method:'PUT',
           headers: {
               Accept: "application/json",
@@ -60,7 +61,7 @@ const EditStaff = ({details,addStaff,currentUser}) => {
         .then(server=>console.log(server))
         .catch(error=>console.log(error))
 
-        fetch('http://192.168.130.161:8000/staff')
+        fetch(urlConnection('staff'))
         .then(res => res.json())
         .then(res => addStaff(res))
         .catch(err =>console.log(err))

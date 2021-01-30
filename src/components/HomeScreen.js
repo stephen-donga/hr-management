@@ -8,6 +8,7 @@ import {setNumberOfUsers} from '../redux/user/userAction'
 
 import HeaderBar from '../custom/HeaderBar'
 import Homepage from './Homepage'
+import {urlConnection} from '../utils/url'
 
 const {width, height} = Dimensions.get('window')
 
@@ -20,12 +21,12 @@ const HomeScreen = ({currentUser,setUsers,allStaff}) => {
     const [newUsers, setNewUsers] = useState([])
 
     const fetchUsers = () => {
-        fetch('http://192.168.130.161:8000/users')
+        fetch(urlConnection('users'))
         .then(res =>res.json())
         .then(server=>setFetched(server))
         .catch(error=>console.log(error))
 
-        fetch('http://192.168.130.161:8000/new')
+        fetch(urlConnection('new'))
         .then(res =>res.json())
         .then(server=>setNewUsers(server))
         .catch(error=>console.log(error))
@@ -35,10 +36,11 @@ const HomeScreen = ({currentUser,setUsers,allStaff}) => {
         fetchUsers()
     }, [])
     const users  = fetched.concat(newUsers)
-    setUsers(users)
-
+    
     let totalStaff = allStaff.length
-    let totalUsers = users.length
+    const AllUsers = users.filter(user =>user.email !='root@gmail.com')
+    let totalUsers = AllUsers.length
+    setUsers(AllUsers)
     return (
         <View style={styles.container}>
             <HeaderBar />

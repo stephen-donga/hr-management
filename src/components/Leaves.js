@@ -1,14 +1,30 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import { View, StyleSheet,Text,Dimensions,FlatList } from 'react-native'
 import {connect} from 'react-redux'
+import {setLeaves} from '../redux/leaves/leavesActions'
 
 import HeaderBar from '../custom/HeaderBar'
 import LeavesCard from '../components/LeavesCard'
+import {urlConnection} from '../utils/url'
 
 
 const {width, height} = Dimensions.get('window')
-const Leaves = ({leaves}) => {
+
+const Leaves = ({leaves,setLeaves}) => {
+
+
+    const fetchLeaves = ()=>{
+        fetch(urlConnection('leaves'))
+        .then(res => res.json())
+        .then(res =>setLeaves(res))
+        .catch(error =>console.log(error))
+    }
+
+    useEffect(() => {
+        fetchLeaves()
+    }, [])
      
+    
     return (
         <View style={styles.container}>
             <HeaderBar />
@@ -47,6 +63,10 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = ({leaves})=>({
     leaves:leaves.leaves
+});
+
+const mapDispatchToProps = dispatch =>({
+    setLeaves: leave =>dispatch(setLeaves(leave))
 })
 
-export default connect(mapStateToProps)(Leaves)
+export default connect(mapStateToProps,mapDispatchToProps)(Leaves)
