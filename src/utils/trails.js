@@ -1,11 +1,10 @@
-import db from './database' 
-
+import {urlConnection} from '../utils/url'
 const auditTrail = () =>{
     
 }
 auditTrail.logTrail=(trail)=>{
 
-    fetch('http://192.168.137.1:8000/trail/add',{
+    fetch(urlConnection('trail/add'),{
         method:'post',
             headers: {
                 Accept: "application/json",

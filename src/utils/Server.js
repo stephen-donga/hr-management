@@ -258,6 +258,15 @@ app.post('/leaves/add',(req, res)=>{
     })
 })
 
+app.delete('/leaves/delete/:id',(req, res)=>{
+    let sql = 'DELETE FROM leaves_table WHERE id=?'
+    connection.query(sql,[req.params.id],(err, result) => {
+        if(err)throw err;
+        res.send(result)
+        console.log(result)
+    })
+})
+
 
 app.listen(8000,()=>{
     console.log('Server started on port:8000')

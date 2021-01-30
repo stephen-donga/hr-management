@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {View,Button,Text,StyleSheet,TouchableOpacity} from 'react-native';
+import {View,Button,Text,ToastAndroid,StyleSheet,TouchableOpacity} from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import auditTrail from '../utils/trails'
 import  {setLoggedIn} from '../redux/user/userAction'
@@ -14,6 +14,10 @@ const Login = ({navigation,setStaf,setLoggedUser,newUsers,setNewUsers,setCurrent
 
     const [fetched, setFetched] = useState([])
     const [loading, setLoading] = useState(false)
+
+    const showToast = () => {
+        ToastAndroid.show('Pleas! enter credentials', ToastAndroid.SHORT);
+      };
 
     const startSpinner = () =>{
         setLoading(true)
@@ -97,6 +101,7 @@ const Login = ({navigation,setStaf,setLoggedUser,newUsers,setNewUsers,setCurrent
                     action:'Failed login with password',
                     time:new Date().toString()
                 }
+                showToast()
     
                 auditTrail.logTrail(trail)
                navigation.navigate('Login')

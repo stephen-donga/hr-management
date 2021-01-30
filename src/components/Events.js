@@ -33,8 +33,7 @@ const Events = ({navigation,addEvents,events}) => {
             <HeaderBar />
             <View style={{width:width,height:40,backgroundColor:'#eee',padding:10,paddingLeft:15,paddingTop:10}}>
                 <Text style={{fontSize:21,fontWeight:'bold',alignSelf:'center',color:'darkblue'}}>Events</Text>
-                 
-                  <Text> {}</Text>
+                <Text>{}</Text>
       
 
             </View>
@@ -52,12 +51,12 @@ const Events = ({navigation,addEvents,events}) => {
             </View>
 
             </View>
-            <View style={{position:'absolute',marginTop:"140%",borderRadius:160,marginLeft:'85%',width:80,padding:10,height:60}}>
+            <View style={{position:'absolute',marginTop:"140%",borderRadius:160,marginLeft:'75%',width:80,padding:10,height:60}}>
                 <TouchableOpacity 
                     onPress={()=>navigation.navigate('AddEvent')}
                     style={{width:'100%',height:'100%',backgroundColor:'fff',alignItems:'center',justifyContent:'center', height:30}}
                 >
-                     <Icon name="plus-circle" color='blue' size={34}/>
+                     <Icon name="plus-circle" color='blue' size={30}/>
                 </TouchableOpacity>
             </View>
         </View>

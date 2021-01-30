@@ -24,7 +24,7 @@ const ViewStaff = ({details,setStf,currentUser}) => {
     
     const deleteMember = (memberId) =>{
         
-        fetch(urlConnection(`staff/delete/:${memberId}`),{
+        fetch(urlConnection(`staff/delete/${memberId}`),{
             method:'DELETE'
         })
         .then(res=>res.json())
@@ -249,15 +249,15 @@ const styles = StyleSheet.create({
     lowersection:{
         flex:1,
         backgroundColor:'white',
-        marginTop:120,
+        marginTop:100,
         marginBottom:10
     },
     title:{
-        fontSize:18,
+        fontSize:15,
         color:'black'
     },
     text:{
-        fontSize:18,
+        fontSize:15,
         fontWeight:'bold',
         color:'darkblue'
     } 

@@ -3,7 +3,6 @@ import {createStackNavigator} from "@react-navigation/stack"
 
 import BottomTabs from '../navigation/BottomTabNavigation'
 import Login from '../components/Login'
-import LoadingScreen from '../components/LoadingScreen'
 import ViewStaff from '../components/ViewStaff'
 import Staff from '../components/Staff'
 import EditStaff from '../components/EditStaff'
@@ -29,7 +28,6 @@ const StackNavigation = ()=>{
         <Stack.Navigator
         headerMode="none"
         >
-            <Stack.Screen name="Loading" component={LoadingScreen} />
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="LeaveDetails" component={LeaveDetails} />
             <Stack.Screen name="Staff" component={Staff} />

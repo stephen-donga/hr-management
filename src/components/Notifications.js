@@ -8,7 +8,7 @@ const Notifications = () => {
     const [data, setData] = useState([])
 
     const fetchNotifications =()=>{
-        fetch(urlConnection(trail))
+        fetch(urlConnection('trail'))
         .then(res =>res.json())
         .then(server=>setData(server))
         .catch(error=>console.log(error))

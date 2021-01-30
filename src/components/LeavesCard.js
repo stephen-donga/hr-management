@@ -4,19 +4,19 @@ import { View, Text, StyleSheet,Image, TouchableOpacity} from 'react-native'
 import { StackActions, useNavigation } from '@react-navigation/native'
 import {connect} from 'react-redux'
 
-const LeavesCard = ({type,start_date,reason,end_date,staff_id,staff}) => {
+const LeavesCard = ({id,type,start_date,reason,end_date,staff_id,staff}) => {
 
     let returnedStaff = staff.filter(one =>one.id===staff_id)
     let member = returnedStaff[0]
+    let lId = id
 
     const navigation = useNavigation()
-    console.warn(staff)
     return (
-        <TouchableOpacity onPress={()=>navigation.dispatch(StackActions.push('LeaveDetails',{member,type,start_date,reason,end_date,staff}))}>
+        <TouchableOpacity onPress={()=>navigation.dispatch(StackActions.push('LeaveDetails',{member,lId,type,start_date,reason,end_date,staff}))}>
         <View style={styles.container}>
              <View style={styles.leftsection}>
                     {
-                        1 ?<Image source={require('../../assets/user.png') } style={{width:100,height:100,borderRadius:100}} /> :<Entypo name="user" color='steelblue' size={80} />
+                        member.image ?<Image source={{uri:member.image}} style={{width:100,height:100,borderRadius:100}} /> :<Entypo name="user" color='steelblue' size={80} />
                     }
              </View>
              <View style={styles.rightsection}>
@@ -36,8 +36,8 @@ const LeavesCard = ({type,start_date,reason,end_date,staff_id,staff}) => {
                     {
                         member ?(
                         <View style={styles.row}>
-                            <Text style={styles.title}>{start_date}</Text>
-                            <Text style={styles.title}>-{"  "}{end_date}</Text>
+                            <Text style={styles.title}>{start_date}{" "}</Text>
+                            <Text style={styles.title}>to{"  "}{end_date}</Text>
                         </View>):null
                     }
 
@@ -53,21 +53,21 @@ const styles = StyleSheet.create({
         width:'100%',
         height:120,
         flexDirection:'row',
-        marginBottom:20
+        marginBottom:10
     },
     leftsection:{
-        width:"30%",
+        width:"35%",
         height:'100%',
         backgroundColor:'dodgerblue',
         alignItems:'center',
         justifyContent:'center'
     },
     rightsection:{
-        width:'70%',
+        width:'65%',
         height:'100%',
     },
     left:{
-        height:'100%',
+        height:'95%',
         width:'100%',
         backgroundColor:'white',
         borderTopLeftRadius:35,
@@ -84,10 +84,9 @@ const styles = StyleSheet.create({
         marginLeft:80
     },
     title:{
-        marginLeft:14,
+        marginLeft:5,
         fontSize:15,
-        fontWeight:'bold',
-        color:'royalblue',
+        color:'grey',
     },
     row:{
         flexDirection:'row',

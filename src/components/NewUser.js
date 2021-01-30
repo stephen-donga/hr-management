@@ -219,7 +219,7 @@
          height:40,
          backgroundColor:'white',
          alignSelf:'center',
-         marginTop:40,
+         margin:25,
          borderRadius:15,
          alignItems:'center',
          justifyContent:'center'

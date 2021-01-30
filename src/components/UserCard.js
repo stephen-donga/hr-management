@@ -61,11 +61,10 @@ const styles = StyleSheet.create({
     },
     title:{
         fontSize:15,
-        fontWeight:'bold',
         color:'grey'
     },
     smalltext:{
-        fontSize:16,
+        fontSize:15,
         fontWeight:'bold',
         color:'#aaa'
     },
@@ -82,16 +81,15 @@ const styles = StyleSheet.create({
         justifyContent:'center'
     },
     leftsection:{
-        width:'30%',
+        width:'35%',
         height:'100%',
         backgroundColor:'indigo',
         justifyContent:'center',
-        paddingLeft:15,
         borderTopLeftRadius:5,
         borderBottomLeftRadius:5
     },
     text:{
-        fontSize:18,
+        fontSize:15,
         color:'grey',
         fontWeight:'bold',
     },
@@ -99,12 +97,13 @@ const styles = StyleSheet.create({
         width:80,
         borderWidth:1,
         height:80,
-        borderRadius:80
+        borderRadius:80,
+        alignSelf:'center'
     },
     rightsection:{
-        width:'70%',
+        width:'65%',
         height:'100%',
-        marginHorizontal:15
+        marginHorizontal:5
     },
     lower:{
         width:'100%',

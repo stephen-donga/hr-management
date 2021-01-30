@@ -90,8 +90,7 @@ const styles = StyleSheet.create({
     },
     extrude:{
         position:'absolute',
-        width:200,
-        height:150,
+        height:145,
         backgroundColor:'#fff',
         borderRadius:150,
         alignSelf:'center',
@@ -102,15 +101,15 @@ const styles = StyleSheet.create({
     lowersection:{
         flex:1,
         backgroundColor:'white',
-        marginTop:120,
+        marginTop:100,
         marginBottom:10
     },
     title:{
-        fontSize:18,
+        fontSize:15,
         color:'black'
     },
     text:{
-        fontSize:18,
+        fontSize:15,
         fontWeight:'bold',
         color:'darkblue'
     }

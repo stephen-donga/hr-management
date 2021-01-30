@@ -118,9 +118,9 @@ const LeaveForm = ({route,navigation,setStf}) => {
     }
 
     return (
-        <View style={{flex:1,backgroundColor:'#fff'}}>
+        <View style={{flex:1,backgroundColor:'white'}}>
             <HeaderBar />
-        <View style={{width:width/2+170,height:height/2+200,alignSelf:'center'}}>
+        <View style={{width:width/2+140,height:height/2+200,alignSelf:'center'}}>
       
         <Text style={{fontSize:21,alignSelf:'center',fontWeight:'bold',color:'darkblue',marginTop:30,marginBottom:30}}>Leave Request Form</Text>
        

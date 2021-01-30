@@ -2,13 +2,18 @@ import React, {useState} from 'react'
 import { View, Text,Alert, StyleSheet,ToastAndroid,Image } from 'react-native'
 import {Entypo} from '@expo/vector-icons'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import {connect} from 'react-redux'
 
 import HeaderBar from '../custom/HeaderBar'
 import {urlConnection} from '../utils/url'
+import {setStaff} from '../redux/staff/staffActions'
+import {setLeaves} from '../redux/leaves/leavesActions'
 
-const LeaveDetails = ({route,navigation}) => {
+const LeaveDetails = ({route,navigation,setStf}) => {
 
-    const {member,type,start_date,reason,end_date,staff} = route.params
+    const [onLeave, setOnleave] = useState(true)
+
+    const {member,type,start_date,reason,lId,end_date,staff} = route.params
     const {first_name,last_name,position,onleave,id}  = member
     let image= require('../../assets/user.png')
 
@@ -30,6 +35,22 @@ const LeaveDetails = ({route,navigation}) => {
 
 
     }
+    const deleteLeave = (Id) =>{
+        
+        fetch(urlConnection(`leaves/delete/${Id}`),{
+            method:'DELETE'
+        })
+        .then(res=>res.json())
+        .then(res=>console.log(res))
+        .catch(err=>console.log(err))
+
+        fetch(urlConnection('leaves'))
+        .then(res=>res.json())
+        .then(res=>setLeavz(res))
+        .catch(err=>console.log(err))
+        setOnleave(!onLeave)
+        navigation.navigate('Home')
+    }
 
     const handleLeaveCancel= ()=>{
         fetch(urlConnection('staff/leave/cancel'),{
@@ -50,14 +71,14 @@ const LeaveDetails = ({route,navigation}) => {
         .then(res => res.json())
         .then(res =>setStf(res))
         .catch(err=> console.log(err))
-         onleave=1
         showToast2()
+        deleteLeave(lId)
       }
 
     return (
         <View style={styles.container}>
             <HeaderBar />
-              <View style={{position:'absolute',marginTop:'20%',borderColor:'#ccc',justifyContent:'center',borderRadius:360,alignSelf:'center', width:150,height:100, borderWidth:1}}>
+              <View style={{position:'absolute',marginTop:'15%',borderColor:'#ccc',justifyContent:'center',borderRadius:360,alignSelf:'center', width:150,height:100, borderWidth:1}}>
                  {
                      image ?<Image source={image} style={{width:140, height:140, alignSelf:'center'}}/> :  <Entypo name='user'style={{alignSelf:'center'}} size={100} />
                  }
@@ -72,17 +93,17 @@ const LeaveDetails = ({route,navigation}) => {
                    </View>
 
                </View>
-               <View style={{width:'100%', height:'50%',backgroundColor:'indigo',flexDirection:'row'}}>
-                   <View style={{width:'50%',height:'30%',borderRightWidth:2,borderColor:'teal'}}>
+               <View style={{width:'100%', height:'45%',backgroundColor:'indigo',flexDirection:'row'}}>
+                   <View style={{width:'50%',height:'30%'}}>
                    </View>
 
-                   <View style={{width:'50%',height:'30%',justifyContent:'center'}}>
+                   <View style={{width:'50%',height:'35%',justifyContent:'center'}}>
                         {
-                           onleave ?
+                           onLeave ?
                              <TouchableOpacity 
                              onPress={cancelLeave}
-                             style={{width:'60%',alignSelf:'center',justifyContent:'center',alignItems:'center',height:'60%',backgroundColor:'#ccc',borderRadius:5}}>
-                                <Text style={{fontSize:15}}>Cancel Leave</Text>
+                             style={{width:'60%',alignSelf:'center',justifyContent:'center',marginTop:-5,alignItems:'center',height:'60%',backgroundColor:'#ccc',borderRadius:5}}>
+                                <Text style={{fontSize:14}}>Cancel Leave</Text>
                              </TouchableOpacity>
                              :null
                         }
@@ -109,4 +130,9 @@ const styles = StyleSheet.create({
     }
 })
 
-export default LeaveDetails
+const mapDispatchToProps = dispatch =>({
+    setStf: members => dispatch(setStaff(members)),
+    setLeavz: leavz =>dispatch(setLeaves(leavz))
+})
+
+export default connect(null,mapDispatchToProps)(LeaveDetails)
