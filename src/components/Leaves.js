@@ -3,6 +3,7 @@ import { View, StyleSheet,Text,Dimensions,FlatList } from 'react-native'
 import {connect} from 'react-redux'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import {Feather} from '@expo/vector-icons'
+import {FAB} from 'react-native-paper'
 
 import {setLeaves} from '../redux/leaves/leavesActions'
 import HeaderBar from '../custom/HeaderBar'
@@ -33,13 +34,7 @@ const Leaves = ({leaves,setLeaves,navigation}) => {
             <View style={{width:width,height:40,backgroundColor:'#eee',padding:10,paddingLeft:15,paddingTop:10}}>
                 <Text style={styles.title}>All members on Leave</Text>
             </View>
-            <View style={styles.add}>
-                <TouchableOpacity
-                onPress={()=>navigation.navigate('Staff')} 
-                >
-                    <Feather name='plus-circle' size={30} color='green' />
-                </TouchableOpacity>
-            </View>
+             
              <View style={styles.details}>
                   <FlatList
                     data={leaves}
@@ -48,6 +43,13 @@ const Leaves = ({leaves,setLeaves,navigation}) => {
                     showsVerticalScrollIndicator={false}
                   />
              </View>
+            <FAB
+                onPress={()=>navigation.navigate('Staff')} 
+                style={{position:'absolute',margin:16,margin:0,bottom:25,right:15}}
+                small
+                icon="plus"
+                color='white'
+                />
         </View>
     )
 }

@@ -15,7 +15,7 @@ const Users = ({users}) => {
              <View style={styles.section}>
                  <FlatList 
                     data={users}
-                    keyExtractor={member =>member.email.toString()}
+                    keyExtractor={member =>member.email}
                     showsVerticalScrollIndicator={false}
                     renderItem={({item})=><UserCard {...item} />}
                  />

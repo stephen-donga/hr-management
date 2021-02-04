@@ -31,7 +31,7 @@ const UserCard = ({email,image,role}) => {
 
             </View>
                 <View style={styles.lower}>
-                    <Text style={styles.title}>Role:{" "}{role.toUpperCase()}</Text>
+                    <Text style={styles.title}>Role:{" "}{role}</Text>
 
                 </View>
         </View>
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
         color:'grey'
     },
     smalltext:{
-        fontSize:16,
+        fontSize:14,
         fontWeight:'bold',
         color:'#aaa'
     },
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius:5
     },
     text:{
-        fontSize:18,
+        fontSize:15,
         color:'grey',
         fontWeight:'bold',
     },

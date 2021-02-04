@@ -13,7 +13,7 @@ const PayCard = ({first_name,last_name,salaries}) => {
                
            </View>
            <View style={{padding:5}}>
-               <Text>{intrn.gross_pay}{" "}ugx</Text>
+               <Text>500,000{" "}ugx</Text>
             </View> 
         </View>
     )

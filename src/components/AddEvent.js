@@ -1,12 +1,12 @@
 import React,{useState} from 'react'
-import { View, Text,Button,TextInput, Dimensions } from 'react-native'
+import { View, Text,Button,TextInput, ToastAndroid,Dimensions } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import DateTimePicker from "@react-native-community/datetimepicker"
 import {connect} from 'react-redux'
 import {StackActions, useNavigation} from '@react-navigation/native'
+
+
 import {urlConnection} from '../utils/url'
-
-
 import FormInput from '../custom/FormInput'
 import HeaderBar from '../custom/HeaderBar'
 import auditTrail from '../utils/trails'
@@ -14,12 +14,15 @@ import { setEvents } from '../redux/events/eventActions'
 
 const {width, height} = Dimensions.get('window')
 
-const AddEvent = ({currentUser,addEvent}) => {
+const AddEvent = ({currentUser,addEvents}) => {
 
     const navigation = useNavigation();
 
     const [event, setEvnt] = useState('');
     const [describe, setDescribe] = useState('')
+
+    const [eventErr, setEventErr] = useState('')
+    const [describeErr, setDescribeErr] = useState('')
 
     const [date, setDate] = useState(new Date(96400000));
     const [mode, setMode] = useState('date');
@@ -41,57 +44,84 @@ const AddEvent = ({currentUser,addEvent}) => {
       const showDatepicker = () => {
         showMode('date');
       };
+
      const handleEvent =()=>{
         let id = 2
+            if(event !==""&&describe !==""){
+                fetch(urlConnection('events/add'),{
+                    method:'post',
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        event:event,
+                        describe:describe,
+                        time:validate,
+                        user_id:id
+                    })
+                })
+                .then(res =>res.json())
+                .then(server=>console.log(server))
+                .catch(error=>console.warn(error))
 
-          fetch(urlConnection('events/add'),{
-            method:'post',
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json"
-              },
-              body: JSON.stringify({
-                 event:event,
-                 describe:describe,
-                 time:validate,
-                 user_id:id
-              })
-          })
-          .then(res =>res.json())
-          .then(server=>console.log(server))
-          .catch(error=>console.warn(error))
+                fetch(urlConnection('events'))
+                .then(res => res.json())
+                .then(res => addEvents(res))
+                .catch(err => console.log(err))
 
-          fetch(urlConnection('events'))
-          .then(res => res.json())
-          .then(res => addEvent(res))
-          .catch(err => console.log(err))
-
-          let trail = {
-              actor:currentUser,
-              action:`Added an event "${event}"`,
-              time:new Date().toString()
+            let trail = {
+                actor:currentUser,
+                action:`Added an event "${event}"`,
+                time:new Date().toString()
+                }
+                auditTrail.logTrail(trail)
+                setEvnt('')
+                setDescribe('')
+                showToastWithGravity()
+                navigate()
+                
+            }else{
+                setEventErr('Please enter event !')
+                setDescribeErr('Please write a detail about the even !')
+                
             }
-            auditTrail.logTrail(trail)
-            setEvnt("")
-            setDescribe('')
+        }
+        
+        const navigate = ()=>{
+            setTimeout(()=>{
+                navigation.dispatch(StackActions.push('Events'))
+            },2000)
+        }        
 
-            navigation.dispatch(StackActions.push('Events'))
-     }
+        const showToastWithGravity = () => {
+            ToastAndroid.showWithGravity(
+              "Event added Successfully",
+              ToastAndroid.LONG,
+              ToastAndroid.CENTER
+            );
+          };
 
+        const handleEventChange = (text)=>{
+            setEvnt(text)
+        }
+        
     return (
         <View style={{width:width}}>
             <HeaderBar />
            <View style={{width:'100%',alignItems:'center', marginTop:5}}>
-               <Text style={{fontSize:25,fontWeight:'bold',marginBottom:25}}>Add an event</Text>
+               <Text style={{fontSize:18,fontWeight:'bold',marginBottom:25}}>Add an event</Text>
                <FormInput 
                     placeholder="Event name"
                     label='Event Name'
+                    message={event ? "":eventErr}
                     value={event}
-                    changeHandler={(e)=>{
-                        setEvnt(e)
-                    }}
+                    changeHandler={handleEventChange}
                />
            <View>
+
+           
+
            <Text style={{marginTop:15,fontSize:17,}}>Description</Text>
             <TextInput 
                 multiline={true}
@@ -107,12 +137,12 @@ const AddEvent = ({currentUser,addEvent}) => {
                     marginTop:10,borderWidth:1,
                     borderColor:'black',
                     borderRadius:5,
-                    fontSize:20,
-                    padding:5
+                    fontSize:15,
+                    padding:20
                     
                 }}
             />
-
+            <Text style={{fontSize:14,color:'red'}}>{describe? "":describeErr}</Text>
                 <View  style={{marginTop:20,marginBottom:20}}>
 
                 <Button  onPress={showDatepicker} title="Select date"  />

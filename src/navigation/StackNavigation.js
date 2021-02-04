@@ -29,17 +29,17 @@ const StackNavigation = ()=>{
         headerMode="none"
         >
             <Stack.Screen name="Login" component={Login} />
-            <Stack.Screen name="LeaveDetails" component={LeaveDetails} />
-            <Stack.Screen name="Staff" component={Staff} />
+            <Stack.Screen name="Events" component={Events} />
+            <Stack.Screen name="Leaves" component={Leaves} />
             <Stack.Screen name="LeaveForm" component={LeaveForm} />
+            <Stack.Screen name="Staff" component={Staff} />
+            <Stack.Screen name="LeaveDetails" component={LeaveDetails} />
             <Stack.Screen name='Addmember' component={AddMember} />
             <Stack.Screen name="EditStaff" component={EditStaff} />
             <Stack.Screen name="Userdetail" component={UserDetail} />
             <Stack.Screen name="Trainee" component={ViewTrainee} />
             <Stack.Screen name="View" component={ViewStaff} />
-            <Stack.Screen name="Events" component={Events} />
             <Stack.Screen name="AddEvent" component={AddEvent} />
-            <Stack.Screen name="Leaves" component={Leaves} />
             <Stack.Screen name="Users" component={Users} />
             <Stack.Screen name="Training" component={Training} />
             <Stack.Screen name="New" component={NewUser} />

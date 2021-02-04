@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import {View,Button,Text,ToastAndroid,StyleSheet,TouchableOpacity} from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
-import auditTrail from '../utils/trails'
 import  {setLoggedIn} from '../redux/user/userAction'
 import {connect} from  'react-redux'
 import {setCurrentUser,setNewUser} from '../redux/user/userAction'
@@ -9,6 +8,7 @@ import {setStaff} from '../redux/staff/staffActions'
 
 import Inputfield from '../custom/Inputfield'
 import {urlConnection} from '../utils/url'
+import auditTrail from '../utils/trails'
 
 const Login = ({navigation,setStaf,setLoggedUser,newUsers,setNewUsers,setCurrentUser}) => {
 
@@ -17,6 +17,10 @@ const Login = ({navigation,setStaf,setLoggedUser,newUsers,setNewUsers,setCurrent
 
     const showToast = () => {
         ToastAndroid.show('Pleas! enter credentials', ToastAndroid.SHORT);
+      };
+
+      const showNetworkToast = () => {
+        ToastAndroid.show('Network Connection failed', ToastAndroid.SHORT);
       };
 
     const startSpinner = () =>{
@@ -62,6 +66,7 @@ const Login = ({navigation,setStaf,setLoggedUser,newUsers,setNewUsers,setCurrent
     const [passwordError,setPasswordError] = useState("")
     
     const filteredUser = allUserz.filter(user =>user.username==username||user.email==username &&user.password==password)
+    
     const handleUsernameChange = (text) => {
         setUsername(text)
     }
@@ -71,7 +76,7 @@ const Login = ({navigation,setStaf,setLoggedUser,newUsers,setNewUsers,setCurrent
     }
 
     const validate = () =>{
-
+        
         let trail={
             actor: "",
             action:'',
@@ -111,11 +116,10 @@ const Login = ({navigation,setStaf,setLoggedUser,newUsers,setNewUsers,setCurrent
 
     const handleLogin = () => {
         if(fetched.length<1){
+            showNetworkToast()
+            
         }
-        validate();
-        
-      
-      
+            validate();
     }
   
         return (
@@ -183,8 +187,6 @@ const Login = ({navigation,setStaf,setLoggedUser,newUsers,setNewUsers,setCurrent
 
                  </View>
                </View>
-
-                
             </View>
         )
     }

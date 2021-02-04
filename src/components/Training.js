@@ -30,12 +30,18 @@ const Training = ({navigation,trainees,trainers}) => {
 
             </View>
             <View style={styles.details}>
-            <FlatList 
-                    data={trainees}
-                    renderItem={({item})=> <TrainerCard {...item}/>}
-                    keyExtractor={member =>member.id.toString()}
-                    showsVerticalScrollIndicator={false}
-                />
+            {
+                trainees.length>0 ?(
+                    <FlatList 
+                        data={trainees}
+                        renderItem={({item})=> <TrainerCard {...item}/>}
+                        keyExtractor={member =>member.id.toString()}
+                        showsVerticalScrollIndicator={false}
+                    />
+                ):(
+                       <Text style={{alignSelf:'center',marginTop:70, fontSize:17, color:'grey'}}> No one is training at the moment ! </Text>
+                )
+            }
             </View>
             
         </View>

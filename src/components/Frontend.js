@@ -3,7 +3,6 @@ import { View, Text } from 'react-native'
 
 const PayCard = ({first_name,last_name,salaries}) => {
      const frnt = salaries.filter(j=>j.position=="Frontend Engineer")
-     console.warn(salaries)
     
      let fr=frnt[0]
     return (
@@ -14,7 +13,7 @@ const PayCard = ({first_name,last_name,salaries}) => {
                
            </View>
            <View style={{padding:5}}>
-               <Text>{fr.gross_pay}{" "}ugx</Text>
+               <Text>800,000{" "}ugx</Text>
             </View> 
         </View>
     )

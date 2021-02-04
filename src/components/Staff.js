@@ -6,6 +6,7 @@ import { Feather } from '@expo/vector-icons';
 import {connect} from 'react-redux'
 import {setDetails} from '../redux/showUserDetails/detailsActions'
 import {setStaff} from '../redux/staff/staffActions'
+import { FAB } from 'react-native-paper'
 
 import HeaderBar from '../custom/HeaderBar'
 import UserCard from './UserCard'
@@ -102,18 +103,17 @@ const Staff = ({showDetails,staff,setStaf,setDetails}) => {
                      </View>
                  )
                 }
-            
-                    <View style={{position:'absolute',marginLeft:'80%',width:50,height:50,borderRadius:150,marginTop:'120%'}}>
-                    <TouchableOpacity 
-                       onPress={()=>{
-                           showDetails ?setDetails(!showDetails):null
-                           navigator.dispatch(StackActions.push('Addmember'))}
-                       }
-                       style={{width:'100%',height:'100%',borderRadius:150,justifyContent:'center',alignItems:'center'}}>
-                       <Feather name='plus-circle'color="green" size={35} />
-                    </TouchableOpacity>
-                </View>
-               
+                    
+                <FAB
+                    style={{position:'absolute',margin:16,margin:0,bottom:25,right:15}}
+                    small
+                    icon="plus"
+
+                    onPress={()=>{
+                        showDetails ?setDetails(!showDetails):null
+                        navigator.dispatch(StackActions.push('Addmember'))}
+                    }
+                />
              
         </View>
     )

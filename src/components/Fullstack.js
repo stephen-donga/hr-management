@@ -13,7 +13,7 @@ const Fullstack = ({first_name,last_name,salaries}) => {
                
            </View>
            <View style={{padding:5}}>
-               <Text>{fu.gross_pay}{" "}ugx</Text>
+               <Text>1500,000{" "}ugx</Text>
             </View> 
         </View>
     )

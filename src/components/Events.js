@@ -1,19 +1,15 @@
-import React,{useState,useEffect} from 'react'
+import React,{useEffect} from 'react'
 import { View,FlatList,Text,Dimensions,StyleSheet } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
-import {Feather as Icon} from '@expo/vector-icons'
 import {connect} from 'react-redux'
 import {setEvents} from '../redux/events/eventActions'
+import {FAB} from 'react-native-paper'
 
 import HeaderBar from '../custom/HeaderBar'
 import EventCard from './EventCard'
 import {urlConnection} from '../utils/url'
 
 const {width, height} = Dimensions.get('window')
-
 const Events = ({navigation,addEvents,events}) => {
-
-    const [ eventz, setEventz] = useState(events)
 
     const fetchEvents = ()=>{
         fetch(urlConnection('events'))
@@ -32,15 +28,13 @@ const Events = ({navigation,addEvents,events}) => {
         <View style={styles.container}>
             <HeaderBar />
             <View style={{width:width,height:40,backgroundColor:'#eee',padding:10,paddingLeft:15,paddingTop:10}}>
-                <Text style={{fontSize:21,fontWeight:'bold',alignSelf:'center',color:'darkblue'}}>Events</Text>
+                <Text style={{fontSize:15,fontWeight:'bold',alignSelf:'center',color:'black'}}>Events</Text>
                 <Text>{}</Text>
       
 
             </View>
             <View style={styles.details}>
-            
-            <Text style={styles.title}>All Events</Text>
-            <View style={{flex:1,backgroundColor:'whitesmoke',marginTop:15}}>
+            <View style={{flex:1,backgroundColor:'white',marginTop:15}}>
                
                 <FlatList 
                         data={events}
@@ -51,14 +45,14 @@ const Events = ({navigation,addEvents,events}) => {
             </View>
 
             </View>
-            <View style={{position:'absolute',marginTop:"140%",borderRadius:160,marginLeft:'75%',width:80,padding:10,height:60}}>
-                <TouchableOpacity 
+          
+            <FAB
                     onPress={()=>navigation.navigate('AddEvent')}
-                    style={{width:'100%',height:'100%',backgroundColor:'fff',alignItems:'center',justifyContent:'center', height:30}}
-                >
-                     <Icon name="plus-circle" color='blue' size={30}/>
-                </TouchableOpacity>
-            </View>
+                style={{position:'absolute',margin:16,margin:0,bottom:25,right:15}}
+                small
+                icon="plus"
+                color='white'
+                />
         </View>
     )
 }
@@ -74,7 +68,7 @@ const styles = StyleSheet.create({
         padding:10
     },
     title:{
-        fontSize:18,
+        fontSize:15,
         fontWeight:'bold',
         alignSelf:'flex-start',
         color:'darkblue',

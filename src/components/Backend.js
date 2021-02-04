@@ -14,7 +14,7 @@ const Backend = ({first_name,last_name,salaries}) => {
                
            </View>
            <View style={{padding:5}}>
-               <Text>{bk.gross_pay}{" "}ugx</Text>
+               <Text> 1200,000{" "}ugx</Text>
             </View> 
         </View>
     )

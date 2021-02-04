@@ -11,8 +11,6 @@ const Payroll = () => {
 
     const[salaries,setSalaries]= useState([])
     const [staff, setStaff] = useState([])
-    // console.warn(staff)
-
 
     const intern = staff.filter(intern=>intern.position=="Intern Developer")
     const backend = staff.filter(backend =>backend.position=="Backend Developer")

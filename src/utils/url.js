@@ -1,5 +1,5 @@
-export const urlConnection =(endpoint) =>{
-    const url = 'http://192.168.0.104:8000/'+endpoint;
-
+  export const urlConnection =(endpoint) =>{
+    const url =`http://hrms.nugsoftdemos.net/${endpoint}`;
     return url;
  }
+

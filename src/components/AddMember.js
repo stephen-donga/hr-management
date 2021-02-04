@@ -1,5 +1,5 @@
 import React,{useState, useEffect} from 'react'
-import { View, Text,Button, StyleSheet, ScrollView,ToastAndroid, TouchableOpacity,Dimensions } from 'react-native'
+import { View, Text,Button, StyleSheet, ScrollView,ToastAndroid,Dimensions } from 'react-native'
 import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePicker from "@react-native-community/datetimepicker"
 import auditTrail from '../utils/trails'

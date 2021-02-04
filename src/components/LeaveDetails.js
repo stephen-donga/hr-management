@@ -89,7 +89,12 @@ const LeaveDetails = ({route,navigation,setStf}) => {
                    <View style={{width:'100%',height:'90%',padding:10,borderRadius:15,borderColor:'#eee',borderWidth:2}}>
                     <Text style={{fontSize:18,color:'darkblue',marginBottom:20, fontWeight:'bold',alignSelf:'center'}}>{type}</Text>
                     <Text style={{fontSize:15,fontWeight:'bold',marginBottom:10}}>Details</Text>
-                    <Text style={{fontSize:15}}>{reason} </Text>
+                    <View style={{flexDirection:'row'}}>
+                    <Text style={{fontSize:15}}>Starts:{" "}{start_date}{"   "} </Text>
+                    <Text style={{fontSize:15}}>Ends:{" "}{start_date} </Text>
+                    </View>
+                    <Text style={{fontSize:15}}> {} </Text>
+                    <Text style={{fontSize:15,marginTop:5}}>{reason} </Text>
                    </View>
 
                </View>

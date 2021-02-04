@@ -6,7 +6,6 @@ const mysql = require('mysql')
 const app = express()
 
 app.use(parser.json());
-// app.use(parser);
 
 const connection = mysql.createConnection({
     host:'localhost',
@@ -34,7 +33,7 @@ const connection = mysql.createConnection({
  app.post('/users/add',(req, res)=>{
      let user = {
           email:req.body.email,
-          suer_id:req.body.id,
+          user_id:req.body.id,
           role:req.body.role,
           password:req.body.password
      }
@@ -271,3 +270,4 @@ app.delete('/leaves/delete/:id',(req, res)=>{
 app.listen(8000,()=>{
     console.log('Server started on port:8000')
 });
+
