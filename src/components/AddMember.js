@@ -124,9 +124,13 @@ const AddMember = ({navigation,currentUser,setStf}) => {
         }else{
             showToast()
             setTimeout(() => {
+              fetch(urlConnection('staff'))
+              .then(res =>res.json())
+              .then(server=>setStf(server))
+              .catch(error=>console.log(error))
                 
-                navigation.navigate('Home')
-            }, 200);
+                navigation.navigate('Staff')
+            }, 100);
             setFirstName("")
             setLastName("")
             setExperience("")
@@ -157,6 +161,8 @@ const AddMember = ({navigation,currentUser,setStf}) => {
             .then(res =>res.json())
             .then(server=>setStf(server))
             .catch(error=>console.log(error))
+
+            
 
         let trail={
                 actor:currentUser,

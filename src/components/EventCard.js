@@ -38,8 +38,8 @@ const EventCard = ({event,setEvent,description,time,id}) => {
                    setIseen(!isSeen)
                     }}
                 >
-        <ModalContent style={{width:width/2+80,height:height/3,backgroundColor:'#eee'}}>
-            <View style={{height:'80%',paddingTop:20}}>
+        <ModalContent style={{width:width/2+80,height:height/3+30,backgroundColor:'#eee'}}>
+            <View style={{height:'80%',paddingTop:10}}>
             <Text style={{fontSize:15,fontWeight:'bold',marginBottom:5,color:'black'}}>Details</Text>
             <Text style={{fontSize:15,color:'darkblue',marginBottom:10}}>{description}</Text>
             <Text style={{fontSize:15,marginBottom:5,color:'black'}}>Date</Text>

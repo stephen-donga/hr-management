@@ -3,7 +3,7 @@ import { View, Text,StyleSheet,TextInput,Dimensions} from 'react-native'
 
 const {width} = Dimensions.get('window')
 
-const FormInput = ({label,placeholder,changeHandler,type, message}) => {
+const FormInput = ({label,placeholder,changeHandler,type, message,...otherProps}) => {
     return (
         <View style={styles.container} >
             <Text style={styles.label}>{label}</Text>
@@ -12,6 +12,7 @@ const FormInput = ({label,placeholder,changeHandler,type, message}) => {
               placeholder={placeholder}
               onChangeText={changeHandler}
               keyboardType={type}
+              {...otherProps}
               
             />
             <Text style={styles.error}>{message}</Text>

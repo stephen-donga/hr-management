@@ -29,3 +29,8 @@ export const setNewUser = users =>({
   type:UserActionTypes.SET_NEW_USERS,
   payload:users
 })
+
+export const setIsloggedIn =user=>({
+  type:UserActionTypes.SET_ISLOGGED_IN,
+  payload:user
+})

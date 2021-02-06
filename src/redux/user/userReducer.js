@@ -6,7 +6,8 @@ const INITIAL_STATE = {
   actions:[],
   user:[],
   loggedIn:{},
-  newUsers:[]
+  newUsers:[],
+  isSignedIn:false
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -41,6 +42,11 @@ const userReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         newUsers: action.payload
+      }
+    case UserActionTypes.SET_ISLOGGED_IN:
+      return{
+        ...state,
+        isSignedIn: action.payload
       }
     default:
       return state;

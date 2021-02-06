@@ -1,5 +1,6 @@
 import React from 'react'
 import {createStackNavigator} from "@react-navigation/stack"
+import {connect} from 'react-redux'
 
 import BottomTabs from '../navigation/BottomTabNavigation'
 import Login from '../components/Login'
@@ -23,12 +24,12 @@ import LeaveForm from '../components/LeaveForm'
 
 const Stack = createStackNavigator()
 
-const StackNavigation = ()=>{
+const StackNavigation = ({isLoggedIn })=>{
     return(
         <Stack.Navigator
         headerMode="none"
         >
-            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Login" component={ isLoggedIn?BottomTabs: Login} />
             <Stack.Screen name="Events" component={Events} />
             <Stack.Screen name="Leaves" component={Leaves} />
             <Stack.Screen name="LeaveForm" component={LeaveForm} />
@@ -51,4 +52,9 @@ const StackNavigation = ()=>{
     )
 }
 
-export default StackNavigation;
+const mapStateToProps=({user})=>({
+
+    isLoggedIn:user.isSignedIn
+})
+
+export default connect(mapStateToProps)(StackNavigation);

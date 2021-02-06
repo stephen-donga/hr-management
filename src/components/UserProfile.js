@@ -1,15 +1,16 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import { View, Text,StyleSheet,Image ,Dimensions, TouchableOpacity} from 'react-native'
 import{Entypo} from "@expo/vector-icons"
 import {Feather as Icon} from "@expo/vector-icons"
 import HeaderBar from '../custom/HeaderBar'
 import {connect} from 'react-redux'
+import {setIsloggedIn} from '../redux/user/userAction'
 import Spinner from 'react-native-loading-spinner-overlay';
 
 
 const {width,height} = Dimensions.get('window')
 
-const ViewStaff = ({loggedIn,navigation}) => {
+const ViewStaff = ({loggedIn,signdIn,navigation,setLogin}) => {
 
   const [loading, setLoading] = useState(false)
 
@@ -17,12 +18,20 @@ const ViewStaff = ({loggedIn,navigation}) => {
     setLoading(true)
     setTimeout(()=>{
         setLoading(false)
+        setLogin(false)
         navigation.navigate('Login')
-    },2000)
+    },500)
 }
 
 let image = null
 const {email, role} = loggedIn;
+
+useEffect(() => {
+    
+    return () => {
+        // setLogin(false)
+    }
+}, [])
 
     return (
         <View style={styles.container}>
@@ -30,7 +39,6 @@ const {email, role} = loggedIn;
             <Spinner
                     visible={loading}
                     size='large'
-                    
             />
             <View style={{width:width,height:75,backgroundColor:'darkblue',justifyContent:'center',paddingLeft:10}}>
                 <Text style={{fontSize:21, fontWeight:'bold', color:'white'}}>Profile</Text>
@@ -103,7 +111,12 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = ({user})=>({
-    loggedIn:user.loggedIn
+    loggedIn:user.loggedIn,
+    signdIn: user.isSignedIn
 })
 
-export default connect(mapStateToProps)(ViewStaff) 
+const mapDispatchToProps = dispatch=>({
+    setLogin: action =>dispatch(setIsloggedIn(action))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(ViewStaff) 

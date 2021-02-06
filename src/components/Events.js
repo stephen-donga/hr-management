@@ -18,11 +18,10 @@ const Events = ({navigation,addEvents,events}) => {
         .catch(error=>console.log(error))
     }
      
-    useEffect(() => {
+    useEffect(() =>{
        fetchEvents()
        
     }, [])
-    
 
     return (
         <View style={styles.container}>
@@ -35,13 +34,17 @@ const Events = ({navigation,addEvents,events}) => {
             </View>
             <View style={styles.details}>
             <View style={{flex:1,backgroundColor:'white',marginTop:15}}>
+               {
+                   events.length ?(
+                    <FlatList 
+                    data={events}
+                    keyExtractor={item =>item.id.toString()}
+                    renderItem={({item})=><EventCard {...item}/>}
+                    showsVerticalScrollIndicator={false}
+                    />
+                   ):<Text style={{fontSize:15,color:'grey',alignSelf:'center'}}>There is no any event at the moment !</Text>
+               }
                
-                <FlatList 
-                        data={events}
-                        keyExtractor={item =>item.id.toString()}
-                        renderItem={({item})=><EventCard {...item}/>}
-                        showsVerticalScrollIndicator={false}
-                        />
             </View>
 
             </View>

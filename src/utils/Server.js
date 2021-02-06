@@ -1,6 +1,7 @@
 const express = require('express');
 const parser = require('body-parser')
 const mysql = require('mysql')
+const bcrypt = require('bcrypt')
 
 
 const app = express()
@@ -25,24 +26,26 @@ const connection = mysql.createConnection({
 
  app.get('/users',(req, res)=>{
      connection.query('SELECT * FROM users',(error, results,fields)=>{
-            if(error) throw error;
+            if(error)throw error;
             res.send(results)
      })
  });
 
  app.post('/users/add',(req, res)=>{
-     let user = {
-          email:req.body.email,
-          user_id:req.body.id,
-          role:req.body.role,
-          password:req.body.password
-     }
-     let sql = 'INSERT INTO users SET ?'
-     connection.query(sql, user, (err, result) => {
-         if(err)throw err;
-         res.send(result)
-     })
+         let user = {
+              email:req.body.email,
+              user_id:req.body.id,
+              role:req.body.role,
+              password:req.body.password 
+         }
+
+         let sql = 'INSERT INTO users SET ?'
+         connection.query(sql, user, (err, result) => {
+             if(err)throw err;
+             res.send(result)
+         })
  });
+
  app.delete('/users/delete/:id',(req, res)=>{
      let sql = 'DELETE FROM users WHERE id = ?'
      connection.query(sql,[req.params.id],(err, result) => {
@@ -60,6 +63,8 @@ const connection = mysql.createConnection({
 });
 
  app.post('/staff/add',(req, res)=>{
+
+    let sql='SELECT * FROM staff_members WHERE email ='
     let user = {
         first_name:req.body.firstname,
         last_name:req.body.lastname,
@@ -139,22 +144,42 @@ app.get('/new',(req, res)=>{
  })
 });
 
-app.post('/new/adduser',(req, res)=>{
-    let user ={
-        first_name:req.body.firstname,
-        last_name:req.body.lastname,
-        email:req.body.email,
-        role:req.body.role,
-        password:req.body.password
+app.post('/new/adduser',async(req, res)=>{
+    try{
+        const hashed = await bcrypt.hash(req.body.password, 10)
+        let user ={
+            first_name:req.body.firstname,
+            last_name:req.body.lastname,
+            email:req.body.email,
+            role:req.body.role,
+            password:hashed
+        }
+        let sql = 'INSERT INTO new_users SET ?'
+        connection.query(sql, user, (err, result) => {
+            if(err)throw err;
+            res.send(result)
+            console.log(result)
+        })
+    }catch(err){
+        console.log(err)
     }
 
-    let sql = 'INSERT INTO new_users SET ?'
-    connection.query(sql, user, (err, result) => {
-        if(err)throw err;
-        res.send(result)
-        console.log(result)
-    })
 });
+
+app.post('/new/login',(req, res)=>{
+
+    const email = req.body.email;
+    const userPassword = req.body.password;
+    
+    let sql = 'SELECT password FROM new_users WHERE email =?'
+    connection.query(sql,[email],(error,results,fields)=>{
+     let hashed=results[0].password
+     bcrypt.compareSync(userPassword,hashed) ? res.send(results):res.send(false)
+
+    })
+
+    
+})
 
 app.delete('/new/delete/:id',(req, res)=>{
     let sql = 'DELETE FROM new_users WHERE id=?'

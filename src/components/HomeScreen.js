@@ -4,7 +4,8 @@ import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import { AntDesign } from '@expo/vector-icons'; 
 import {connect} from 'react-redux'
 import { StackActions,useNavigation } from '@react-navigation/native';
-import {setNumberOfUsers} from '../redux/user/userAction'
+import {setNumberOfUsers,setIsloggedIn} from '../redux/user/userAction'
+import {setStaff} from '../redux/staff/staffActions'
 
 import HeaderBar from '../custom/HeaderBar'
 import Homepage from './Homepage'
@@ -12,7 +13,7 @@ import {urlConnection} from '../utils/url'
 
 const {width, height} = Dimensions.get('window')
 
-const HomeScreen = ({currentUser,setUsers,allStaff}) => {
+const HomeScreen = ({currentUser,setUsers,allStaff,setAllStaff,signedIn,setSignedIn}) => {
 
 
     const navigation = useNavigation()
@@ -30,11 +31,19 @@ const HomeScreen = ({currentUser,setUsers,allStaff}) => {
         .then(res =>res.json())
         .then(server=>setNewUsers(server))
         .catch(error=>console.log(error))
+        fetch(urlConnection('staff'))
+        .then(res =>res.json())
+        .then(server=>setAllStaff(server))
+        .catch(error=>console.log(error))
     }
-
     useEffect(() => {
         fetchUsers()
+        return () => {
+             
+            setSignedIn(!signedIn)
+        }
     }, [])
+ 
     const users  = fetched.concat(newUsers)
     
     let totalStaff = allStaff.length
@@ -55,6 +64,7 @@ const HomeScreen = ({currentUser,setUsers,allStaff}) => {
                           onPress={()=>navigation.navigate('Userprofile')}
                         >
                             <Image style={{width:50,borderWidth:1,borderColor:'teal',height:50,borderRadius:50}} source={require('../../assets/profile.jpg')}/>
+                            <AntDesign name='right'style={{position:'absolute',marginTop:20,marginLeft:50}} color='grey'size={15} />
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -203,11 +213,14 @@ const styles = StyleSheet.create({
 const mapStateToProps = ({user,staff}) => ({
     currentUser: user.currentUser,
     allStaff: staff.staff,
-    roles: user.actions
+    roles: user.actions,
+    signedIn:user.isSignedIn
   });
 
   const mapDispatchToProps = dispatch =>({
-      setUsers: users => dispatch(setNumberOfUsers(users))
+      setUsers: users => dispatch(setNumberOfUsers(users)),
+      setAllStaff: staff=>dispatch(setStaff(staff)),
+      setSignedIn: user=>dispatch(setIsloggedIn(user))
   })
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen)

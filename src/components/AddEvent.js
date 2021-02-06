@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState, useEffect} from 'react'
 import { View, Text,Button,TextInput, ToastAndroid,Dimensions } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import DateTimePicker from "@react-native-community/datetimepicker"
@@ -65,6 +65,8 @@ const AddEvent = ({currentUser,addEvents}) => {
                 .then(server=>console.log(server))
                 .catch(error=>console.warn(error))
 
+                setEvnt("")
+
                 fetch(urlConnection('events'))
                 .then(res => res.json())
                 .then(res => addEvents(res))
@@ -76,7 +78,6 @@ const AddEvent = ({currentUser,addEvents}) => {
                 time:new Date().toString()
                 }
                 auditTrail.logTrail(trail)
-                setEvnt('')
                 setDescribe('')
                 showToastWithGravity()
                 navigate()
@@ -87,18 +88,19 @@ const AddEvent = ({currentUser,addEvents}) => {
                 
             }
         }
-        
+     
         const navigate = ()=>{
             setTimeout(()=>{
                 navigation.dispatch(StackActions.push('Events'))
-            },2000)
+            },200)
         }        
 
         const showToastWithGravity = () => {
             ToastAndroid.showWithGravity(
               "Event added Successfully",
               ToastAndroid.LONG,
-              ToastAndroid.CENTER
+              ToastAndroid.CENTER,
+              ToastAndroid.color='blue'
             );
           };
 

@@ -23,17 +23,19 @@ const Login = ({navigation,setStaf,setLoggedUser,newUsers,setNewUsers,setCurrent
         ToastAndroid.show('Network Connection failed', ToastAndroid.SHORT);
       };
 
+     
+
     const startSpinner = () =>{
         setLoading(true)
         setTimeout(()=>{
             setLoading(false)
-            navigation.navigate('Home')
+            navigation.navigate('Home') 
             setUsername("");
             setPassword("")
-        },1000)
+            
+        },800)
     }
     
-
     const fetchUsers = () => {
         fetch(urlConnection('users'))
         .then(res =>res.json())
@@ -96,6 +98,8 @@ const Login = ({navigation,setStaf,setLoggedUser,newUsers,setNewUsers,setCurrent
             setCurrentUser(username)
             let user = filteredUser[0]
             setLoggedUser(user)
+            setUserError('')
+            setPasswordError('')
 
             auditTrail.logTrail(trail)
             startSpinner()
@@ -118,8 +122,28 @@ const Login = ({navigation,setStaf,setLoggedUser,newUsers,setNewUsers,setCurrent
         if(fetched.length<1){
             showNetworkToast()
             
+            
         }
             validate();
+    }
+
+    const handleAuth = () =>{
+        fetch(urlConnection('new/login',{
+            method:'post',
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({
+                email:username,
+                password:password,
+              })
+        })
+        )
+        .then(res =>res.json())
+        .then(res=>alert(res))
+        .catch(error=>alert(error))
+        // .finally(()=>alert('in'))
     }
   
         return (
@@ -144,13 +168,13 @@ const Login = ({navigation,setStaf,setLoggedUser,newUsers,setNewUsers,setCurrent
                <View style={{width:'85%',borderRadius:10,padding:11}}>
                  
                      
-                     <Inputfield 
-                         label="Username or Email"
-                         icon="user"
-                         value={username}
-                         message={username ?'':userError}
-                         placeholder="username or email"
-                         changeHandler={handleUsernameChange }
+                <Inputfield 
+                    label="Email"
+                    icon="user"
+                    value={username}
+                    message={username ?'':userError}
+                    placeholder="email"
+                    changeHandler={handleUsernameChange }
  
                   />
                   <Inputfield 
@@ -198,22 +222,21 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         alignItems:'center',
         backgroundColor:'white'
-
     }
 })
 
-const mapStateToProps = ({ user, staff }) => ({
-    currentUser: user.currentUser,
-    user_role: user.role,
-    allS:staff.staff,
-    newUsers:user.newUsers
+  const mapStateToProps = ({ user, staff }) => ({
+        currentUser: user.currentUser,
+        user_role: user.role,
+        allS:staff.staff,
+        newUsers:user.newUsers,
   });
   
   const mapDispatchToProps = dispatch => ({
-    setCurrentUser: user => dispatch(setCurrentUser(user)),
-    setStaf: user => dispatch(setStaff(user)),
-    setLoggedUser: user => dispatch(setLoggedIn(user)),
-    setNewUsers: user => dispatch(setNewUser(user))
+        setCurrentUser: user => dispatch(setCurrentUser(user)),
+        setStaf: user => dispatch(setStaff(user)),
+        setLoggedUser: user => dispatch(setLoggedIn(user)),
+        setNewUsers: user => dispatch(setNewUser(user)),
    
   });
 
