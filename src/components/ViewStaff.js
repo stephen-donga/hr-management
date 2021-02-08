@@ -30,12 +30,15 @@ const ViewStaff = ({details,setStf,currentUser}) => {
         .then(res=>res.json())
         .then(res=>console.log(res))
         .catch(err=>console.log(err))
+        .finally(()=>{
+          fetch(urlConnection('staff'))
+          .then(res =>res.json())
+          .then(server=>setStf(server))
+          .catch(error=>console.log(error))
+        })
         showToast()
 
-        fetch(urlConnection('staff'))
-        .then(res =>res.json())
-        .then(server=>setStf(server))
-        .catch(error=>console.log(error))
+        
        
 
       let trail={

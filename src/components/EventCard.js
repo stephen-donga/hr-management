@@ -18,11 +18,13 @@ const EventCard = ({event,setEvent,description,time,id}) => {
         .then(res=>res.json())
         .then(res=>console.log(res))
         .catch(err=>console.log(err))
+        .finally(()=>{
+            fetch(urlConnection('events'))
+            .then(res=>res.json())
+            .then(res=>setEvent(res))
+            .catch(err=>console.log(err))
 
-        fetch(urlConnection('events'))
-        .then(res=>res.json())
-        .then(res=>setEvent(res))
-        .catch(err=>console.log(err))
+        })
 
         setIseen(!isSeen)
 

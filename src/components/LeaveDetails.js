@@ -43,13 +43,17 @@ const LeaveDetails = ({route,navigation,setStf}) => {
         .then(res=>res.json())
         .then(res=>console.log(res))
         .catch(err=>console.log(err))
+        .finally(()=>{
+            fetch(urlConnection('leaves'))
+            .then(res=>res.json())
+            .then(res=>setLeavz(res))
+            .catch(err=>console.log(err))
+            setOnleave(!onLeave)
+            navigation.navigate('Home')
 
-        fetch(urlConnection('leaves'))
-        .then(res=>res.json())
-        .then(res=>setLeavz(res))
-        .catch(err=>console.log(err))
-        setOnleave(!onLeave)
-        navigation.navigate('Home')
+        })
+
+        
     }
 
     const handleLeaveCancel= ()=>{

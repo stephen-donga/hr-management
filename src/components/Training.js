@@ -39,7 +39,7 @@ const Training = ({navigation,trainees,trainers}) => {
                         showsVerticalScrollIndicator={false}
                     />
                 ):(
-                       <Text style={{alignSelf:'center',marginTop:70, fontSize:17, color:'grey'}}> No one is training at the moment ! </Text>
+                       <Text style={{alignSelf:'center',marginTop:70, fontSize:17, color:'grey'}}> No one is on training at the moment ! </Text>
                 )
             }
             </View>

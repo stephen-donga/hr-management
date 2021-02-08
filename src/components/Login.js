@@ -12,21 +12,10 @@ import auditTrail from '../utils/trails'
 
 const Login = ({navigation,setStaf,setLoggedUser,newUsers,setNewUsers,setCurrentUser}) => {
 
-    const [fetched, setFetched] = useState([])
     const [loading, setLoading] = useState(false)
 
-    const showToast = () => {
-        ToastAndroid.show('Pleas! enter credentials', ToastAndroid.SHORT);
-      };
-
-      const showNetworkToast = () => {
-        ToastAndroid.show('Network Connection failed', ToastAndroid.SHORT);
-      };
-
-     
-
-    const startSpinner = () =>{
-        setLoading(true)
+      const startSpinner = () =>{
+          setLoading(true)
         setTimeout(()=>{
             setLoading(false)
             navigation.navigate('Home') 
@@ -37,11 +26,6 @@ const Login = ({navigation,setStaf,setLoggedUser,newUsers,setNewUsers,setCurrent
     }
     
     const fetchUsers = () => {
-        fetch(urlConnection('users'))
-        .then(res =>res.json())
-        .then(server=>setFetched(server))
-        .catch(error=>console.log(error))
-
         fetch(urlConnection('new'))
         .then(res =>res.json())
         .then(server=>setNewUsers(server))
@@ -51,23 +35,22 @@ const Login = ({navigation,setStaf,setLoggedUser,newUsers,setNewUsers,setCurrent
         .then(res =>res.json())
         .then(server=>setStaf(server))
         .catch(error=>console.log(error))
-
+        
     }
-     
-    let allUserz = fetched.concat(newUsers)
-     useEffect(() => {
-         fetchUsers();
+    
+    useEffect(() => {
+        fetchUsers();
         return () => {
-          
+            
         }
     }, [])
-
+    
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [userError,setUserError] = useState("")
     const [passwordError,setPasswordError] = useState("")
     
-    const filteredUser = allUserz.filter(user =>user.username==username||user.email==username &&user.password==password)
+    const filteredUser = newUsers.filter(user =>user.email==username)
     
     const handleUsernameChange = (text) => {
         setUsername(text)
@@ -77,73 +60,68 @@ const Login = ({navigation,setStaf,setLoggedUser,newUsers,setNewUsers,setCurrent
         setPassword(text);
     }
 
-    const validate = () =>{
-        
-        let trail={
-            actor: "",
-            action:'',
-            time:new Date().toString()
+    const handleAuth = () =>{
+        if(username==""){
+            if(userError=="")setUserError("Please enter a valid username")
+            return;
         }
-
-        if(userError=="")setUserError("Please enter a valid username")
-        
-        if(passwordError=="")setPasswordError("Please enter a valid password")
-        
-        if(filteredUser.length&&filteredUser[0].password===password){
-            trail ={
-                actor:username,
-                action:'Successfully logged in',
+        if(password==""){
+            if(passwordError=="")setPasswordError("Please enter a valid password")
+            return;
+        }
+        fetch(urlConnection('new/login'),{
+            method:'post',
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email:username,
+                password:password,
+            })
+        }
+        )
+        .then(res =>res.json())
+        .then(res=>{
+            let trail={
+                actor: "",
+                action:'',
                 time:new Date().toString()
             }
-            setCurrentUser(username)
-            let user = filteredUser[0]
-            setLoggedUser(user)
-            setUserError('')
-            setPasswordError('')
-
-            auditTrail.logTrail(trail)
-            startSpinner()
-            }
-            else{
+            if(res.message===true){
+                trail ={
+                    actor:username,
+                    action:'Successfully logged in',
+                    time:new Date().toString()
+                }
+                
+                setCurrentUser(username)
+                let user = filteredUser[0]
+                setLoggedUser(user)
+                setUserError('')
+                setPasswordError('')
+            
+                auditTrail.logTrail(trail)
+                startSpinner()
+                return;
+            }else if(res.message===false){
+                alert('Wrong password !')
+    
                 trail={
                     actor:username,
                     action:'Failed login with password',
                     time:new Date().toString()
                 }
-                showToast()
-    
                 auditTrail.logTrail(trail)
-               navigation.navigate('Login')
- 
+            }else if(res.message==='none') {
+                alert('No user with the provided credentials')
+            }else{
+                alert('Network failed')
             }
-    }
-
-    const handleLogin = () => {
-        if(fetched.length<1){
-            showNetworkToast()
-            
-            
-        }
-            validate();
-    }
-
-    const handleAuth = () =>{
-        fetch(urlConnection('new/login',{
-            method:'post',
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json"
-              },
-              body: JSON.stringify({
-                email:username,
-                password:password,
-              })
         })
-        )
-        .then(res =>res.json())
-        .then(res=>alert(res))
         .catch(error=>alert(error))
-        // .finally(()=>alert('in'))
+         
+        
     }
   
         return (
@@ -196,7 +174,7 @@ const Login = ({navigation,setStaf,setLoggedUser,newUsers,setNewUsers,setCurrent
                     <Button 
                         title="Login"
                         color='darkgreen'
-                        onPress={handleLogin}
+                        onPress={handleAuth}
                     />
                     </View>
                  

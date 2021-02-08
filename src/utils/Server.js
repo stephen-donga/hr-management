@@ -32,18 +32,28 @@ const connection = mysql.createConnection({
  });
 
  app.post('/users/add',(req, res)=>{
-         let user = {
-              email:req.body.email,
-              user_id:req.body.id,
-              role:req.body.role,
-              password:req.body.password 
-         }
 
-         let sql = 'INSERT INTO users SET ?'
-         connection.query(sql, user, (err, result) => {
-             if(err)throw err;
-             res.send(result)
-         })
+    let sqlCheck = 'SELECT * users WHERE email = ?'
+    connection.query(sqlCheck,[req.body.email],(error,results, fields)=>{
+        if(results.length > 0){
+            res.send('Email already taken')
+            return;
+        }else{
+
+            let user = {
+                 email:req.body.email,
+                 user_id:req.body.id,
+                 role:req.body.role,
+                 password:req.body.password 
+            }
+    
+            let sql = 'INSERT INTO users SET ?'
+            connection.query(sql, user, (err, result) => {
+                if(err)throw err;
+                res.send(result)
+            })
+        }
+    })
  });
 
  app.delete('/users/delete/:id',(req, res)=>{
@@ -64,22 +74,57 @@ const connection = mysql.createConnection({
 
  app.post('/staff/add',(req, res)=>{
 
-    let sql='SELECT * FROM staff_members WHERE email ='
-    let user = {
-        first_name:req.body.firstname,
-        last_name:req.body.lastname,
-        position:req.body.position,
-        qualification:req.body.qualification,
-        experience:req.body.experience,
-        date_of_birth:req.body.date,
-        image:req.body.image,
-        onleave:0
-    }
-    let sql = 'INSERT INTO staff_members SET ?'
-    connection.query(sql, user, (err, result) => {
-        if(err)throw err;
-        res.send(result)
-        console.log(result)
+     let firstname =req.body.firstname
+     let lastname = req.body.lastname
+
+    let sqlCheck="SELECT * FROM staff_members WHERE last_name = ?"
+    connection.query(sqlCheck,[lastname],(err,results,fields)=>{
+        if(results.length > 0){
+           
+                if(results[0].first_name == firstname){
+
+                        res.setHeader('Content-Type','application/json')
+                        let failed = {message:'exists'}
+                        res.send(JSON.stringify(failed))
+                 }else{
+                    let user = {
+                        first_name:req.body.firstname,
+                        last_name:req.body.lastname,
+                        position:req.body.position,
+                        qualification:req.body.qualification,
+                        experience:req.body.experience,
+                        date_of_birth:req.body.date,
+                        image:req.body.image,
+                        onleave:0
+                    }
+                        let sql = 'INSERT INTO staff_members SET ?'
+                        connection.query(sql, user, (err, result) => {
+                        if(err)throw err;
+                        res.setHeader('Content-Type','application/json')
+                        let success= {message:true}
+                        res.send(JSON.stringify(success))
+                     })
+                }
+
+            }else{
+                let user = {
+                    first_name:req.body.firstname,
+                    last_name:req.body.lastname,
+                    position:req.body.position,
+                    qualification:req.body.qualification,
+                    experience:req.body.experience,
+                    date_of_birth:req.body.date,
+                    image:req.body.image,
+                    onleave:0
+                }
+                let sql = 'INSERT INTO staff_members SET ?'
+                connection.query(sql, user, (err, result) => {
+                if(err)throw err;
+                res.setHeader('Content-Type','application/json')
+                let success= {message:true}
+                res.send(JSON.stringify(success))
+            })
+        }
     })
 });
 
@@ -145,20 +190,33 @@ app.get('/new',(req, res)=>{
 });
 
 app.post('/new/adduser',async(req, res)=>{
+    const hashed = await bcrypt.hash(req.body.password, 10)
     try{
-        const hashed = await bcrypt.hash(req.body.password, 10)
-        let user ={
-            first_name:req.body.firstname,
-            last_name:req.body.lastname,
-            email:req.body.email,
-            role:req.body.role,
-            password:hashed
-        }
-        let sql = 'INSERT INTO new_users SET ?'
-        connection.query(sql, user, (err, result) => {
-            if(err)throw err;
-            res.send(result)
-            console.log(result)
+        let sqlCheck = 'SELECT * FROM new_users WHERE email =?'
+        connection.query(sqlCheck,[req.body.email],(error,results,fields)=>{
+            if(results.length > 0){
+                res.setHeader('Content-Type','application/json')
+                let result = {message:'taken'}
+                res.send(JSON.stringify(result))
+                return;
+            }else{
+
+                let user ={
+                    first_name:req.body.firstname,
+                    last_name:req.body.lastname,
+                    email:req.body.email,
+                    role:req.body.role,
+                    password:hashed
+                }
+                let sql = 'INSERT INTO new_users SET ?'
+                connection.query(sql, user, (err, result) => {
+                    if(err)throw err;
+                    res.setHeader('Content-Type','application/json')
+                    let success= {message:'loaded'}
+                    res.send(JSON.stringify(success))
+                    
+                })
+            }
         })
     }catch(err){
         console.log(err)
@@ -167,14 +225,26 @@ app.post('/new/adduser',async(req, res)=>{
 });
 
 app.post('/new/login',(req, res)=>{
-
     const email = req.body.email;
     const userPassword = req.body.password;
     
     let sql = 'SELECT password FROM new_users WHERE email =?'
     connection.query(sql,[email],(error,results,fields)=>{
-     let hashed=results[0].password
-     bcrypt.compareSync(userPassword,hashed) ? res.send(results):res.send(false)
+        
+        if(results.length > 0){
+         let hashed = results[0].password
+         res.setHeader('Content-Type','application/json')
+         let success= {message:true}
+         let failed = {message:false}
+
+         bcrypt.compareSync(userPassword,hashed)
+         ? 
+         res.send(JSON.stringify(success))
+         :
+         res.send(JSON.stringify(failed))
+     }else{
+         res.send(JSON.stringify({message:'none'}))
+     }
 
     })
 

@@ -29,7 +29,7 @@ const {email, role} = loggedIn;
 useEffect(() => {
     
     return () => {
-        // setLogin(false)
+        setLogin(false)
     }
 }, [])
 

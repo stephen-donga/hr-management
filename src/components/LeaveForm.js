@@ -107,12 +107,12 @@ const LeaveForm = ({route,navigation,setStf}) => {
             .then(res =>res.json())
             .then(server=>console.log(server))
             .catch(error=>console.log(error))
-
-          fetch(urlConnection('staff'))
-          .then(res =>res.json())
-          .then(server=>setStf(server))
-          .catch(error=>console.log(error))
-          
+            .finally(()=>{
+              fetch(urlConnection('staff'))
+              .then(res =>res.json())
+              .then(server=>setStf(server))
+              .catch(error=>console.log(error))
+            })
         }
 
     }

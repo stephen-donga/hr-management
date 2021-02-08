@@ -60,11 +60,12 @@ const EditStaff = ({details,addStaff,currentUser}) => {
         .then(res =>res.json())
         .then(server=>console.log(server))
         .catch(error=>console.log(error))
-
-        fetch(urlConnection('staff'))
-        .then(res => res.json())
-        .then(res => addStaff(res))
-        .catch(err =>console.log(err))
+        .finally(()=>{
+          fetch(urlConnection('staff'))
+          .then(res => res.json())
+          .then(res => addStaff(res))
+          .catch(err =>console.log(err))
+        })
 
        Alert.alert('Edit',"Apply changes ?",[
         {
@@ -75,7 +76,7 @@ const EditStaff = ({details,addStaff,currentUser}) => {
         { text: 'OK', onPress: () =>{
             let trail = {
                 actor:currentUser,
-                action:`Edited staff${first_name} ${last_name} to ${firstname} ${lastname}`,
+                action:`Edited staff ${firstname} ${lastname}`,
                 time: new Date().toString()
             }
 
@@ -101,8 +102,6 @@ const EditStaff = ({details,addStaff,currentUser}) => {
       const showDatepicker = () => {
         showMode('date');
       };
-
-    
 
     return (
         <View style={styles.container}>
@@ -154,8 +153,7 @@ const EditStaff = ({details,addStaff,currentUser}) => {
                 <FormInput 
                     label="Experience"
                     placeholder={experience.toString()}
-                    value={exprence}
-                    type="number-pad"
+                    type="numeric"
                     changeHandler={(text)=>setExprence(text)}
               
                 />

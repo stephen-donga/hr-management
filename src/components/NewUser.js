@@ -1,5 +1,5 @@
  import React,{useState} from 'react'
- import { View,ScrollView, Text,StyleSheet,Dimensions,TouchableOpacity } from 'react-native'
+ import { View,ScrollView,ToastAndroid, Text,StyleSheet,Dimensions,TouchableOpacity } from 'react-native'
  import DropDownPicker from 'react-native-dropdown-picker';
  import {connect} from 'react-redux'
  import {setNewUser} from '../redux/user/userAction'
@@ -32,6 +32,10 @@
     const [pswdError, setPswdError] = useState("")
 
     let controller
+
+    const showToast =()=>{
+        ToastAndroid.show(' New user Created !',ToastAndroid.CENTER,ToastAndroid.LONG)
+    }
 
      const handleFirstNameChange =(text)=>{
         setFirstName(text)
@@ -66,7 +70,7 @@
             return;
         }
         if(password !==confirmPassword){
-            setConfirmPassword('Passwords don\'t match !')
+            alert('Passwords don\'t match !')
             return
         }
  
@@ -85,20 +89,28 @@
               })
         })
         .then(res => res.json())
-        .then(res => console.log(res))
+        .then(res =>{
+            if(res.message=="taken"){
+                alert('Email already taken')
+                return;
+            }else{
+                showToast()
+                navigation.navigate('Home')
+                setFirstName("")
+                setLastName("")
+                setEmail("")
+                setPassword("")
+                setConfirmPassword("")
+
+            }
+        })
         .catch(err =>console.log(err))
-
-        fetch(urlConnection('new'))
-        .then(res =>res.json())
-        .then(server=>setNewUsers(server))
-        .catch(error=>console.log(error))
-
-            navigation.navigate('Login')
-            setFirstName("")
-            setLastName("")
-            setEmail("")
-            setPassword("")
-            setConfirmPassword("")
+        .finally(()=>{
+            fetch(urlConnection('new'))
+            .then(res =>res.json())
+            .then(server=>setNewUsers(server))
+            .catch(error=>console.log(error))
+        })
      }
 
      return (

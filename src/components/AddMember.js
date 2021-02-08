@@ -152,38 +152,42 @@ const AddMember = ({navigation,currentUser,setStf}) => {
                     date:validDate,
                     image:image
                   })
-            })
-            .then(res =>res.json())
-            .then(server=>console.log(server))
-            .catch(error=>console.log(error))
-
-            fetch(urlConnection('staff'))
-            .then(res =>res.json())
-            .then(server=>setStf(server))
-            .catch(error=>console.log(error))
-
-            
-
-        let trail={
-                actor:currentUser,
-                action:`Added new member ${firstname} ${lastname}`,
-                time:new Date().toString()
-            }
-    
-            auditTrail.logTrail(trail)
-
-            //clearing errors
-            setQualifyErr("")
-            setExperienceErr("")
-            setFnameErr("")
-            setLnameErr(" ")
-        }
-    }
-
-    const onChange = (event, selectedDate) => {
-        const currentDate = selectedDate || date;
-        setShow(Platform.OS === 'ios');
-        setDate(currentDate);
+                })
+                .then(res =>res.json())
+                .then(server=>{
+                  if(server.message=="exists"){
+                     alert('No duplicate allowed !')
+                     }else{
+                     let trail={
+                      actor:currentUser,
+                      action:`Added new member ${firstname} ${lastname}`,
+                      time:new Date().toString()
+                      }
+          
+                       auditTrail.logTrail(trail)
+        
+                        //clearing errors
+                        setQualifyErr("")
+                        setExperienceErr("")
+                        setFnameErr("")
+                        setLnameErr(" ")
+                    
+                  }
+                })
+                .catch(error=>console.log(error))
+                .finally(()=>{
+                  fetch(urlConnection('staff'))
+                .then(res =>res.json())
+                .then(server=>setStf(server))
+                .catch(error=>console.log(error))
+                })
+              }
+          
+              }
+              const onChange = (event, selectedDate) => {
+                const currentDate = selectedDate || date;
+                setShow(Platform.OS === 'ios');
+                setDate(currentDate);
       };
     
       const showMode = (currentMode) => {
