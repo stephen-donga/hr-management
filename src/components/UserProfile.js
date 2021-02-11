@@ -4,13 +4,15 @@ import{Entypo} from "@expo/vector-icons"
 import {Feather as Icon} from "@expo/vector-icons"
 import HeaderBar from '../custom/HeaderBar'
 import {connect} from 'react-redux'
-import {setIsloggedIn} from '../redux/user/userAction'
+import {setIsloggedIn,setImage} from '../redux/user/userAction'
 import Spinner from 'react-native-loading-spinner-overlay';
+import * as ImagePicker from 'expo-image-picker';
+
 
 
 const {width,height} = Dimensions.get('window')
 
-const ViewStaff = ({loggedIn,signdIn,navigation,setLogin}) => {
+const ViewStaff = ({loggedIn,signdIn,image,userPic,navigation,setLogin}) => {
 
   const [loading, setLoading] = useState(false)
 
@@ -28,7 +30,7 @@ const ViewStaff = ({loggedIn,signdIn,navigation,setLogin}) => {
       }
 }
 
-let image = null
+ 
 const {email, role} = loggedIn;
 
 useEffect(() => {
@@ -37,6 +39,33 @@ useEffect(() => {
         setLogin(false)
     }
 }, [])
+
+useEffect(() => {
+    (async () => {
+        if (Platform.OS !== 'web') {
+            const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+            if (status !== 'granted') {
+                alert('Sorry, we need camera roll permissions to make this work!');
+            }
+        }
+    })();
+}, []);
+
+const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+    });
+    
+    console.log(result);
+    
+    if (!result.cancelled) {
+        userPic(result.uri);
+    }
+};
+
 
     return (
         <View style={styles.container}>
@@ -50,7 +79,18 @@ useEffect(() => {
             </View>
            <View style={styles.topsection}>
               {
-                  image !==null?(<Image source={require('../../assets/user.png')} style={styles.pic}/>):( <Entypo name="user"  size={130} color="steelblue" />)
+                  image?(
+                  <TouchableOpacity
+                  onPress={pickImage}
+                  >
+                      <Image source={{uri:image}} style={styles.pic}/>
+                  </TouchableOpacity>)
+                  :(
+                    <TouchableOpacity
+                    onPress={pickImage}>
+                         <Entypo name="user"  size={130} color="steelblue" />
+                  </TouchableOpacity>
+                  )
               }
         <View>
         <Text style={{marginTop:30,fontWeight:'bold' ,fontSize:15}}>{email}</Text>
@@ -106,9 +146,9 @@ const styles = StyleSheet.create({
         position:'relative'
     },
     pic:{
-        width:'35%',
-        height:'70%',
-        borderRadius:80,
+        width:100,
+        height:100,
+        borderRadius:50,
         borderWidth:2,
         borderColor:'grey'
     }
@@ -117,11 +157,13 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = ({user})=>({
     loggedIn:user.loggedIn,
-    signdIn: user.isSignedIn
+    signdIn: user.isSignedIn,
+    image:user.userPic
 })
 
 const mapDispatchToProps = dispatch=>({
-    setLogin: action =>dispatch(setIsloggedIn(action))
+    setLogin: action =>dispatch(setIsloggedIn(action)),
+    userPic: action =>dispatch(setImage(action))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewStaff) 

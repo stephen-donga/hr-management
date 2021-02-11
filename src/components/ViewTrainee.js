@@ -13,27 +13,17 @@ const ViewTrainee = ({person}) => {
         <View style={styles.container}>
             <HeaderBar />
             <View style={styles.top}>
+               <View style={styles.extrude}>
+                 <Image source={{uri:image}} style={{width:100,height:100,borderRadius:50}}/>
+               </View>
+               <View style={{flex:1,left:70}}>
+                    <Text style={{fontSize:18,fontWeight:'bold',color:'white',paddingLeft:60}}>{first_name}{"  "}{last_name}</Text>
+                </View>
 
             </View>
             <ScrollView style={styles.lowersection}>
-                <View style={{width:'100%',height:50, flexDirection:'row',paddingHorizontal:40}}>
-                   <View style={{width:'40%',height:'100%'}}>
-                      <Text style={styles.title}>First name</Text>
-                   </View>
-                   <View style={{width:'60%',height:'100%'}}>
-                     <Text style={styles.text}>{first_name}</Text>
-                   </View>
-                </View>
-                <View style={{width:'100%',height:50, flexDirection:'row',paddingHorizontal:40}}>
-                   <View style={{width:'40%',height:'100%'}}>
-                      <Text style={styles.title}>Last name</Text>
-                   </View>
-                   <View style={{width:'60%',height:'100%'}}>
-                     <Text style={styles.text}>{last_name}</Text>
-                   </View>
-                </View>
-
-                <View style={{width:'100%',height:50, flexDirection:'row',paddingHorizontal:40}}>
+                
+                <View style={{width:'100%',height:30, flexDirection:'row',paddingHorizontal:40}}>
                    <View style={{width:'40%',height:'100%'}}>
                       <Text style={styles.title}>Position</Text>
                    </View>
@@ -42,7 +32,7 @@ const ViewTrainee = ({person}) => {
                    </View>
                 </View>
 
-                <View style={{width:'100%',height:50, flexDirection:'row',paddingHorizontal:40}}>
+                <View style={{width:'100%',height:30, flexDirection:'row',paddingHorizontal:40}}>
                    <View style={{width:'40%',height:'100%'}}>
                       <Text style={styles.title}>Qualification</Text>
                    </View>
@@ -51,7 +41,7 @@ const ViewTrainee = ({person}) => {
                    </View>
                 </View>
 
-                <View style={{width:'100%',height:50, flexDirection:'row',paddingHorizontal:40}}>
+                <View style={{width:'100%',height:30, flexDirection:'row',paddingHorizontal:40}}>
                    <View style={{width:'40%',height:'100%'}}>
                       <Text style={styles.title}>Experience</Text>
                    </View>
@@ -71,9 +61,6 @@ const ViewTrainee = ({person}) => {
                    </View>
                 </View>
                </ScrollView>
-            <View style={styles.extrude}>
-                <Image source={{uri:image}} style={{width:185,height:185,borderRadius:185, alignSelf:'center'}}/>
-            </View>
         </View>
     )
 }
@@ -89,19 +76,20 @@ const styles = StyleSheet.create({
         backgroundColor:'indigo'
     },
     extrude:{
-        position:'absolute',
-        height:145,
+        top:30,
+        left:-90,
+        width:100,
+        height:100,
         backgroundColor:'#fff',
-        borderRadius:150,
+        borderRadius:50,
         alignSelf:'center',
-        marginTop:'20%',
         elevation:5,
         justifyContent:'center'
     },
     lowersection:{
         flex:1,
         backgroundColor:'white',
-        marginTop:100,
+        marginTop:50,
         marginBottom:10
     },
     title:{

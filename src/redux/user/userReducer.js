@@ -7,7 +7,8 @@ const INITIAL_STATE = {
   user:[],
   loggedIn:{},
   newUsers:[],
-  isSignedIn:false
+  isSignedIn:false,
+  userPic:null
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -47,6 +48,11 @@ const userReducer = (state = INITIAL_STATE, action) => {
       return{
         ...state,
         isSignedIn: action.payload
+      }
+    case UserActionTypes.SET_IMAGE:
+      return{
+        ...state,
+        userPic:action.payload
       }
     default:
       return state;

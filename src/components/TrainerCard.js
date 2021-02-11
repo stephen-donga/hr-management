@@ -85,7 +85,6 @@ const styles = StyleSheet.create({
     leftsection:{
         width:'35%',
         height:'100%',
-        backgroundColor:'dodgerblue',
         justifyContent:'center',
         paddingLeft:5,
         borderTopLeftRadius:5,

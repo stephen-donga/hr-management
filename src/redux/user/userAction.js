@@ -34,3 +34,8 @@ export const setIsloggedIn =user=>({
   type:UserActionTypes.SET_ISLOGGED_IN,
   payload:user
 })
+
+export const setImage =user=>({
+  type:UserActionTypes.SET_IMAGE,
+  payload:user
+})

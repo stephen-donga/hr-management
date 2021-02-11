@@ -80,29 +80,17 @@ const ViewStaff = ({details,setStf,currentUser}) => {
       </View>
     </ModalContent>
   </Modal>
-               <View style={styles.uppersection}></View>
-               <View style={styles.extrudingsection}>
-                   <Image source={{uri:image}} style={{width:170,height:170,borderRadius:80 }} />
+               <View style={styles.uppersection}>
+                 <View style={styles.extrudingsection}>
+                   <Image source={{uri:image}} style={{width:90,height:90,borderRadius:45 }} />
+                 </View>
+                  <View style={{flex:1,left:100}}>
+                    <Text style={{fontSize:18,fontWeight:'bold',color:'white',paddingLeft:50}}>{first_name}{"  "}{last_name}</Text>
+                  </View>
                </View>
                <ScrollView style={styles.lowersection}>
-                <View style={{width:'100%',height:50, flexDirection:'row',paddingHorizontal:40}}>
-                   <View style={{width:'40%',height:'100%'}}>
-                      <Text style={styles.title}>First name</Text>
-                   </View>
-                   <View style={{width:'60%',height:'100%'}}>
-                     <Text style={styles.text}>{first_name}</Text>
-                   </View>
-                </View>
-                <View style={{width:'100%',height:50, flexDirection:'row',paddingHorizontal:40}}>
-                   <View style={{width:'40%',height:'100%'}}>
-                      <Text style={styles.title}>Last name</Text>
-                   </View>
-                   <View style={{width:'60%',height:'100%'}}>
-                     <Text style={styles.text}>{last_name}</Text>
-                   </View>
-                </View>
 
-                <View style={{width:'100%',height:50, flexDirection:'row',paddingHorizontal:40}}>
+                <View style={{width:'100%',height:30, flexDirection:'row',paddingHorizontal:40}}>
                    <View style={{width:'40%',height:'100%'}}>
                       <Text style={styles.title}>Position</Text>
                    </View>
@@ -111,7 +99,7 @@ const ViewStaff = ({details,setStf,currentUser}) => {
                    </View>
                 </View>
 
-                <View style={{width:'100%',height:50, flexDirection:'row',paddingHorizontal:40}}>
+                <View style={{width:'100%',height:30, flexDirection:'row',paddingHorizontal:40}}>
                    <View style={{width:'40%',height:'100%'}}>
                       <Text style={styles.title}>Qualification</Text>
                    </View>
@@ -120,7 +108,7 @@ const ViewStaff = ({details,setStf,currentUser}) => {
                    </View>
                 </View>
 
-                <View style={{width:'100%',height:50, flexDirection:'row',paddingHorizontal:40}}>
+                <View style={{width:'100%',height:30, flexDirection:'row',paddingHorizontal:40}}>
                    <View style={{width:'40%',height:'100%'}}>
                       <Text style={styles.title}>Experience</Text>
                    </View>
@@ -140,9 +128,13 @@ const ViewStaff = ({details,setStf,currentUser}) => {
                      <Text style={styles.text}>{date_of_birth}</Text>
                    </View>
                 </View>
-                {
+              
+               </ScrollView>
+
+               <View style={{flexDirection:'row',justifyContent:'space-evenly',marginBottom:50}}>
+               {
                   !onleave?(<TouchableOpacity
-                  style={{width:'90%',height:40,backgroundColor:'dodgerblue',alignItems:'center',justifyContent:'center',alignSelf:'center',marginBottom:10}}
+                  style={{width:90,height:40,borderRadius:15,backgroundColor:'dodgerblue',alignItems:'center',justifyContent:'center',alignSelf:'center',marginBottom:10}}
                   onPress={()=>navigation.navigate('LeaveForm',{id})}
                   
                   >
@@ -151,7 +143,7 @@ const ViewStaff = ({details,setStf,currentUser}) => {
                 }
 
                 <TouchableOpacity
-                style={{width:'90%',height:40,backgroundColor:'green',alignItems:'center',justifyContent:'center',alignSelf:'center',marginBottom:10}}
+                style={{width:90,height:40,borderRadius:15,backgroundColor:'green',alignItems:'center',justifyContent:'center',alignSelf:'center',marginBottom:10}}
                 onPress={()=>navigation.navigate('EditStaff')}
                 
                 >
@@ -159,18 +151,18 @@ const ViewStaff = ({details,setStf,currentUser}) => {
                 </TouchableOpacity>
                 
                 <TouchableOpacity
-                style={{width:'90%',height:40,backgroundColor:'#eee',elevation:5,alignItems:'center',justifyContent:'center',alignSelf:'center',marginBottom:10}}
+                style={{width:90,height:40,borderRadius:15,backgroundColor:'#eee',elevation:5,alignItems:'center',justifyContent:'center',alignSelf:'center',marginBottom:10}}
                 onPress={handleDelete}
                 
                 >
                     <Text style={{
-                      fontSize:18,
+                      fontSize:15,
                       fontWeight:'bold',
                       color:'red'
                       }}>Delete</Text>
                 </TouchableOpacity>
 
-               </ScrollView>
+               </View>
         </View>
     )
 }
@@ -183,32 +175,31 @@ const styles = StyleSheet.create({
         backgroundColor:'white'
     },
     btntext:{
-        fontSize:18,
+        fontSize:15,
         fontWeight:'bold',
         color:'white'
     },
     uppersection:{
         width:width,
-        height:height/3-80,
+        height:height/3-20,
         backgroundColor:'dodgerblue'
     },
     extrudingsection:{
-        position:'absolute',
-        width:width/3+40,
-        height:height/4-30,
-        padding:5,
-        justifyContent:'center',
+        top:50,
+        left:30,
+        width:width/3-10,
+        height:height/4-50,
         alignItems:'center',
+        justifyContent:'center',
         borderRadius:150,
+        padding:5,
         backgroundColor:'white',
-        marginTop:'15%',
-        alignSelf:'center',
         elevation:5
     },
     lowersection:{
         flex:1,
         backgroundColor:'white',
-        marginTop:100,
+        marginTop:30,
         marginBottom:10
     },
     title:{

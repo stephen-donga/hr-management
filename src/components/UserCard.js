@@ -36,10 +36,19 @@ const UserCard = ({first_name,last_name,id,date_of_birth,position,qualification,
             <View style={styles.rightsection}>
                 <View style={styles.upper}>
                 <Text style={styles.text}>{first_name}{" "}{last_name}</Text>
+                <Text style={styles.title}>{position}</Text>
 
             </View>
                 <View style={styles.lower}>
-                    <Text style={styles.title}>{position}</Text>
+               {
+               onleave?(
+                    <Text style={styles.title2}>
+                        On Leave
+                   </Text>
+               ):(
+                <Text style={styles.title1}>Available</Text>
+               )
+            }
 
                 </View>
         </View>
@@ -63,6 +72,14 @@ const styles = StyleSheet.create({
         fontSize:15,
         color:'grey'
     },
+    title1:{
+        fontSize:15,
+        color:'green'
+    },
+    title2:{
+        fontSize:15,
+        color:'orange'
+    },
     smalltext:{
         fontSize:15,
         fontWeight:'bold',
@@ -75,16 +92,15 @@ const styles = StyleSheet.create({
     },
     upper:{
         width:'100%',
-        height:'50%',
-        borderBottomWidth:1,
-        borderColor:'indigo',
+        height:'60%',
         justifyContent:'center'
     },
     leftsection:{
         width:'35%',
-        height:'100%',
-        backgroundColor:'indigo',
+        height:'90%',
         justifyContent:'center',
+        marginLeft:5,
+        marginTop:5,
         borderTopLeftRadius:5,
         borderBottomLeftRadius:5
     },
@@ -97,7 +113,7 @@ const styles = StyleSheet.create({
         width:80,
         borderWidth:1,
         height:80,
-        borderRadius:80,
+        borderRadius:40,
         alignSelf:'center'
     },
     rightsection:{
@@ -107,7 +123,7 @@ const styles = StyleSheet.create({
     },
     lower:{
         width:'100%',
-        height:'50%',
+        height:'40%',
         justifyContent:'center'
     },
     card:{
