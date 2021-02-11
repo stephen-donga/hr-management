@@ -3,7 +3,7 @@ import { View, Text ,StyleSheet, Image,Dimensions, Button} from 'react-native'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import { AntDesign } from '@expo/vector-icons'; 
 import {connect} from 'react-redux'
-import { StackActions,useNavigation } from '@react-navigation/native';
+import { StackActions,TabActions,useNavigation } from '@react-navigation/native';
 import {setNumberOfUsers,setIsloggedIn} from '../redux/user/userAction'
 import {setStaff} from '../redux/staff/staffActions'
 
@@ -81,7 +81,7 @@ const HomeScreen = ({currentUser,setUsers,allStaff,setAllStaff,signedIn,setSigne
             <View style={styles.lastsection}>
                 <Text style={styles.title}>All members</Text>
                     <FlatList 
-                    data={[{name:'Staff',urls:require('../../assets/staff2.png'),number:totalStaff,screen:'Staff'},
+                    data={[{name:'staff',urls:require('../../assets/staff2.png'),number:totalStaff,screen:'Staff'},
                     {name:'Users',urls:require('../../assets/user.png'),number:totalUsers,screen:'Users'}]}
                     renderItem={({item})=>{
                         return(

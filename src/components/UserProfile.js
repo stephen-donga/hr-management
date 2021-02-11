@@ -14,13 +14,18 @@ const ViewStaff = ({loggedIn,signdIn,navigation,setLogin}) => {
 
   const [loading, setLoading] = useState(false)
 
-  const startSpinner = () =>{
-    setLoading(true)
-    setTimeout(()=>{
+  const startSpinner = async() =>{
+      try{
+          setLoading(true)
+          setLogin(false)
+          setTimeout(()=>{
+              setLoading(false)
+              navigation.navigate('Login')
+          },500)
+      }catch(error){
         setLoading(false)
-        setLogin(false)
         navigation.navigate('Login')
-    },500)
+      }
 }
 
 let image = null

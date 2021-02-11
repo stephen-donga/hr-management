@@ -50,7 +50,7 @@ const ViewStaff = ({details,setStf,currentUser}) => {
       }
       
       const showToast = () => {
-        ToastAndroid.show('Delete successful !', ToastAndroid.SHORT);
+        ToastAndroid.show('Deleted member !', ToastAndroid.SHORT);
       };
 
       const handleDelete = ()=>{
@@ -76,52 +76,7 @@ const ViewStaff = ({details,setStf,currentUser}) => {
   >
     <ModalContent style={{width:width/2+170,height:height/2+200}}>
       <View >
-        {/* <Text style={{fontSize:21,alignSelf:'center',fontWeight:'bold',color:'darkblue',marginBottom:30}}>Leave Request Form</Text>
-        <Text style={{fontSize:18}}>Reason</Text>
-        <TextInput 
-        multiline={true}
-        style={{width:'98%',padding:10,height:100,fontSize:19,marginBottom:10,backgroundColor:'#eee'}}
-          placeholder='Reason and leave details here'
-        />
-          <TouchableOpacity  onPress={()=>showDatepicker()} 
-          style={{width:'98%',height:50,backgroundColor:'blue',alignItems:'center',justifyContent:'center'}}
-          >
-            <Text style={{fontSize:17,marginBottom:10,fontWeight:'bold',color:'white'}}>Select start date</Text>
-          </TouchableOpacity>
-          <TouchableOpacity  onPress={showDatepicker2} 
-          style={{width:'98%',height:50,marginTop:10,backgroundColor:'steelblue',alignItems:'center',justifyContent:'center'}}
-          >
-            <Text style={{fontSize:17,fontWeight:'bold',color:'white'}}>Select end date</Text>
-          </TouchableOpacity>
-          {show && (
-                    <DateTimePicker
-                      testID="dateTimePicker"
-                      value={date}
-                      mode={mode}
-                      is24Hour={true}
-                      display="default"
-                      onChange={onChange}
-                      />
-                    
-      )}
-
-        <TouchableOpacity
-        style={{width:'98%',alignItems:'center',justifyContent:'center',height:50,marginTop:50,backgroundColor:'mediumaquamarine'}}
-        >
-          <Text style={{fontSize:18,fontWeight:'bold',color:'white'}}>Submit</Text>
-        </TouchableOpacity>
-
-        {show2 && (
-                    <DateTimePicker
-                      testID="dateTimePicker"
-                      value={date2}
-                      mode={mode2}
-                      is24Hour={true}
-                      display="default"
-                      onChange={onChange2}
-                      />
-                    
-      )} */}
+ 
       </View>
     </ModalContent>
   </Modal>
@@ -169,6 +124,7 @@ const ViewStaff = ({details,setStf,currentUser}) => {
                    <View style={{width:'40%',height:'100%'}}>
                       <Text style={styles.title}>Experience</Text>
                    </View>
+                   
                    <View style={{width:'60%',height:'100%'}}>
                      {
                          experience >1 ?(<Text style={styles.text}>{experience}{" "}years</Text>):(<Text style={styles.text}>{experience}{" "}year</Text>)

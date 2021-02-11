@@ -6,9 +6,11 @@ import {connect} from 'react-redux'
 import {setEvents} from '../redux/events/eventActions'
 
 
+import auditTrail from '../utils/trails'
+
+
 const {width, height} = Dimensions.get('window')
-const EventCard = ({event,setEvent,description,time,id}) => {
-    
+const EventCard = ({event,setEvent,description,time,id, currentUser}) => {
     const [isSeen,setIseen] = useState(false)
 
     const handleDelete =()=>{
@@ -23,6 +25,14 @@ const EventCard = ({event,setEvent,description,time,id}) => {
             .then(res=>res.json())
             .then(res=>setEvent(res))
             .catch(err=>console.log(err))
+
+            let trail={
+                actor:currentUser,
+                action:`Removed event ${event}`,
+                time:new Date().toString()
+            }
+
+            auditTrail.logTrail(trail)
 
         })
 
@@ -78,9 +88,12 @@ const styles = StyleSheet.create({
         color:'black'
     }
 })
+const mapStateToProps =({user})=>({
+    currentUser:user.currentUser
+})
 
 const mapDispatchToProps = dispatch => ({
     setEvent: events =>dispatch(setEvents(events))
 })
 
-export default connect(null,mapDispatchToProps)(EventCard)
+export default connect(mapStateToProps,mapDispatchToProps)(EventCard)

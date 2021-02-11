@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState, useEffect} from 'react'
 import { View, Text,TouchableOpacity,TextInput,ToastAndroid ,Dimensions} from 'react-native'
 import DateTimePicker from "@react-native-community/datetimepicker"
 import {connect} from 'react-redux'
@@ -6,11 +6,15 @@ import {setStaff} from '../redux/staff/staffActions'
 
 import HeaderBar from '../custom/HeaderBar'
 import {urlConnection} from '../utils/url'
+import auditTrail from '../utils/trails'
 
 const {width,height} = Dimensions.get('window')
-const LeaveForm = ({route,navigation,setStf}) => {
+const LeaveForm = ({route,navigation,setStf,currentUser,staff}) => {
 
-    const {id} = route.params;
+  
+  const {id} = route.params;
+  let userOnLeave = staff.find(user =>user.id ==id)
+   
     const [reason, setReason] = useState('')
     const [leaveType, setLeaveType] = useState('')
 
@@ -91,6 +95,21 @@ const LeaveForm = ({route,navigation,setStf}) => {
             .then(res =>res.json())
             .then(server=>console.log(server))
             .catch(error=>console.log(error))
+            .finally(()=>{
+              let trail={
+                actor: currentUser,
+                action:`Added ${userOnLeave.first_name} ${userOnLeave.last_name} to the list of members on ${leaveType}`,
+                time:new Date().toString()
+            }
+
+            auditTrail.logTrail(trail)
+
+            fetch(urlConnection('staff'))
+            .then(res =>res.json())
+            .then(server=>setStf(server))
+            .catch(error=>console.log(error))
+
+            })
             showToast2()
             navigation.navigate('Home')
 
@@ -184,8 +203,13 @@ const LeaveForm = ({route,navigation,setStf}) => {
     )
 }
 
+const mapStateToProps =({user,staff})=>({
+  currentUser:user.currentUser,
+  staff:staff.staff
+})
+
 const mapDispatchToProps = dispatch =>({
   setStf: users =>dispatch(setStaff(users))
 })
 
-export default connect(null, mapDispatchToProps)(LeaveForm)
+export default connect(mapStateToProps, mapDispatchToProps)(LeaveForm)

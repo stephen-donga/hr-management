@@ -129,7 +129,7 @@ const AddMember = ({navigation,currentUser,setStf}) => {
               .then(server=>setStf(server))
               .catch(error=>console.log(error))
                 
-                navigation.navigate('Staff')
+                navigation.navigate('staff')
             }, 100);
             setFirstName("")
             setLastName("")

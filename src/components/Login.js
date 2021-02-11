@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import {View,Button,Text,ToastAndroid,StyleSheet,TouchableOpacity} from 'react-native';
+import {View,Button,Text,Dimensions,StyleSheet,TouchableOpacity} from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import  {setLoggedIn} from '../redux/user/userAction'
+import { Modal, ModalContent } from 'react-native-modals'
 import {connect} from  'react-redux'
 import {setCurrentUser,setNewUser} from '../redux/user/userAction'
 import {setStaff} from '../redux/staff/staffActions'
@@ -9,6 +10,8 @@ import {setStaff} from '../redux/staff/staffActions'
 import Inputfield from '../custom/Inputfield'
 import {urlConnection} from '../utils/url'
 import auditTrail from '../utils/trails'
+
+const {width, height} = Dimensions.get('window')
 
 const Login = ({navigation,setStaf,setLoggedUser,newUsers,setNewUsers,setCurrentUser}) => {
 
@@ -49,6 +52,8 @@ const Login = ({navigation,setStaf,setLoggedUser,newUsers,setNewUsers,setCurrent
     const [password, setPassword] = useState("")
     const [userError,setUserError] = useState("")
     const [passwordError,setPasswordError] = useState("")
+    const [loginErrorMessage, setLoginErrorMessage]=useState('')
+    const [isSeen,setIsSeen]=useState(false)
     
     const filteredUser = newUsers.filter(user =>user.email==username)
     
@@ -105,7 +110,8 @@ const Login = ({navigation,setStaf,setLoggedUser,newUsers,setNewUsers,setCurrent
                 startSpinner()
                 return;
             }else if(res.message===false){
-                alert('Wrong password !')
+                setLoginErrorMessage('Wrong password !')
+                setIsSeen(true)
     
                 trail={
                     actor:username,
@@ -114,9 +120,11 @@ const Login = ({navigation,setStaf,setLoggedUser,newUsers,setNewUsers,setCurrent
                 }
                 auditTrail.logTrail(trail)
             }else if(res.message==='none') {
-                alert('No user with the provided credentials')
+                setLoginErrorMessage('No user with the provided email and password')
+                setIsSeen(true)
             }else{
-                alert('Network failed')
+                setLoginErrorMessage('Network failed')
+                setIsSeen(true)
             }
         })
         .catch(error=>alert(error))
@@ -189,6 +197,27 @@ const Login = ({navigation,setStaf,setLoggedUser,newUsers,setNewUsers,setCurrent
 
                  </View>
                </View>
+               <Modal
+                    visible={isSeen}
+                    onTouchOutside={() => {
+                    setLoginErrorMessage('')
+                    setIsSeen(!isSeen)
+                    }}
+                >
+                    <ModalContent style={{width:width/2+80,height:height/3+30,backgroundColor:'#fff'}}>
+                        <View style={{height:'80%',alignItems:'center',justifyContent:'center',paddingTop:10}}>
+                          <Text style={{fontSize:15,alignSelf:'center', fontWeight:'bold',marginBottom:5,color:'red'}}>{loginErrorMessage}</Text>
+                        
+
+                        </View>
+                    <TouchableOpacity
+                    onPress= { ()=>setIsSeen(!isSeen)}
+                    style={{alignSelf:'center',width:150,alignItems:'center',justifyContent:'center',height:40,borderRadius:15,borderWidth:1,borderColor:'#eee'}}
+                    >
+                        <Text style={{fontSize:15}}>Close</Text>
+                    </TouchableOpacity>
+                </ModalContent>
+  </Modal>
             </View>
         )
     }

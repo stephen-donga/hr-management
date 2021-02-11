@@ -44,7 +44,7 @@ const Leaves = ({leaves,setLeaves,navigation}) => {
                   />
              </View>
             <FAB
-                onPress={()=>navigation.navigate('Staff')} 
+                onPress={()=>navigation.navigate('staff')} 
                 style={{position:'absolute',margin:16,margin:0,bottom:25,right:15}}
                 small
                 icon="plus"
