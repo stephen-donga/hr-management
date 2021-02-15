@@ -65,7 +65,11 @@ const HomeScreen = ({currentUser,userPic,setUsers,allStaff,setAllStaff,signedIn,
                         >
                             {
                                 userPic?(<Image style={{width:50,borderWidth:1,borderColor:'teal',height:50,borderRadius:50}} source={{uri:userPic}}/>)
-                                :(<Entypo name='user' size={24} />)
+                                :(
+                                <View style={{width:50,height:50,borderRadius:50}}>
+                                    <Entypo name='user' size={24} />
+                                </View>
+                                    )
                             }
                             <AntDesign name='right'style={{position:'absolute',marginTop:20,marginLeft:50}} color='grey'size={15} />
                         </TouchableOpacity>

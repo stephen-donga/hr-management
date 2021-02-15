@@ -41,6 +41,8 @@ const Staff = ({showDetails,staff,setStaf,setDetails}) => {
         setSearchField(text)
     }
     
+    // let filteredUsers = staff;
+
     let filter = searchField.toString().toLocaleLowerCase()
     const filteredUsers = staff.length <1?null: staff.filter(member =>  member.first_name.toLowerCase().includes(filter)||member.last_name.toLowerCase().includes(filter))
     return (

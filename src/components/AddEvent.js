@@ -24,7 +24,7 @@ const AddEvent = ({currentUser,addEvents}) => {
     const [eventErr, setEventErr] = useState('')
     const [describeErr, setDescribeErr] = useState('')
 
-    const [date, setDate] = useState(new Date(96400000));
+    const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
 

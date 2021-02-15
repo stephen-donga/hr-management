@@ -70,11 +70,14 @@ const LeaveDetails = ({route,navigation,setStf}) => {
             .then(res =>res.json())
             .then(server=>console.log(server))
             .catch(err=>console.log(err))
+            .finally(()=>{
+                fetch(urlConnection('staff'))
+                .then(res => res.json())
+                .then(res =>setStf(res))
+                .catch(err=> console.log(err))
 
-        fetch(urlConnection('staff'))
-        .then(res => res.json())
-        .then(res =>setStf(res))
-        .catch(err=> console.log(err))
+            })
+
         showToast2()
         deleteLeave(lId)
       }

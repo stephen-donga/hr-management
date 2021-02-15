@@ -18,11 +18,11 @@ const LeaveForm = ({route,navigation,setStf,currentUser,staff}) => {
     const [reason, setReason] = useState('')
     const [leaveType, setLeaveType] = useState('')
 
-    const [date, setDate] = useState(new Date(96400000));
+    const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
 
-    const [date2, setDate2] = useState(new Date(96400000));
+    const [date2, setDate2] = useState(new Date());
     const [mode2, setMode2] = useState('date');
     const [show2, setShow2] = useState(false);
 
@@ -78,6 +78,7 @@ const LeaveForm = ({route,navigation,setStf,currentUser,staff}) => {
             showToast()
             return;
         }else{
+
             fetch(urlConnection('leaves/add'),{
                 method:'post',
                 headers: {

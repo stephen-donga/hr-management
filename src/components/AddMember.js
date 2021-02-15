@@ -5,7 +5,6 @@ import DateTimePicker from "@react-native-community/datetimepicker"
 import auditTrail from '../utils/trails'
 import {connect} from 'react-redux'
 import * as ImagePicker from 'expo-image-picker';
-import Constants from 'expo-constants';
 import {urlConnection} from '../utils/url'
 
 import {setStaff} from '../redux/staff/staffActions'
@@ -66,8 +65,8 @@ const AddMember = ({navigation,currentUser,setStf}) => {
           aspect: [4, 3],
           quality: 1,
         });
-    
-        console.log(result);
+     
+        console.log(result)
     
         if (!result.cancelled) {
           setImage(result.uri);
